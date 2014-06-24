@@ -1,0 +1,1 @@
+﻿<%@ Application Codebehind="Global.asax.cs" Inherits="SnapUI.Web.MvcApplication" Language="C#" %>

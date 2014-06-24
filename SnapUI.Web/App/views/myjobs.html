@@ -1,0 +1,30 @@
+﻿<div class="row-fluid">
+    <table class="table">
+        <thead>
+            <tr>
+                <th><a href="#myjobs" data-bind="click: sortByJobid">Job ID</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
+                <th><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
+
+            </tr>
+        </thead>
+        <tbody data-bind="foreach: myJobs">
+
+            <tr>
+                <td data-bind="text: Jobid "></td>
+                <td data-bind="text: Checkid "></td>
+                <td data-bind="text: Dev"></td>
+                <td data-bind="text: Queue"></td>
+                <td data-bind="text: Status"></td>
+                <td data-bind="text: Priority"></td>
+                <td data-bind="text: Submitdate"></td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>
+

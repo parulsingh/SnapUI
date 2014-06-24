@@ -1,0 +1,7 @@
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\bin\Debug\SnapUI.Services.Contracts.dll
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\bin\Debug\SnapUI.Services.Contracts.pdb
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\bin\Debug\SnapUI.Common.Models.dll
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\bin\Debug\SnapUI.Common.Models.pdb
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\obj\Debug\SnapUI.Services.Contracts.csprojResolveAssemblyReference.cache
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\obj\Debug\SnapUI.Services.Contracts.dll
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services.Contracts\obj\Debug\SnapUI.Services.Contracts.pdb

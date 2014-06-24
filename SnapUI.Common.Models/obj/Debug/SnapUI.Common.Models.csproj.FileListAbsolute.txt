@@ -1,0 +1,5 @@
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Common.Models\bin\Debug\SnapUI.Common.Models.dll
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Common.Models\bin\Debug\SnapUI.Common.Models.pdb
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.dll
+c:\users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.pdb
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.csprojResolveAssemblyReference.cache
