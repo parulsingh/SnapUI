@@ -9,8 +9,15 @@
     }
 
 
+    var getAllJobs = function (results) {
+        return http.get('api/alljobs')
+            .then(function (data) {
+                results(data);
+            });
+    }
 
     return {
-        getMyJobs: getMyJobs
+        getMyJobs: getMyJobs,
+        getAllJobs: getAllJobs
     }
 });

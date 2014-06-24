@@ -33,7 +33,7 @@ namespace SnapUI.Web.Controllers
 
         public IEnumerable<Job> GetMyJobs()
         {
-            return _myJobsService.getMyJobs();
+            return _myJobsService.GetMyJobs();
         }
     }
 }

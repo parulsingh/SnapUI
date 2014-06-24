@@ -15,15 +15,24 @@ namespace SnapUI.Services
     public class MyJobsService : IMyJobsService
     {
         private readonly string _connectionString;
-        string myAlias;
+        object myAlias;
 
         public MyJobsService(string alias)
         {
-            myAlias = alias;
+            if (alias == "null")
+            {
+                myAlias = DBNull.Value;
+
+            }
+            else
+            {
+                myAlias = alias;
+            }
+            
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         }
 
-        public IEnumerable<Job> getMyJobs()
+        public IEnumerable<Job> GetMyJobs()
         {
             List<string> allQueuesList = new List<string>() { "cas", "cmprecacheworkflow", "cmprecacheworkflow_test",
                 "infrasandbox01", "infrasandbox02", "intune_ctip1", "intune_ctip1_test",
@@ -118,7 +127,7 @@ namespace SnapUI.Services
                         string priority = reader.GetString(4);
                         string status = reader.GetString(5);
                         DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
-                        alljobs.Add(new Job { Checkid = checkid, Jobid = jobid, Dev = dev, Queue = queue, Priority = priority, Status = status, Submitdate = submitdate, currentUser = myAlias });
+                        alljobs.Add(new Job { Checkid = checkid, Jobid = jobid, Dev = dev, Queue = queue, Priority = priority, Status = status, Submitdate = submitdate, currentUser = myAlias});
                     }
                 }
             }

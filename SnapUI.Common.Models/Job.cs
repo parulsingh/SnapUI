@@ -18,7 +18,7 @@ namespace SnapUI.Common.Models
 
         public string Priority { get; set; }
         public object Submitdate { get; set; }
-        public string currentUser { get; set; }
+        public object currentUser { get; set; }
 
     }
 }

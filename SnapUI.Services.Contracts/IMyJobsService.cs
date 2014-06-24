@@ -5,6 +5,6 @@ namespace SnapUI.Services.Contracts
 {
     public interface IMyJobsService
     {
-        IEnumerable<Job> getMyJobs();
+        IEnumerable<Job> GetMyJobs();
     }
 }
