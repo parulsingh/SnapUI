@@ -2,7 +2,14 @@
     <table class="table">
         <thead>
             <tr>
-                <th><a href="#myjobs" data-bind="click: sortByJobid">Job ID</a></th>
+                <th><a href="#myjobs" data-bind="click: sortByJobid">Job ID</a>
+                    <select id="jobid-filter">
+                        <option>105924</option>
+                        <option>110115</option>
+                        <option>110114</option>
+                        <option>110113</option>
+                    </select>
+                </th>
                 <th><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
                 <th><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
                 <th><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>

@@ -1,9 +1,19 @@
 ﻿@using System.Web
 @using System.Web.Optimization
+@using Kendo.Mvc.UI
 <!DOCTYPE html>
 <html>
 <head>
+    @Scripts.Render("~/scripts/vendor")
+    @Scripts.Render("~/bundles/kendo")
+    <script src="http://cdn.kendostatic.com/<2014.1.528.440>/js/kendo.all.min.js"></script>
+    <script src="http://cdn.kendostatic.com/<2014.1.528.440>/js/kendo.aspnetmvc.min.js"></script>
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/<2014.1.528.440>/styles/kendo.common.min.css" />
+    <link rel="stylesheet" href="http://cdn.kendostatic.com/<2014.1.528.440>/styles/kendo.default.min.css" />
+    <link href="~/Content/kendo/kendo.dataviz.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo/kendo.dataviz.default.min.css" rel="stylesheet" />
     <title>SNAP UI </title>
+
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -12,6 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/kendo/css")
     <script type="text/javascript">
         if (navigator.userAgent.match(/IEMobile\/10\.0/)) {
             var msViewportStyle = document.createElement("style");
@@ -26,8 +37,8 @@
         @Html.Partial("_splash")
        
     </div>
+    @(Html.Kendo().DatePicker().Name("datepicker")) 
 
-    @Scripts.Render("~/scripts/vendor")
 	<script src="~/Scripts/require.js" data-main="@Url.Content("~/App/main")"></script>
 </body>
 </html>
