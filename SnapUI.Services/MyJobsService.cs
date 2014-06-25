@@ -47,7 +47,7 @@ namespace SnapUI.Services
 
             var allJobs = new List<Job>();
             List<object> getCheckinHistParameters = new List<object>() { "@DevNm", "@Number", "@QueueId" };
-            List<object> getCheckinHistParameterValues = new List<object>() { myAlias, "50", DBNull.Value };
+            List<object> getCheckinHistParameterValues = new List<object>() { DBNull.Value, "50", DBNull.Value }; //hard coded this
 
             //foreach (string queue in allQueuesList)
             //{

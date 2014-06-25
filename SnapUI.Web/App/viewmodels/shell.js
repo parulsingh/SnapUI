@@ -29,6 +29,7 @@
                 .activate();            // Activate the router
         }
 
+
         function log(msg, data, showToast) {
             logger.log(msg, data, system.getModuleId(shell), showToast);
         }
