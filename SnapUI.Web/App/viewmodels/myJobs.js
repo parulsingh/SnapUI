@@ -9,38 +9,10 @@
     var vm = {
         activate: activate,
         title: title,
-        myJobs: ko.observableArray([]),
-        expand: function () {
-            $("td[colspan=3]").find("p").hide();
-            $("table").click(function (event) {
-                event.stopPropagation();
-                var $target = $(event.target);
-                if ($target.closest("td").attr("colspan") > 1) {
-                    $target.slideUp();
-                } else {
-                    $target.closest("tr").next().find("p").slideToggle();
-                }
-            });
-        }
+        myJobs: ko.observableArray([])
     };
 
     return vm;
-
-    var composition = require('durandal/composition');
-    composition.addBindingHandler('expandingTable', {
-        init: function () {
-            $("td[colspan=3]").find("p").hide();
-            $("table").click(function (event) {
-                event.stopPropagation();
-                var $target = $(event.target);
-                if ($target.closest("td").attr("colspan") > 1) {
-                    $target.slideUp();
-                } else {
-                    $target.closest("tr").next().find("p").slideToggle();
-                }
-            });
-        }
-    });
 
 
     function activate() {
@@ -48,7 +20,6 @@
         var nameDirection = -1;
         var qtyDirection = -1;
         logger.log(title + ' View Activated', null, title, true);
-        var self = this;
 
         if (self.myJobs().length > 0) {
             logger.log('Array already has data');
@@ -135,8 +106,8 @@
             .then(function () {
                 logger.log('Data loaded from server');
             });
+
+
     }
-
-
 
 });

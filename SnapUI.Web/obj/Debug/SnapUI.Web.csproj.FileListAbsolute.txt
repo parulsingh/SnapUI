@@ -5,9 +5,13 @@ C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Ant
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Breeze.WebApi.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\EntityFramework.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Irony.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Kendo.Mvc.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Microsoft.Web.Infrastructure.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Newtonsoft.Json.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Net.Http.Formatting.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Web.Helpers.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Web.Http.dll
@@ -22,7 +26,11 @@ C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Web
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\WebGrease.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\WebMatrix.Data.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\WebMatrix.WebData.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.pdb
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.pdb
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.pdb
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\EntityFramework.xml
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Kendo.Mvc.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Newtonsoft.Json.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Net.Http.Formatting.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Web.Helpers.xml
@@ -35,65 +43,6 @@ C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Sys
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\System.Web.WebPages.Razor.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\WebMatrix.Data.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\WebMatrix.WebData.xml
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.dll
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.pdb
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.csprojResolveAssemblyReference.cache
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.dll
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.dll
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.dll
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.pdb
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.pdb
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\SnapUI.Services.pdb
-<<<<<<< HEAD
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Web.dll.config
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Web.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Web.pdb
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Antlr3.Runtime.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Breeze.WebApi.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\EntityFramework.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Irony.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Microsoft.Web.Infrastructure.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Microsoft.Web.Mvc.FixedDisplayModes.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Newtonsoft.Json.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Services.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Net.Http.Formatting.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Helpers.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Http.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Http.WebHost.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Mvc.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Optimization.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Razor.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.Deployment.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.Razor.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebActivator.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebGrease.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebMatrix.Data.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebMatrix.WebData.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Common.Models.pdb
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Services.Contracts.pdb
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\SnapUI.Services.pdb
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\EntityFramework.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\Newtonsoft.Json.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Net.Http.Formatting.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Helpers.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Http.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Http.WebHost.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Mvc.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.Razor.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.Deployment.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\System.Web.WebPages.Razor.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebMatrix.Data.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\WebMatrix.WebData.xml
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.csprojResolveAssemblyReference.cache
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.dll
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.pdb
-=======
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Kendo.Mvc.dll
-C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\Kendo.Mvc.xml
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\bg-BG\Kendo.Mvc.resources.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\cs-CZ\Kendo.Mvc.resources.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\da-DK\Kendo.Mvc.resources.dll
@@ -111,4 +60,6 @@ C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\sv-
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\tr-TR\Kendo.Mvc.resources.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\uk-UA\Kendo.Mvc.resources.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\bin\zh-CN\Kendo.Mvc.resources.dll
->>>>>>> a407f5ff4d4bba6ee90ad48472f4169dcafc6017
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.csprojResolveAssemblyReference.cache
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.dll
+C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.pdb
