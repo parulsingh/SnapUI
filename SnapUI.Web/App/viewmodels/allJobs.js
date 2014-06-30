@@ -16,17 +16,17 @@
 
 
     function activate() {
+
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
         logger.log(title + ' View Activated', null, title, true);
+
         // filtering stuff
         self.jobIdFilter = ko.observable('');
-
         self.checkinIdFilter = ko.observable('');
-
         self.devFilter = ko.observable('');
-
+        
         self.priorityFilters = ko.observableArray(["None", "High", "Low", "Normal"]);
         self.priorityFilter = ko.observable('');
 
@@ -58,13 +58,15 @@
             var qBool;
             var sBool;
             var pBool;
+            var result;
 
           return ko.utils.arrayFilter(self.allJobs(), function (i) {
               if (!jobIdFilter || jobIdFilter == "") {
                   jBool = true;
               }
               else {
-                  jBool = i.Jobid == jobIdFilter;
+
+                  jBool = self.jobIdFilter() == String(i.Jobid).substring(0, self.jobIdFilter().length);
 
               }
 
@@ -72,46 +74,44 @@
                   cBool = true;
               }
               else {
-                  cBool = i.Checkid == checkinIdFilter;
+                  cBool = self.checkinIdFilter() == String(i.Checkid).substring(0, self.checkinIdFilter().length);
 
               }
               if (!devFilter || devFilter == "") {
                   dBool = true;
               }
               else {
-                  dBool = i.Dev == devFilter;
+                  dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
 
               }
                 
-                if (!queueFilter || queueFilter == "None") {
-                    qBool = true;
-                } 
-                else {
-                    qBool = i.Queue == queueFilter;
+              if (!queueFilter || queueFilter == "None") {
+                  qBool = true;
+              } 
+              else {
+                  qBool = i.Queue == queueFilter;
             
-                }
+              }
 
-                if (!statusFilter || statusFilter == "None") {
-                    sBool = true;
-                } 
-                else {
-                    sBool = i.Status == statusFilter;
+              if (!statusFilter || statusFilter == "None") {
+                  sBool = true;
+              } 
+              else {
+                  sBool = i.Status == statusFilter;
             
-                }
-                if (!priorityFilter || priorityFilter == "None") {
-                    pBool = true;
-                }
-                else {
-                    pBool = i.Priority == priorityFilter;
+              }
+              if (!priorityFilter || priorityFilter == "None") {
+                  pBool = true;
+              }
+              else {
+                  pBool = i.Priority == priorityFilter;
 
-                }
-                return  jBool && cBool && dBool && pBool && qBool && sBool;
+              }
+              result = jBool && cBool && dBool && pBool && qBool && sBool;
+              return result;
 
             });
         });
-
-
-        // filtering stuff
 
 
         if (self.allJobs().length > 0) {

@@ -14,16 +14,16 @@
         </thead>
 
         <tr>
-            <td><input data-bind="value: jobIdFilter" type="text"></td>
-            <td><input data-bind="value: checkinIdFilter" type="text"></td>
-            <td><input data-bind="value: devFilter" type="text"></td>
+            <td><input data-bind="value: jobIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
+            <td><input data-bind="value: checkinIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
+            <td><input data-bind="value: devFilter, valueUpdate:'afterkeydown'" type="search"></td>
             <td><select data-bind="options: queueFilters, value: queueFilter"></select></td>
             <td><select data-bind="options: statusFilters, value: statusFilter"></select></td>
             <td><select data-bind="options: priorityFilters, value: priorityFilter"></select></td>
-            <td></td>
         </tr>
         <tbody data-bind="foreach: filteredItems">
-            <tr data-toggle="collapse" data-bind="attr: { 'data-target': '#tray'+$index()}" class="accordion-toggle">
+
+            <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="accordion-toggle">
                 <td data-bind="text: Jobid "></td>
                 <td data-bind="text: Checkid "></td>
                 <td data-bind="text: Dev"></td>
@@ -39,6 +39,7 @@
                     </div>
                 </td>
             </tr>
+
         </tbody>
     </table>
 
