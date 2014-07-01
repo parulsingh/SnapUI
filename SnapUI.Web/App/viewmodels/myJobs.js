@@ -15,6 +15,7 @@
     return vm;
 
 
+
     function activate() {
         var self = this;
         var nameDirection = -1;
