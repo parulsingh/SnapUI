@@ -1,6 +1,5 @@
 ﻿<div class="row-fluid">
 
-    <script src="~/Scripts/jqueryFileTree.js"></script>
 
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <thead>
@@ -31,7 +30,8 @@
             <tr>
                 <td class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
-                        <a href="file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/">View logs</a>
+
+                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> View Logs</a>
                         <br>
                         <br>
                     </div>
