@@ -74,7 +74,7 @@ namespace SnapUI.Services
             //allJobs.AddRange(tempJobs);
 
             List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
-            List<object> historyParameterValues = new List<object>() { "2014/6/28", DateTime.Now, DBNull.Value, myAlias };
+            List<object> historyParameterValues = new List<object>() { "2014/5/28", DateTime.Now, DBNull.Value, myAlias };
             var allJobs = CallProc("NewSnapUIProc", historyParameters, historyParameterValues);
 
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
