@@ -74,7 +74,7 @@ namespace SnapUI.Services
             //allJobs.AddRange(tempJobs);
 
             List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
-            List<object> historyParameterValues = new List<object>() { "2014/5/28", DateTime.Now, DBNull.Value, myAlias };
+            List<object> historyParameterValues = new List<object>() { "2014/6/28", DateTime.Now, DBNull.Value, myAlias };
             var allJobs = CallProc("NewSnapUIProc", historyParameters, historyParameterValues);
 
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
@@ -109,159 +109,157 @@ namespace SnapUI.Services
                 }
                 conn.Open();
 
-                if (procname == "Snp.UI_GetCheckinDetails")
+                //if (procname == "Snp.UI_GetCheckinDetails")
+                //{
+                //    //XmlReader xmlReader = command.ExecuteXmlReader();      
+
+                //    //while (xmlReader.Read())
+                //    XmlReaderSettings settings = new XmlReaderSettings();
+                //    settings.IgnoreWhitespace = true;
+                //    using (XmlReader xmlReader = command.ExecuteXmlReader())
+                //    {
+                //        string teststring = "teststrg";
+                //        string teststring2 = "teststrng 2";
+
+                //        xmlReader.ReadToFollowing("JOB");
+                //        XmlReader inner = xmlReader.ReadSubtree();
+                //        inner.ReadToDescendant("JobPk");
+                //        if (inner.ReadInnerXml() == "110342")
+                //        {
+                //            teststring2 = "inside 110342";
+                //            inner.ReadToFollowing("JOB_EVENT");
+                //            //while (true)
+                //            //{
+                //            inner.ReadToDescendant("EventDesc");
+                //            string eventDesc = inner.ReadInnerXml();
+                //            //inner.ReadToFollowing("State");
+                //            string state = inner.ReadInnerXml();
+
+                //            //inner.ReadToFollowing("EventDesc");
+                //            //eventDesc = inner.ReadInnerXml();
+                //            //inner.ReadToFollowing("State");
+                //            //state = inner.ReadInnerXml();
+
+                //            //if (state == "Aborted")
+                //            //{
+                //            teststring2 = state;
+                //            //break;
+                //            //}
+                //            //else
+                //            //    continue;
+                //            //}
+                //            //do
+                //            //{
+                //            //inner.ReadToFollowing("State");
+                //            //teststring2 = inner.GetAttribute("State");
+                //            //teststring2 = inner.ReadInnerXml();
+                //            //} while (inner.ReadToNextSibling("JOB_EVENT"));
+
+                //            //while (true)
+                //            //{
+                //            //    if (loop != 3)
+                //            //    {
+                //            //        inner.ReadToNextSibling("JOB_EVENT");
+                //            //        teststring2 = inner.GetAttribute("Build");
+                //            //    }
+                //            //    else break;
+                //            //    loop++;
+                //            //}
+                //            //inner = xmlReader.ReadSubtree();
+                //            //inner.ReadToDescendant("EventDesc");
+                //            //teststring = inner.ReadInnerXml();
+                //        }
+                //        inner.Close();
+
+                //        Job newJob = new Job
+                //        {
+                //            Checkid = 123,
+                //            Jobid = 123,
+                //            Dev = teststring,
+                //            Priority = teststring2
+                //        };
+                //        allJobs.Add(newJob);
+                //    }
+                //}
+                
+                SqlDataReader reader = command.ExecuteReader();
+                while (reader.Read())
                 {
-                    //XmlReader xmlReader = command.ExecuteXmlReader();      
-
-                    //while (xmlReader.Read())
-                    XmlReaderSettings settings = new XmlReaderSettings();
-                    settings.IgnoreWhitespace = true;
-                    using (XmlReader xmlReader = command.ExecuteXmlReader())
+                    if (procname == "NewSnapUIProc")
                     {
-                        string teststring = "teststrg";
-                        string teststring2 = "teststrng 2";
-
-                        xmlReader.ReadToFollowing("JOB");
-                        XmlReader inner = xmlReader.ReadSubtree();
-                        inner.ReadToDescendant("JobPk");
-                        if (inner.ReadInnerXml() == "110342")
+                        int checkid = reader.GetInt32(0);
+                        int jobid = reader.GetInt32(1);
+                        string dev = reader.GetString(2);
+                        string queue = reader.GetString(3);
+                        DateTime submitdate = reader.GetDateTime(4);
+                        string status = reader.GetString(5);
+                        if (status == "Aborted")
                         {
-                            teststring2 = "inside 110342";
-                            inner.ReadToFollowing("JOB_EVENT");
-                            //while (true)
-                            //{
-                            inner.ReadToDescendant("EventDesc");
-                            string eventDesc = inner.ReadInnerXml();
-                            //inner.ReadToFollowing("State");
-                            string state = inner.ReadInnerXml();
-
-                            //inner.ReadToFollowing("EventDesc");
-                            //eventDesc = inner.ReadInnerXml();
-                            //inner.ReadToFollowing("State");
-                            //state = inner.ReadInnerXml();
-
-                            //if (state == "Aborted")
-                            //{
-                            teststring2 = state;
-                            //break;
-                            //}
-                            //else
-                            //    continue;
-                            //}
-                            //do
-                            //{
-                            //inner.ReadToFollowing("State");
-                            //teststring2 = inner.GetAttribute("State");
-                            //teststring2 = inner.ReadInnerXml();
-                            //} while (inner.ReadToNextSibling("JOB_EVENT"));
-
-                            //while (true)
-                            //{
-                            //    if (loop != 3)
-                            //    {
-                            //        inner.ReadToNextSibling("JOB_EVENT");
-                            //        teststring2 = inner.GetAttribute("Build");
-                            //    }
-                            //    else break;
-                            //    loop++;
-                            //}
-                            //inner = xmlReader.ReadSubtree();
-                            //inner.ReadToDescendant("EventDesc");
-                            //teststring = inner.ReadInnerXml();
+                            status = "Aborted: " + reader.GetString(8);
                         }
-                        inner.Close();
-
+                        string priority = reader.GetString(6);
                         Job newJob = new Job
                         {
-                            Checkid = 123,
-                            Jobid = 123,
-                            Dev = teststring,
-                            Priority = teststring2
+                            Checkid = checkid,
+                            Jobid = jobid,
+                            Dev = dev,
+                            Queue = queue,
+                            Submitdate = submitdate,
+                            Status = status,
+                            Priority = priority
                         };
                         allJobs.Add(newJob);
                     }
-                }
 
-                else
-                {
-                    SqlDataReader reader = command.ExecuteReader();
+                    //int pendingPlace = 1;
+                    //if (procname == "Snp.GetPendingQueue")
+                    //{
+                    //    int jobid = reader.GetInt32(0);
+                    //    int checkid = Int32.Parse(reader.GetString(1));
+                    //    string dev = reader.GetString(2);
+                    //    string queue = reader.GetString(3);
+                    //    string priority = reader.GetString(4);
+                    //    string status = reader.GetString(5);
+                    //    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
+                    //    Job newJob = new Job
+                    //    {
+                    //        Checkid = checkid,
+                    //        Jobid = jobid,
+                    //        Dev = dev,
+                    //        Queue = queue,
+                    //        Priority = priority,
+                    //        Status = status,
+                    //        Submitdate = submitdate,
+                    //        Placeorstatus = null
+                    //    };
+                    //    if (newJob.Status == "Pending")
+                    //        newJob.Placeorstatus = pendingPlace++;
+                    //    allJobs.Add(newJob);
+                    //}
 
-                    int pendingPlace = 1;
-                    while (reader.Read())
-                    {
-
-                        if (procname == "NewSnapUIProc")
-                        {
-                            int checkid = reader.GetInt32(0);
-                            int jobid = reader.GetInt32(1);
-                            string dev = reader.GetString(2);
-                            string queue = reader.GetString(3);
-                            DateTime submitdate = reader.GetDateTime(4);
-                            string status = reader.GetString(5);
-                            object placeorstatus = reader.GetValue(7);
-                            Job newJob = new Job
-                            {
-                                Checkid = checkid,
-                                Jobid = jobid,
-                                Dev = dev,
-                                Queue = queue,
-                                Status = status,
-                                Submitdate = submitdate,
-                                Placeorstatus = placeorstatus
-                            };
-                            allJobs.Add(newJob);
-                        }
-                        if (procname == "Snp.GetPendingQueue")
-                        {
-                            int jobid = reader.GetInt32(0);
-                            int checkid = Int32.Parse(reader.GetString(1));
-                            string dev = reader.GetString(2);
-                            string queue = reader.GetString(3);
-                            string priority = reader.GetString(4);
-                            string status = reader.GetString(5);
-                            DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
-                            Job newJob = new Job
-                            {
-                                Checkid = checkid,
-                                Jobid = jobid,
-                                Dev = dev,
-                                Queue = queue,
-                                Priority = priority,
-                                Status = status,
-                                Submitdate = submitdate,
-                                Placeorstatus = null
-                            };
-                            if (newJob.Status == "Pending")
-                                newJob.Placeorstatus = pendingPlace++;
-
-                            allJobs.Add(newJob);
-                        }
-
-                        else if (procname == "Snp.GetCheckinHist")
-                        {
-                            int checkid = Int32.Parse(reader.GetString(0));
-                            int jobid = reader.GetInt32(1);
-                            string dev = reader.GetString(2);
-                            string queue = reader.GetString(3);
-                            string priority = reader.GetString(4);
-                            string status = reader.GetString(5);
-                            DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
-                            Job newJob = new Job
-                            {
-                                Checkid = checkid,
-                                Jobid = jobid,
-                                Dev = dev,
-                                Queue = queue,
-                                Priority = priority,
-                                Status = status,
-                                Submitdate = submitdate,
-                                Placeorstatus = null
-                            };
-
-                            allJobs.Add(newJob);
-                        }
-                    }
-                }
+                    //else if (procname == "Snp.GetCheckinHist")
+                    //{
+                    //    int checkid = Int32.Parse(reader.GetString(0));
+                    //    int jobid = reader.GetInt32(1);
+                    //    string dev = reader.GetString(2);
+                    //    string queue = reader.GetString(3);
+                    //    string priority = reader.GetString(4);
+                    //    string status = reader.GetString(5);
+                    //    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
+                    //    Job newJob = new Job
+                    //    {
+                    //        Checkid = checkid,
+                    //        Jobid = jobid,
+                    //        Dev = dev,
+                    //        Queue = queue,
+                    //        Priority = priority,
+                    //        Status = status,
+                    //        Submitdate = submitdate,
+                    //        Placeorstatus = null
+                    //    };
+                    //    allJobs.Add(newJob);
+                    //}
+                }                
             }
             return allJobs;
         }
