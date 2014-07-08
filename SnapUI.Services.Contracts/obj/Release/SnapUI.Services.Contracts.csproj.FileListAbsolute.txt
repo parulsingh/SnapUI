@@ -1,0 +1,7 @@
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\bin\Release\SnapUI.Services.Contracts.dll
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\bin\Release\SnapUI.Services.Contracts.pdb
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\bin\Release\SnapUI.Common.Models.dll
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\bin\Release\SnapUI.Common.Models.pdb
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\obj\Release\SnapUI.Services.Contracts.csprojResolveAssemblyReference.cache
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\obj\Release\SnapUI.Services.Contracts.dll
+C:\Users\t-serhe\SnapUI\SnapUI.Services.Contracts\obj\Release\SnapUI.Services.Contracts.pdb

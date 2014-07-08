@@ -28,7 +28,7 @@ namespace SnapUI.Services
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
         }
 
-        public IEnumerable<Job> GetMyJobs()
+        public IEnumerable<Job> GetMyJobs(List<string> queuePrefList)
         {
             //List<string> allQueuesList = new List<string>() {
             //    "CAS", "CMPreCacheWorkflow", "CMPreCacheWorkflow_test",
@@ -73,198 +73,163 @@ namespace SnapUI.Services
             //);
             //allJobs.AddRange(tempJobs);
 
-            List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
-            List<object> historyParameterValues = new List<object>() { "2014/6/28", DateTime.Now, DBNull.Value, myAlias };
-            var allJobs = CallProc("NewSnapUIProc", historyParameters, historyParameterValues);
+            //object queue = DBNull.Value;
+
+            //if (myAlias != DBNull.Value)
+            //{
+            //    IUserPrefService _userPrefService = new UserPrefService((string)myAlias);
+                
+            //    var temp = new List<string>(){ "intune_dev_office", "JupiterSnapVM5" };
+
+            //    _userPrefService.UpdateUserPref(temp);
+
+            //    var queuePrefList = _userPrefService.GetUserPref();                 
+            //    queue = queuePrefList.First();
+            //}                
+
+            var allJobs = new List<Job>();
+            foreach (var queue in queuePrefList)
+            {
+                List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
+                List<object> historyParameterValues = new List<object>() { "2014/6/28", DateTime.Now, queue, myAlias };
+                var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", historyParameters, historyParameterValues);
+                allJobs.AddRange(allJobsFromQueue);
+            }
 
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
             return uniqueAllJobsOrdered;
         }
 
-        public IEnumerable<Job> CallProc(string procname, List<object> parameters, List<object> parameterValues)
+        public SqlDataReader MakeReader(SqlConnection conn, string procname, List<object> parameters, List<object> parameterValues)
         {
-            var allJobs = new List<Job>();
+            var command = new SqlCommand
+            {
+                Connection = conn,
+                CommandText = procname,
+                CommandType = CommandType.StoredProcedure
+            };
 
+            // count # of parameters
+            IEnumerable<int> parameterCount = Enumerable.Range(0, parameters.Count());
+            //set each parameter in List parameters to List parameterValues
+            foreach (int i in parameterCount)
+            {
+                var newParameter = new SqlParameter
+                {
+                    ParameterName = parameters[i].ToString(),
+                    Direction = ParameterDirection.Input,
+                    Value = parameterValues[i]
+                };
+                command.Parameters.Add(newParameter);
+            }
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            return reader;
+        }
+
+        public IEnumerable<string> CallUserPrefProc(string procname, List<object> parameters, List<object> parameterValues)
+        {
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                var command = new SqlCommand
-                {
-                    Connection = conn,
-                    CommandText = procname,
-                    CommandType = CommandType.StoredProcedure
-                };
+                var queuePrefList = new List<string>();
 
-                // count # of parameters
-                IEnumerable<int> parameterCount = Enumerable.Range(0, parameters.Count());
-                //set each parameter in List parameters to List parameterValues
-                foreach (int i in parameterCount)
-                {
-                    var newParameter = new SqlParameter
-                    {
-                        ParameterName = parameters[i].ToString(),
-                        Direction = ParameterDirection.Input,
-                        Value = parameterValues[i]
-                    };
-                    command.Parameters.Add(newParameter);
-                }
-                conn.Open();
-
-                //if (procname == "Snp.UI_GetCheckinDetails")
-                //{
-                //    //XmlReader xmlReader = command.ExecuteXmlReader();      
-
-                //    //while (xmlReader.Read())
-                //    XmlReaderSettings settings = new XmlReaderSettings();
-                //    settings.IgnoreWhitespace = true;
-                //    using (XmlReader xmlReader = command.ExecuteXmlReader())
-                //    {
-                //        string teststring = "teststrg";
-                //        string teststring2 = "teststrng 2";
-
-                //        xmlReader.ReadToFollowing("JOB");
-                //        XmlReader inner = xmlReader.ReadSubtree();
-                //        inner.ReadToDescendant("JobPk");
-                //        if (inner.ReadInnerXml() == "110342")
-                //        {
-                //            teststring2 = "inside 110342";
-                //            inner.ReadToFollowing("JOB_EVENT");
-                //            //while (true)
-                //            //{
-                //            inner.ReadToDescendant("EventDesc");
-                //            string eventDesc = inner.ReadInnerXml();
-                //            //inner.ReadToFollowing("State");
-                //            string state = inner.ReadInnerXml();
-
-                //            //inner.ReadToFollowing("EventDesc");
-                //            //eventDesc = inner.ReadInnerXml();
-                //            //inner.ReadToFollowing("State");
-                //            //state = inner.ReadInnerXml();
-
-                //            //if (state == "Aborted")
-                //            //{
-                //            teststring2 = state;
-                //            //break;
-                //            //}
-                //            //else
-                //            //    continue;
-                //            //}
-                //            //do
-                //            //{
-                //            //inner.ReadToFollowing("State");
-                //            //teststring2 = inner.GetAttribute("State");
-                //            //teststring2 = inner.ReadInnerXml();
-                //            //} while (inner.ReadToNextSibling("JOB_EVENT"));
-
-                //            //while (true)
-                //            //{
-                //            //    if (loop != 3)
-                //            //    {
-                //            //        inner.ReadToNextSibling("JOB_EVENT");
-                //            //        teststring2 = inner.GetAttribute("Build");
-                //            //    }
-                //            //    else break;
-                //            //    loop++;
-                //            //}
-                //            //inner = xmlReader.ReadSubtree();
-                //            //inner.ReadToDescendant("EventDesc");
-                //            //teststring = inner.ReadInnerXml();
-                //        }
-                //        inner.Close();
-
-                //        Job newJob = new Job
-                //        {
-                //            Checkid = 123,
-                //            Jobid = 123,
-                //            Dev = teststring,
-                //            Priority = teststring2
-                //        };
-                //        allJobs.Add(newJob);
-                //    }
-                //}
-                
-                SqlDataReader reader = command.ExecuteReader();
+                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);
+                //conn.Open();
                 while (reader.Read())
                 {
-                    if (procname == "NewSnapUIProc")
-                    {
-                        int checkid = reader.GetInt32(0);
-                        int jobid = reader.GetInt32(1);
-                        string dev = reader.GetString(2);
-                        string queue = reader.GetString(3);
-                        DateTime submitdate = reader.GetDateTime(4);
-                        string status = reader.GetString(5);
-                        string task = null;
-                        if (status == "Aborted")
-                        {
-                            task = reader.GetString(8);
-                        }
-                        string priority = reader.GetString(6);
-                        Job newJob = new Job
-                        {
-                            Checkid = checkid,
-                            Jobid = jobid,
-                            Dev = dev,
-                            Queue = queue,
-                            Submitdate = submitdate,
-                            Status = new List<string>(){ status, task },
-                            Priority = priority
-                        };
-                        allJobs.Add(newJob);
-                    }
-
-                    //int pendingPlace = 1;
-                    //if (procname == "Snp.GetPendingQueue")
-                    //{
-                    //    int jobid = reader.GetInt32(0);
-                    //    int checkid = Int32.Parse(reader.GetString(1));
-                    //    string dev = reader.GetString(2);
-                    //    string queue = reader.GetString(3);
-                    //    string priority = reader.GetString(4);
-                    //    string status = reader.GetString(5);
-                    //    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
-                    //    Job newJob = new Job
-                    //    {
-                    //        Checkid = checkid,
-                    //        Jobid = jobid,
-                    //        Dev = dev,
-                    //        Queue = queue,
-                    //        Priority = priority,
-                    //        Status = status,
-                    //        Submitdate = submitdate,
-                    //        Placeorstatus = null
-                    //    };
-                    //    if (newJob.Status == "Pending")
-                    //        newJob.Placeorstatus = pendingPlace++;
-                    //    allJobs.Add(newJob);
-                    //}
-
-                    //else if (procname == "Snp.GetCheckinHist")
-                    //{
-                    //    int checkid = Int32.Parse(reader.GetString(0));
-                    //    int jobid = reader.GetInt32(1);
-                    //    string dev = reader.GetString(2);
-                    //    string queue = reader.GetString(3);
-                    //    string priority = reader.GetString(4);
-                    //    string status = reader.GetString(5);
-                    //    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
-                    //    Job newJob = new Job
-                    //    {
-                    //        Checkid = checkid,
-                    //        Jobid = jobid,
-                    //        Dev = dev,
-                    //        Queue = queue,
-                    //        Priority = priority,
-                    //        Status = status,
-                    //        Submitdate = submitdate,
-                    //        Placeorstatus = null
-                    //    };
-                    //    allJobs.Add(newJob);
-                    //}
-                }                
+                    string queuePrefString = reader.GetString(2);
+                    queuePrefList.Add(queuePrefString);
+                };                
+                return queuePrefList;
             }
-            return allJobs;
+        }
+
+        public IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues)
+        {
+            using (SqlConnection conn = new SqlConnection(_connectionString))
+            {
+                var allJobs = new List<Job>();
+                
+                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);                
+                //conn.Open();                                            
+                while (reader.Read())
+                {                   
+                    int checkid = reader.GetInt32(0);
+                    int jobid = reader.GetInt32(1);
+                    string dev = reader.GetString(2);
+                    string queue = reader.GetString(3);
+                    DateTime submitdate = reader.GetDateTime(4);
+                    string status = reader.GetString(5);
+                    string task = null;
+                    if (status == "Aborted")
+                    {
+                        task = reader.GetString(8);
+                    }
+                    string priority = reader.GetString(6);
+                    Job newJob = new Job
+                    {
+                        Checkid = checkid,
+                        Jobid = jobid,
+                        Dev = dev,
+                        Queue = queue,
+                        Submitdate = submitdate,
+                        Status = new List<string>() { status, task },
+                        Priority = priority
+                    };
+                    allJobs.Add(newJob);                    
+                }
+                return allJobs;             
+            }                                
         }
     }
 }
 
 
+//int pendingPlace = 1;
+//if (procname == "Snp.GetPendingQueue")
+//{
+//    int jobid = reader.GetInt32(0);
+//    int checkid = Int32.Parse(reader.GetString(1));
+//    string dev = reader.GetString(2);
+//    string queue = reader.GetString(3);
+//    string priority = reader.GetString(4);
+//    string status = reader.GetString(5);
+//    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
+//    Job newJob = new Job
+//    {
+//        Checkid = checkid,
+//        Jobid = jobid,
+//        Dev = dev,
+//        Queue = queue,
+//        Priority = priority,
+//        Status = status,
+//        Submitdate = submitdate,
+//        Placeorstatus = null
+//    };
+//    if (newJob.Status == "Pending")
+//        newJob.Placeorstatus = pendingPlace++;
+//    allJobs.Add(newJob);
+//}
+
+//else if (procname == "Snp.GetCheckinHist")
+//{
+//    int checkid = Int32.Parse(reader.GetString(0));
+//    int jobid = reader.GetInt32(1);
+//    string dev = reader.GetString(2);
+//    string queue = reader.GetString(3);
+//    string priority = reader.GetString(4);
+//    string status = reader.GetString(5);
+//    DateTime submitdate = Convert.ToDateTime(reader.GetString(6));
+//    Job newJob = new Job
+//    {
+//        Checkid = checkid,
+//        Jobid = jobid,
+//        Dev = dev,
+//        Queue = queue,
+//        Priority = priority,
+//        Status = status,
+//        Submitdate = submitdate,
+//        Placeorstatus = null
+//    };
+//    allJobs.Add(newJob);
+//}

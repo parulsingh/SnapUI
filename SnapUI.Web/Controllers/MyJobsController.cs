@@ -11,11 +11,11 @@ namespace SnapUI.Web.Controllers
     public class MyJobsController : ApiController
     {
         private readonly IMyJobsService _myJobsService;
+        private readonly IUserPrefService _userPrefService;
         public string alias;
 
         public MyJobsController()
-        {
-             
+        {             
             if (User.Identity.IsAuthenticated)
             {
                 string user = User.Identity.Name;
@@ -28,12 +28,14 @@ namespace SnapUI.Web.Controllers
             }
 
             _myJobsService = new MyJobsService(alias);
+            _userPrefService = new UserPrefService(alias);
 
         }
 
         public IEnumerable<Job> GetMyJobs()
         {
-            return _myJobsService.GetMyJobs();
+            List<string> userPrefList = _userPrefService.GetUserPref();
+            return _myJobsService.GetMyJobs(userPrefList);
         }
     }
 }
