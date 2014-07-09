@@ -91,7 +91,7 @@ namespace SnapUI.Services
             foreach (var queue in queuePrefList)
             {
                 List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
-                List<object> historyParameterValues = new List<object>() { "2014/6/28", DateTime.Now, queue, myAlias };
+                List<object> historyParameterValues = new List<object>() { DateTime.Now.AddDays(-7.5), DateTime.Now, queue, myAlias };
                 var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", historyParameters, historyParameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
