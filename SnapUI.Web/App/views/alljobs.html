@@ -1,4 +1,7 @@
-﻿<div class="row-fluid">
+﻿
+<div class="row-fluid">
+   
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <thead>
             <tr>
@@ -9,7 +12,6 @@
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Submit Date</th>
-
             </tr>
         </thead>
 
@@ -20,6 +22,8 @@
             <td><select data-bind="options: queueFilters, value: queueFilter"></select></td>
             <td><select data-bind="options: statusFilters, value: statusFilter"></select></td>
             <td><select data-bind="options: priorityFilters, value: priorityFilter"></select></td>
+            <td id='target'> <input data-bind='datepicker: test_date'></td>
+            
         </tr>
         <tbody data-bind="foreach: filteredItems">
 
@@ -37,7 +41,13 @@
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> View Logs</a>
                         <br>
+                        <p>View Log Tracer Files</p>
+                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_0/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_0</a>
                         <br>
+                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        <br>
+                        <br>
+
                     </div>
                 </td>
             </tr>

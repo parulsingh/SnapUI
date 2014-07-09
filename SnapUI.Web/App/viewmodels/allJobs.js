@@ -9,14 +9,37 @@
     var vm = {
         activate: activate,
         title: title,
-        allJobs: ko.observableArray([]),
+        allJobs: ko.observableArray([])
+
     };
 
     return vm;
 
 
     function activate() {
+        ko.bindingHandlers.datepicker = {
+            init: function (element, valueAccessor, allBindingsAccessor) {
+                //initialize datepicker with some optional options
+                var options = allBindingsAccessor().datepickerOptions || {};
+                $(element).datepicker(options);
 
+                //when a user changes the date, update the view model
+                ko.utils.registerEventHandler(element, "changeDate", function (event) {
+                    var value = valueAccessor();
+                    if (ko.isObservable(value)) {
+                        value(event.date);
+                    }
+                });
+            },
+            update: function (element, valueAccessor) {
+                var widget = $(element).data("datepicker");
+                //when the view model is updated, update the widget
+                if (widget) {
+                    widget.date = ko.utils.unwrapObservable(valueAccessor());
+                    widget.setValue();
+                }
+            }
+        };
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
@@ -44,6 +67,7 @@
 
         self.statusFilters = ko.observableArray(["None", "In Progress", "Cancelled", "Aborted"]);
         self.statusFilter = ko.observable('');
+        self.test_date = ko.observable(new Date());
 
         self.filteredItems = ko.computed(function () {
             var jobIdFilter = self.jobIdFilter();
@@ -52,12 +76,14 @@
             var priorityFilter = self.priorityFilter();
             var queueFilter = self.queueFilter();
             var statusFilter = self.statusFilter();
+            var test_date = self.test_date();
             var jBool;
             var cBool;
             var dBool;
             var qBool;
             var sBool;
             var pBool;
+            var daBool;
             var result;
 
           return ko.utils.arrayFilter(self.allJobs(), function (i) {
@@ -107,7 +133,35 @@
                   pBool = i.Priority == priorityFilter;
 
               }
-              result = jBool && cBool && dBool && pBool && qBool && sBool;
+              if (!test_date || test_date == "") {
+                  daBool = true;
+              }
+              else {
+                  var dateString = i.Submitdate.substring(0, 10);
+                  var split = dateString.split("-");
+                  var dateString2 = split[0] + "/" + split[1] + "/" + split[2];
+
+                  var jobDate = new Date(dateString2);
+                  jobDate.setHours(0);
+                  test_date.setHours(0);
+                  console.log(i.Submitdate.substring(0, 10));
+                  console.log("submitdate " + jobDate);
+                  console.log("submitdate " + jobDate.getTime());
+                  console.log("test_date " + test_date);
+                  console.log("test_date " + test_date.getTime());
+                  daBool = test_date.getTime() == jobDate.getTime();
+
+              }
+
+              console.log("jBool " + jBool);
+              console.log("cBool " + cBool);
+              console.log("dBool " + dBool);
+              console.log("pBool " + pBool);
+              console.log("qBool " + qBool);
+              console.log("sBool " + sBool);
+              console.log("daBool " + daBool);
+              result = jBool && cBool && dBool && pBool && qBool && sBool && daBool;
+              console.log("this is result " + result);
               return result;
 
             });
