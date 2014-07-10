@@ -11,17 +11,30 @@ namespace SnapUI.Web.Controllers
     public class AllJobsController : ApiController
     {
         private readonly IMyJobsService _allJobsService;
-
+        private readonly IUserPrefService _userPrefService;
+        public string alias;
+        
         public AllJobsController()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                string user = User.Identity.Name;
+                String[] domainAlias = user.Split('\\');
+                alias = domainAlias[1];
+            }
+            else
+            {
+                alias = "unknown";
+            }
 
             _allJobsService = new MyJobsService("null");
-
+            _userPrefService = new UserPrefService(alias);
         }
 
         public IEnumerable<Job> GetAllJobs()
         {
-            return _allJobsService.GetMyJobs();
+            List<string> userPrefList = _userPrefService.GetUserPref(); 
+            return _allJobsService.GetMyJobs(userPrefList);
         }
     }
 }

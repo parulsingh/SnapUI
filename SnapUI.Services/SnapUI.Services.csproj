@@ -43,6 +43,7 @@
     <Compile Include="MyJobsService.cs" />
     <Compile Include="LogFileService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserPrefService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\SnapUI.Common.Models\SnapUI.Common.Models.csproj">

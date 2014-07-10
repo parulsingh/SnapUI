@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="ILogFileService.cs" />
     <Compile Include="IMyJobsService.cs" />
+    <Compile Include="IUserPrefService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

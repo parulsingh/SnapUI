@@ -133,8 +133,10 @@
                   pBool = i.Priority == priorityFilter;
 
               }
-              if (!test_date || test_date == "") {
+              var today = new Date();
+              if (!test_date || ((test_date.getDay() == today.getDay()) && (test_date.getDate() == today.getDate()) && (test_date.getFullYear() == today.getFullYear()))) {
                   daBool = true;
+                  console.log("THISHAPPENED");
               }
               else {
                   var dateString = i.Submitdate.substring(0, 10);
@@ -144,24 +146,13 @@
                   var jobDate = new Date(dateString2);
                   jobDate.setHours(0);
                   test_date.setHours(0);
-                  console.log(i.Submitdate.substring(0, 10));
-                  console.log("submitdate " + jobDate);
-                  console.log("submitdate " + jobDate.getTime());
-                  console.log("test_date " + test_date);
-                  console.log("test_date " + test_date.getTime());
                   daBool = test_date.getTime() == jobDate.getTime();
 
               }
 
-              console.log("jBool " + jBool);
-              console.log("cBool " + cBool);
-              console.log("dBool " + dBool);
-              console.log("pBool " + pBool);
-              console.log("qBool " + qBool);
-              console.log("sBool " + sBool);
-              console.log("daBool " + daBool);
+
               result = jBool && cBool && dBool && pBool && qBool && sBool && daBool;
-              console.log("this is result " + result);
+
               return result;
 
             });
