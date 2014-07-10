@@ -65,7 +65,7 @@
                 "SCCM_Office", "SccmMain", "SccmTest", "SCCM-WEH2-CVP"]);
         self.queueFilter = ko.observable('');
 
-        self.statusFilters = ko.observableArray(["None", "In Progress", "Cancelled", "Aborted"]);
+        self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending" ]);
         self.statusFilter = ko.observable('');
         self.test_date = ko.observable(new Date());
 
@@ -105,10 +105,12 @@
               }
               if (!devFilter || devFilter == "") {
                   dBool = true;
+              } else if (devFilter == "sangeev*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
               }
               else {
                   dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
-
               }
                 
               if (!queueFilter || queueFilter == "None") {
@@ -123,7 +125,7 @@
                   sBool = true;
               } 
               else {
-                  sBool = i.Status == statusFilter;
+                  sBool = i.Status[0] == statusFilter;
             
               }
               if (!priorityFilter || priorityFilter == "None") {

@@ -63,8 +63,8 @@
         self.sortByStatus = function () {
             nameDirection = -nameDirection;
             self.myJobs.sort(function (a, b) {
-                if (a.Status.toLowerCase() > b.Status.toLowerCase()) return 1 * nameDirection;
-                if (a.Status.toLowerCase() < b.Status.toLowerCase()) return -1 * nameDirection;
+                if (a.Status[0].toLowerCase() > b.Status[0].toLowerCase()) return 1 * nameDirection;
+                if (a.Status[0].toLowerCase() < b.Status[0].toLowerCase()) return -1 * nameDirection;
                 return 0;
             });
         };
