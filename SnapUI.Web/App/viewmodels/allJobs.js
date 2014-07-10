@@ -108,6 +108,24 @@
               } else if (devFilter == "sangeev*" && devFilter.substr(-1) == "*") {
                   var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin"];
                   dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "benyim*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "gdhawan*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["adeepc", "ezager", "jitenkos", "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "joyceche*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["apervaiz", "dvoskuil", "t-jiro", "liharris", "xiaoshi"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "lichen*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "prasak*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["bbisht", "brandonw", "brunoy", "sajaga", "siddsi", "sokhalsa"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
+              } else if (devFilter == "tbrady*" && devFilter.substr(-1) == "*") {
+                  var directReports = ["fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
               }
               else {
                   dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
