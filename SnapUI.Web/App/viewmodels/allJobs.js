@@ -43,7 +43,7 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        logger.log(title + ' View Activated', null, title, true);
+        //logger.log(title + ' View Activated', null, title, true);
 
         // filtering stuff
         self.jobIdFilter = ko.observable('');
@@ -136,7 +136,6 @@
               var today = new Date();
               if (!test_date || ((test_date.getDay() == today.getDay()) && (test_date.getDate() == today.getDate()) && (test_date.getFullYear() == today.getFullYear()))) {
                   daBool = true;
-                  console.log("THISHAPPENED");
               }
               else {
                   var dateString = i.Submitdate.substring(0, 10);

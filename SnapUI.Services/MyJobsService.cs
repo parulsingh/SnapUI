@@ -159,12 +159,21 @@ namespace SnapUI.Services
                     string dev = reader.GetString(2);
                     string queue = reader.GetString(3);
                     DateTime submitdate = reader.GetDateTime(4);
+                    string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
                     string status = reader.GetString(5);
+                    
                     string task = null;
-                    if (status == "Aborted")
+                    string statusString = null;
+                    if (status == "Aborted" || status == "In Progress")
                     {
                         task = reader.GetString(8);
+                        statusString = status + ": " + task;
                     }
+                    else
+                    {
+                        statusString = status;
+                    }
+                    
                     string priority = reader.GetString(6);
                     Job newJob = new Job
                     {
@@ -173,7 +182,9 @@ namespace SnapUI.Services
                         Dev = dev,
                         Queue = queue,
                         Submitdate = submitdate,
+                        SubmitdateString = submitdateString,
                         Status = new List<string>() { status, task },
+                        StatusString = statusString,
                         Priority = priority
                     };
                     allJobs.Add(newJob);                    

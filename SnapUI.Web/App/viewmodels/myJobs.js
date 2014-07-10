@@ -20,7 +20,7 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        logger.log(title + ' View Activated', null, title, true);
+        //logger.log(title + ' View Activated', null, title, true);
 
         if (self.myJobs().length > 0) {
             logger.log('Array already has data');

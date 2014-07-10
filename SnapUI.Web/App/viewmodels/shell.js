@@ -13,7 +13,7 @@
         }
 
         function boot() {
-            log('Hot Towel SPA Loaded!', null, true);
+            //log('Hot Towel SPA Loaded!', null, true);
 
             router.on('router:route:not-found', function (fragment) {
                 logError('No Route Found', fragment, true);
