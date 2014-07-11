@@ -16,10 +16,8 @@ namespace SnapUI.Common.Models
         public string Dev { get; set; }
         public string Queue { get; set; }
         public DateTime Submitdate { get; set; }
-
         public string SubmitdateString { get; set; }
-        public List<string> Status { get; set; }
-
+        public List<object> Status { get; set; }
         public string StatusString { get; set; }
         public string Priority { get; set; }
         public object Placeorstatus { get; set; }

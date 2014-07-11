@@ -78,7 +78,7 @@ namespace SnapUI.Services
             //if (myAlias != DBNull.Value)
             //{
             //    IUserPrefService _userPrefService = new UserPrefService((string)myAlias);
-                
+
             //    var temp = new List<string>(){ "intune_dev_office", "JupiterSnapVM5" };
 
             //    _userPrefService.UpdateUserPref(temp);
@@ -90,9 +90,9 @@ namespace SnapUI.Services
             var allJobs = new List<Job>();
             foreach (var queue in queuePrefList)
             {
-                List<object> historyParameters = new List<object>() { "@StartDt", "@EndDt", "@QueueName", "@DevName" };
-                List<object> historyParameterValues = new List<object>() { "2014/5/23", "2014/5/30", queue, myAlias };
-                var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", historyParameters, historyParameterValues);
+                List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now, queue, myAlias };
+                var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
 
@@ -127,54 +127,47 @@ namespace SnapUI.Services
             return reader;
         }
 
-        public IEnumerable<string> CallUserPrefProc(string procname, List<object> parameters, List<object> parameterValues)
-        {
-            using (SqlConnection conn = new SqlConnection(_connectionString))
-            {
-                var queuePrefList = new List<string>();
-
-                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);
-                //conn.Open();
-                while (reader.Read())
-                {
-                    string queuePrefString = reader.GetString(2);
-                    queuePrefList.Add(queuePrefString);
-                };                
-                return queuePrefList;
-            }
-        }
-
         public IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues)
         {
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 var allJobs = new List<Job>();
-                
-                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);                
+
+                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);
                 //conn.Open();                                            
                 while (reader.Read())
-                {                   
+                {
                     int checkid = reader.GetInt32(0);
                     int jobid = reader.GetInt32(1);
                     string dev = reader.GetString(2);
                     string queue = reader.GetString(3);
                     DateTime submitdate = reader.GetDateTime(4);
                     string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
+
                     string status = reader.GetString(5);
-                    
-                    string task = null;
-                    string statusString = null;
+                    string task;
+                    string placeinQueue;
+                    string statusString;
+                    var statusList = new List<object>();
                     if (status == "Aborted" || status == "In Progress")
                     {
-                        task = reader.GetString(8);
+                        task = reader.GetString(9);
+                        statusList = new List<object>() { status, task };
                         statusString = status + ": " + task;
+                    }
+                    else if (status == "Pending")
+                    {
+                        placeinQueue = reader.GetInt32(6).ToString();
+                        statusList = new List<object>() { status, placeinQueue };
+                        statusString = status + ": " + placeinQueue + "th in queue";
                     }
                     else
                     {
+                        statusList = new List<object>() { status };
                         statusString = status;
                     }
-                    
-                    string priority = reader.GetString(6);
+
+                    string priority = reader.GetString(7);
                     Job newJob = new Job
                     {
                         Checkid = checkid,
@@ -183,14 +176,14 @@ namespace SnapUI.Services
                         Queue = queue,
                         Submitdate = submitdate,
                         SubmitdateString = submitdateString,
-                        Status = new List<string>() { status, task },
+                        Status = statusList,
                         StatusString = statusString,
                         Priority = priority
                     };
-                    allJobs.Add(newJob);                    
+                    allJobs.Add(newJob);
                 }
-                return allJobs;             
-            }                                
+                return allJobs;
+            }
         }
     }
 }
