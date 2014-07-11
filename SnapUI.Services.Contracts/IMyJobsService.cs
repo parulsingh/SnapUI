@@ -9,5 +9,6 @@ namespace SnapUI.Services.Contracts
         IEnumerable<Job> GetMyJobs(List<string> queuePrefList);
         SqlDataReader MakeReader(SqlConnection conn, string procname, List<object> parameters, List<object> parameterValues);
         IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues);
+        string MakePositionSuffix(int position);
     }
 }

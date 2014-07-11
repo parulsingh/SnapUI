@@ -143,7 +143,6 @@ namespace SnapUI.Services
                     string queue = reader.GetString(3);
                     DateTime submitdate = reader.GetDateTime(4);
                     string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
-
                     string status = reader.GetString(5);
                     string task;
                     string placeinQueue;
@@ -159,7 +158,7 @@ namespace SnapUI.Services
                     {
                         placeinQueue = reader.GetInt32(6).ToString();
                         statusList = new List<object>() { status, placeinQueue };
-                        statusString = status + ": " + placeinQueue + "th in queue";
+                        statusString = status + ": " + placeinQueue + MakePositionSuffix(Int32.Parse(placeinQueue)) + " in queue";
                     }
                     else
                     {
@@ -184,6 +183,36 @@ namespace SnapUI.Services
                 }
                 return allJobs;
             }
+        }
+
+        public string MakePositionSuffix (int position)
+        {
+            int mod100 = position % 100;
+            if (11 <= mod100 && mod100 <= 19)
+                return "th";
+            else
+            {
+                int unitplace = position % 10;
+                switch (unitplace)
+                {
+                    case 1:
+                        return "st";
+                    case 2:
+                        return "nd";
+                    case 3:
+                        return "rd";
+                    case 0:
+                    case 4:
+                    case 5:
+                    case 6:
+                    case 7:
+                    case 8:
+                    case 9:
+                        return "th";
+                    default:
+                        return null;
+                }    
+            }        
         }
     }
 }
