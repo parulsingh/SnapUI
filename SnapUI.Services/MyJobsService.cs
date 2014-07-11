@@ -91,7 +91,7 @@ namespace SnapUI.Services
             foreach (var queue in queuePrefList)
             {
                 List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now, queue, myAlias };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-1), DateTime.Now, queue, myAlias };
                 var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
@@ -144,15 +144,19 @@ namespace SnapUI.Services
                     DateTime submitdate = reader.GetDateTime(4);
                     string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
                     string status = reader.GetString(5);
-                    string task;
-                    string placeinQueue;
-                    string statusString;
+                    string task = null;
+                    string placeinQueue = null;
+                    string statusString = null;
                     var statusList = new List<object>();
                     if (status == "Aborted" || status == "In Progress")
                     {
-                        task = reader.GetString(9);
+                        if (reader.GetValue(9) != DBNull.Value)
+                            task = reader.GetString(9);
+                        else
+                            task = "No current task";
                         statusList = new List<object>() { status, task };
-                        statusString = status + ": " + task;
+                        statusString = status + ": " + task;                        
+
                     }
                     else if (status == "Pending")
                     {
