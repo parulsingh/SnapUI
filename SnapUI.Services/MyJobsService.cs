@@ -144,9 +144,11 @@ namespace SnapUI.Services
                     DateTime submitdate = reader.GetDateTime(4);
                     string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
                     string status = reader.GetString(5);
+                    
                     string task = null;
                     string placeinQueue = null;
                     string statusString = null;
+                    Boolean runBVTfailure = false;
                     var statusList = new List<object>();
                     if (status == "Aborted" || status == "In Progress")
                     {
@@ -155,7 +157,9 @@ namespace SnapUI.Services
                         else
                             task = "No current task";
                         statusList = new List<object>() { status, task };
-                        statusString = status + ": " + task;                        
+                        statusString = status + ": " + task;
+                        runBVTfailure = ((((string)status) == "Aborted") && task == "RunBVTs");
+                        Console.WriteLine("runbvt " + runBVTfailure);
 
                     }
                     else if (status == "Pending")
@@ -180,6 +184,7 @@ namespace SnapUI.Services
                         Submitdate = submitdate,
                         SubmitdateString = submitdateString,
                         Status = statusList,
+                        RunBVTfailure = runBVTfailure,
                         StatusString = statusString,
                         Priority = priority
                     };

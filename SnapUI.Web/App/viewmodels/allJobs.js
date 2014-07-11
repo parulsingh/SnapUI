@@ -69,6 +69,9 @@
         self.statusFilter = ko.observable('');
         self.test_date = ko.observable(new Date());
 
+
+
+
         self.filteredItems = ko.computed(function () {
             var jobIdFilter = self.jobIdFilter();
             var checkinIdFilter = self.checkinIdFilter();
@@ -77,6 +80,9 @@
             var queueFilter = self.queueFilter();
             var statusFilter = self.statusFilter();
             var test_date = self.test_date();
+
+
+
             var jBool;
             var cBool;
             var dBool;
@@ -86,7 +92,10 @@
             var daBool;
             var result;
 
-          return ko.utils.arrayFilter(self.allJobs(), function (i) {
+            return ko.utils.arrayFilter(self.allJobs(), function (i) {
+                console.log(i.Jobid);
+                console.log(i.RunBVTfailure);
+
               if (!jobIdFilter || jobIdFilter == "") {
                   jBool = true;
               }

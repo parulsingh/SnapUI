@@ -18,6 +18,7 @@
 
             <tr data-toggle="collapse" data-bind="attr: { 'data-target': '#tray'+$index()}" class="accordion-toggle">
                 <td data-bind="text: Jobid "></td>
+                <td><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}">Logs</a></td>
                 <td data-bind="text: Checkid "></td>
                 <td data-bind="text: Dev"></td>
                 <td data-bind="text: Queue"></td>
@@ -31,13 +32,11 @@
                 <td class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
 
-                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> View Logs</a>
-                        <br>
-                        <p>View Log Tracer Files</p>
-                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_0/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_0</a>
-                        <br>
-                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
-                        <br>
+                        
+                        <div data-bind="if: RunBVTfailure">
+                            <p> View Log Tracer Files </p>
+                            <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        </div>
                         <br>
 
                     </div>
