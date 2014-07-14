@@ -114,6 +114,13 @@
               }
               if (!devFilter || devFilter == "") {
                   dBool = true;
+              } else if (devFilter == "djam*") {
+                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin",
+                      "ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu", "adeepc", "ezager", "jitenkos",
+                      "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan", "apervaiz", "dvoskuil", "t-jiro", "liharris",
+                      "xiaoshi", "cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi", "bbisht", "brandonw", "brunoy",
+                      "sajaga", "siddsi", "sokhalsa", "fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
+                  dBool = directReports.indexOf(i.Dev) != -1;
               } else if (devFilter == "sangeev*" && devFilter.substr(-1) == "*") {
                   var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin"];
                   dBool = directReports.indexOf(i.Dev) != -1;
