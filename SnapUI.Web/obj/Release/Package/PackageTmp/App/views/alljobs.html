@@ -1,5 +1,10 @@
-﻿<div class="row-fluid">
+﻿
+<div class="row-fluid">
+   
+    <script src="~/Scripts/bootstrap-datepicker.js"></script>
+    
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
+        <p data-bind="text: 'Top Failures: '+firstFailure+', '+secondFailure+', '+thirdFailure"></p>
         <thead>
             <tr>
                 <th>Job ID</th>
@@ -9,35 +14,43 @@
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Submit Date</th>
-
             </tr>
         </thead>
 
         <tr>
-            <td><input data-bind="value: jobIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
-            <td><input data-bind="value: checkinIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
-            <td><input data-bind="value: devFilter, valueUpdate:'afterkeydown'" type="search"></td>
+            <td><input style="width: 100px;" data-bind="value: jobIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
+            <td><input style="width: 100px;" data-bind="value: checkinIdFilter, valueUpdate:'afterkeydown'" type="search"></td>
+            <td><input style="width: 100px;" data-bind="value: devFilter, valueUpdate:'afterkeydown'" type="search"></td>
             <td><select data-bind="options: queueFilters, value: queueFilter"></select></td>
-            <td><select data-bind="options: statusFilters, value: statusFilter"></select></td>
-            <td><select data-bind="options: priorityFilters, value: priorityFilter"></select></td>
+            <td><select style="width: 300px;" data-bind="options: statusFilters, value: statusFilter"></select></td>
+            <td><select style="width: 100px;" data-bind="options: priorityFilters, value: priorityFilter"></select></td>
+            <td id='target'> <input data-bind='datepicker: test_date'></td>
+            
         </tr>
         <tbody data-bind="foreach: filteredItems">
 
             <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="accordion-toggle">
-                <td data-bind="text: Jobid "></td>
-                <td data-bind="text: Checkid "></td>
-                <td data-bind="text: Dev"></td>
-                <td data-bind="text: Queue"></td>
-                <td data-bind="text: Status"></td>
-                <td data-bind="text: Priority"></td>
-                <td data-bind="text: Submitdate"></td>
+              
+                <td style="width: 150px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid}"><p data-bind="text: Jobid "></p></a></td>
+                <td style="width: 150px;" data-bind="text: Checkid "></td>
+                <td style="width: 150px;" data-bind="text: Dev"></td>
+                <td style="width: 250px;" data-bind="text: Queue"></td>
+                <td style="width: 150px;" data-bind="text: StatusString"></td>
+                <td style="width: 150px;" data-bind="text: Priority"></td>
+                <td data-bind="text: SubmitdateString"></td>
             </tr>
             <tr>
                 <td class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
-                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> View Logs</a>
+                        
                         <br>
+                        <div data-bind="if: RunBVTfailure">
+                            <p> View Log Tracer Files </p>
+                            <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        </div>
                         <br>
+                       
+
                     </div>
                 </td>
             </tr>

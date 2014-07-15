@@ -91,12 +91,12 @@ namespace SnapUI.Services
             foreach (var queue in queuePrefList)
             {
                 List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-1), DateTime.Now, queue, myAlias };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now, queue, myAlias };
                 var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
 
-            IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
+            IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);           
             return uniqueAllJobsOrdered;
         }
 
@@ -135,60 +135,60 @@ namespace SnapUI.Services
 
                 SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);
                 //conn.Open();                                            
-                while (reader.Read())
+                if (reader.HasRows)
                 {
-                    int checkid = reader.GetInt32(0);
-                    int jobid = reader.GetInt32(1);
-                    string dev = reader.GetString(2);
-                    string queue = reader.GetString(3);
-                    DateTime submitdate = reader.GetDateTime(4);
-                    string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
-                    string status = reader.GetString(5);
-                    
-                    string task = null;
-                    string placeinQueue = null;
-                    string statusString = null;
-                    Boolean runBVTfailure = false;
-                    var statusList = new List<object>();
-                    if (status == "Aborted" || status == "In Progress")
+                    while (reader.Read())
                     {
-                        if (reader.GetValue(9) != DBNull.Value)
-                            task = reader.GetString(9);
+                        int checkid = reader.GetInt32(0);
+                        int jobid = reader.GetInt32(1);
+                        string dev = reader.GetString(2);
+                        string queue = reader.GetString(3);
+                        DateTime submitdate = reader.GetDateTime(4);
+                        string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
+                        string description = reader.GetString(8);
+                        string status = reader.GetString(5);
+                        string task = null;
+                        string placeinQueue = null;
+                        string statusString = null;
+                        var statusList = new List<object>();
+                        if (status == "Aborted" || status == "In Progress")
+                        {
+                            if (reader.GetValue(9) != DBNull.Value)
+                                task = reader.GetString(9);
+                            else
+                                task = "No current task";
+                            statusList = new List<object>() { status, task };
+                            statusString = status + ": " + task;
+
+                        }
+                        else if (status == "Pending")
+                        {
+                            placeinQueue = reader.GetInt32(6).ToString();
+                            statusList = new List<object>() { status, placeinQueue };
+                            statusString = status + ": " + placeinQueue + MakePositionSuffix(Int32.Parse(placeinQueue)) + " in queue";
+                        }
                         else
-                            task = "No current task";
-                        statusList = new List<object>() { status, task };
-                        statusString = status + ": " + task;
-                        runBVTfailure = ((((string)status) == "Aborted") && task == "RunBVTs");
-                        Console.WriteLine("runbvt " + runBVTfailure);
+                        {
+                            statusList = new List<object>() { status };
+                            statusString = status;
+                        }
 
+                        string priority = reader.GetString(7);
+                        Job newJob = new Job
+                        {
+                            Checkid = checkid,
+                            Jobid = jobid,
+                            Dev = dev,
+                            Queue = queue,
+                            Submitdate = submitdate,
+                            SubmitdateString = submitdateString,
+                            Description = description,
+                            Status = statusList,
+                            StatusString = statusString,
+                            Priority = priority
+                        };
+                        allJobs.Add(newJob);
                     }
-                    else if (status == "Pending")
-                    {
-                        placeinQueue = reader.GetInt32(6).ToString();
-                        statusList = new List<object>() { status, placeinQueue };
-                        statusString = status + ": " + placeinQueue + MakePositionSuffix(Int32.Parse(placeinQueue)) + " in queue";
-                    }
-                    else
-                    {
-                        statusList = new List<object>() { status };
-                        statusString = status;
-                    }
-
-                    string priority = reader.GetString(7);
-                    Job newJob = new Job
-                    {
-                        Checkid = checkid,
-                        Jobid = jobid,
-                        Dev = dev,
-                        Queue = queue,
-                        Submitdate = submitdate,
-                        SubmitdateString = submitdateString,
-                        Status = statusList,
-                        RunBVTfailure = runBVTfailure,
-                        StatusString = statusString,
-                        Priority = priority
-                    };
-                    allJobs.Add(newJob);
                 }
                 return allJobs;
             }

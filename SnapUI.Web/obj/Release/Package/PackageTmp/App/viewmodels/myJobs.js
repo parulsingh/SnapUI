@@ -20,7 +20,7 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        logger.log(title + ' View Activated', null, title, true);
+        //logger.log(title + ' View Activated', null, title, true);
 
         if (self.myJobs().length > 0) {
             logger.log('Array already has data');
@@ -63,8 +63,8 @@
         self.sortByStatus = function () {
             nameDirection = -nameDirection;
             self.myJobs.sort(function (a, b) {
-                if (a.Status.toLowerCase() > b.Status.toLowerCase()) return 1 * nameDirection;
-                if (a.Status.toLowerCase() < b.Status.toLowerCase()) return -1 * nameDirection;
+                if (a.Status[0].toLowerCase() > b.Status[0].toLowerCase()) return 1 * nameDirection;
+                if (a.Status[0].toLowerCase() < b.Status[0].toLowerCase()) return -1 * nameDirection;
                 return 0;
             });
         };

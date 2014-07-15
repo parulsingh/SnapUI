@@ -15,7 +15,7 @@ namespace SnapUI.Web.Controllers
         public string alias;
 
         public MyJobsController()
-        {             
+        {
             if (User.Identity.IsAuthenticated)
             {
                 string user = User.Identity.Name;
@@ -27,15 +27,15 @@ namespace SnapUI.Web.Controllers
                 alias = "unknown";
             }
 
-            _myJobsService = new MyJobsService(alias);
-            _userPrefService = new UserPrefService(alias);
 
+            //_userPrefService = new UserPrefService(alias);
+            _myJobsService = new MyJobsService(alias);
         }
 
-        public IEnumerable<Job> GetMyJobs()
+        public IEnumerable<Job> GetAllJobs()
         {
-            List<string> userPrefList = _userPrefService.GetUserPref();
-            return _myJobsService.GetMyJobs(userPrefList);
+            //List<string> userPrefList = _userPrefService.GetUserPref();
+            return _myJobsService.GetMyJobs(new List<string>() { "intune_dev_office", "intune_dev_office_test", "JupiterSnapVM5", "Sandbox4" });
         }
     }
 }

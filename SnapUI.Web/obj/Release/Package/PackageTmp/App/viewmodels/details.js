@@ -9,7 +9,7 @@
 
     //#region Internal Methods
     function activate() {
-        logger.log(title + ' View Activated', null, title, true);
+        //logger.log(title + ' View Activated', null, title, true);
         return true;
     }
     //#endregion

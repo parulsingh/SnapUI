@@ -17,13 +17,18 @@
         <tbody data-bind="foreach: myJobs">
 
             <tr data-toggle="collapse" data-bind="attr: { 'data-target': '#tray'+$index()}" class="accordion-toggle">
-                <td data-bind="text: Jobid "></td>
+                <style>
+                    p {
+                        display: inline;
+                    }
+                </style>
+                <td><p data-bind="text: Jobid "></p><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid}"> Logs</a></td>
                 <td data-bind="text: Checkid "></td>
                 <td data-bind="text: Dev"></td>
                 <td data-bind="text: Queue"></td>
-                <td data-bind="text: Status"></td>
+                <td data-bind="text: StatusString"></td>
                 <td data-bind="text: Priority"></td>
-                <td data-bind="text: Submitdate"></td>
+                <td data-bind="text: SubmitdateString"></td>
 
             </tr>
 
@@ -31,9 +36,13 @@
                 <td class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
 
-                        <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> View Logs</a>
+                        
+                        <div data-bind="if: RunBVTfailure">
+                            <p> View Log Tracer Files </p>
+                            <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        </div>
                         <br>
-                        <br>
+
                     </div>
 
                 </td>
