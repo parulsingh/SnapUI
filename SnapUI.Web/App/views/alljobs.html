@@ -2,7 +2,11 @@
 <div class="row-fluid">
    
     <script src="~/Scripts/bootstrap-datepicker.js"></script>
-    
+    <style>
+        table {
+            table-layout: fixed;
+        }
+    </style>
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <p data-bind="text: 'Top Failures: '+firstFailure+', '+secondFailure+', '+thirdFailure"></p>
         <thead>
@@ -14,6 +18,7 @@
                 <th>Status</th>
                 <th>Priority</th>
                 <th>Submit Date</th>
+                <th >Bug ID</th>
             </tr>
         </thead>
 
@@ -24,8 +29,8 @@
             <td><select data-bind="options: queueFilters, value: queueFilter"></select></td>
             <td><select style="width: 300px;" data-bind="options: statusFilters, value: statusFilter"></select></td>
             <td><select style="width: 100px;" data-bind="options: priorityFilters, value: priorityFilter"></select></td>
-            <td id='target'> <input data-bind='datepicker: test_date'></td>
-            
+            <td id='target'> <input style="width: 200px;" data-bind='datepicker: test_date'></td>
+            <td style="width: 100px;"></td>
         </tr>
         <tbody data-bind="foreach: filteredItems">
 
@@ -35,22 +40,22 @@
                 <td style="width: 150px;" data-bind="text: Checkid "></td>
                 <td style="width: 150px;" data-bind="text: Dev"></td>
                 <td style="width: 250px;" data-bind="text: Queue"></td>
-                <td style="width: 150px;" data-bind="text: StatusString"></td>
+                <td style="width: 250px;" data-bind="text: StatusString"></td>
                 <td style="width: 150px;" data-bind="text: Priority"></td>
-                <td data-bind="text: SubmitdateString"></td>
+                <td style="width: 150px;" data-bind="text: SubmitdateString"></td>
+                <td style="width: 150px;"><a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+ PreBugId}"><p data-bind="text: PreBugId "></p></a></td>
             </tr>
             <tr>
-                <td class="hiddenRow" style="border:none;">
+                <td class="hiddenRow" style="border: none; width: 50px; ">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
-                        
+                        <p data-bind="text: Description "></p>
                         <br>
                         <div data-bind="if: RunBVTfailure">
                             <p> View Log Tracer Files </p>
                             <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                            <br>
                         </div>
-                        <br>
                        
-
                     </div>
                 </td>
             </tr>

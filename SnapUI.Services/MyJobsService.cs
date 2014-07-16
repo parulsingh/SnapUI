@@ -150,16 +150,27 @@ namespace SnapUI.Services
                         string task = null;
                         string placeinQueue = null;
                         string statusString = null;
+                        string preBugId = null;
+                        Boolean runBVTfailure = false;
+                        string[] split = description.Split();
+                        if (Array.IndexOf(split, "BUG:") != -1)
+                        {
+                            preBugId = split[Array.IndexOf(split, "BUG:") + 1];
+                        }
                         var statusList = new List<object>();
                         if (status == "Aborted" || status == "In Progress")
                         {
+                           
                             if (reader.GetValue(9) != DBNull.Value)
                                 task = reader.GetString(9);
                             else
                                 task = "No current task";
                             statusList = new List<object>() { status, task };
                             statusString = status + ": " + task;
-
+                            if (status == "Aborted" && task == "RunBVTs")
+                            {
+                                runBVTfailure = true;
+                            }
                         }
                         else if (status == "Pending")
                         {
@@ -183,7 +194,9 @@ namespace SnapUI.Services
                             Submitdate = submitdate,
                             SubmitdateString = submitdateString,
                             Description = description,
+                            PreBugId = preBugId,
                             Status = statusList,
+                            RunBVTfailure = runBVTfailure,
                             StatusString = statusString,
                             Priority = priority
                         };

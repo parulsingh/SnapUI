@@ -22,7 +22,7 @@ namespace SnapUI.Common.Models
         public string Priority { get; set; }
         public object Placeorstatus { get; set; }
         public Boolean RunBVTfailure { get; set; }
-        public int PreBugId { get; set; }
+        public string PreBugId { get; set; }
         public int PostBugId { get; set; }
         public string Description { get; set; }
         public bool Equals(Job other)
