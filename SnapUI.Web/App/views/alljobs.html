@@ -46,7 +46,8 @@
                 <td style="width: 150px;"><a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+ PreBugId}"><p data-bind="text: PreBugId "></p></a></td>
             </tr>
             <tr>
-                <td class="hiddenRow" style="border: none; width: 50px; ">
+                <td colspan="6" class="hiddenRow" style="border: none; width: 50px; ">
+                    <br>
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <p data-bind="text: Description "></p>
                         <br>
@@ -55,7 +56,7 @@
                             <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
                             <br>
                         </div>
-                       
+
                     </div>
                 </td>
             </tr>
