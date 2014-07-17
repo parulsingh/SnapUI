@@ -25,3 +25,12 @@ C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services\bi
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.csprojResolveAssemblyReference.cache
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.dll
 C:\Users\t-parsi\documents\visual studio 2013\Projects\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.pdb
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Services.dll
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Services.pdb
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Common.Models.dll
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Services.Contracts.dll
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Common.Models.pdb
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\bin\Debug\SnapUI.Services.Contracts.pdb
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.csprojResolveAssemblyReference.cache
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.dll
+C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Services\obj\Debug\SnapUI.Services.pdb

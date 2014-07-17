@@ -11,7 +11,7 @@ namespace SnapUI.Web.Controllers
     public class MyJobsController : ApiController
     {
         private readonly IMyJobsService _myJobsService;
-        private readonly IUserPrefService _userPrefService;
+        //private readonly IUserPrefService _userPrefService;
         public string alias;
 
         public MyJobsController()

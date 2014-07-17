@@ -93,8 +93,6 @@
             var result;
 
             return ko.utils.arrayFilter(self.allJobs(), function (i) {
-                console.log(i.Jobid);
-                console.log(i.RunBVTfailure);
 
               if (!jobIdFilter || jobIdFilter == "") {
                   jBool = true;

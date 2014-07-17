@@ -85,6 +85,15 @@
             });
         };
 
+        self.sortByBugid = function () {
+            nameDirection = -nameDirection;
+            self.myJobs.sort(function (a, b) {
+                if (a.PreBugId > b.PreBugId) return 1 * nameDirection;
+                if (a.PreBugId < b.PreBugId) return -1 * nameDirection;
+                return 0;
+            });
+        };
+
         $(function () {
 
             $('#jobid-filter').change(function () {
