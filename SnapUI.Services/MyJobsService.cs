@@ -11,6 +11,7 @@ using System.Data.SqlClient;
 using System.Web;
 using System.Xml;
 using System.Xml.XPath;
+using System.Diagnostics;
 
 namespace SnapUI.Services
 {
@@ -150,13 +151,21 @@ namespace SnapUI.Services
                         string task = null;
                         string placeinQueue = null;
                         string statusString = null;
-                        string preBugId = null;
+                        List<string> preBugId = new List<string>();
                         Boolean runBVTfailure = false;
                         string[] split = description.Split();
                         if (Array.IndexOf(split, "BUG:") != -1)
                         {
-                            preBugId = split[Array.IndexOf(split, "BUG:") + 1];
+                            int i = Array.IndexOf(split, "BUG:") + 1;
+                            int n;
+                           
+                            while (i <split.Length && int.TryParse(split[i], out n) )
+                                {
+                                    preBugId.Add(split[i]);
+                                    i++;
+                                }
                         }
+                        Debug.WriteLine("hello" + checkid + " " + string.Join(",", preBugId.ToArray()));
                         var statusList = new List<object>();
                         if (status == "Aborted" || status == "In Progress")
                         {

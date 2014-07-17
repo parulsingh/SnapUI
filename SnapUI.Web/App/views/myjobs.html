@@ -4,13 +4,14 @@
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <thead>
             <tr>
-                <th><a href=" #myjobs" data-bind="click: sortByJobid">Job ID </a></th>
-                <th><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
-                <th><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
-                <th><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
-                <th><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
-                <th><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
-                <th><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
+                <th style="width: 150px;"><a href=" #myjobs" data-bind="click: sortByJobid">Job ID </a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
+                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
 
             </tr>
         </thead>
@@ -22,18 +23,19 @@
                         display: inline;
                     }
                 </style>
-                <td><p data-bind="text: Jobid "></p><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"> Logs</a></td>
-                <td data-bind="text: Checkid "></td>
+                <td style="width: 150px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev, 'target':'_blank'}"><p data-bind="text: Checkid "></p></a></td>
+                <td style="width: 150px;" data-bind="text: Jobid "></td>
                 <td data-bind="text: Dev"></td>
                 <td data-bind="text: Queue"></td>
                 <td data-bind="text: StatusString"></td>
                 <td data-bind="text: Priority"></td>
                 <td data-bind="text: SubmitdateString"></td>
+                <td style="width: 150px;"><a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+ PreBugId, 'target':'_blank'}"><p data-bind="text: PreBugId "></p></a></td>
 
             </tr>
 
             <tr>
-                <td class="hiddenRow" style="border:none;">
+                <td colspan="8" class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
 
                         
