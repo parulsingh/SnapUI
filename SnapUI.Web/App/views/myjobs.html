@@ -20,8 +20,8 @@
                 <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
                 <th style="width: 150px;"><a href=" #myjobs" data-bind="click: sortByJobid">Job ID </a></th>
                 <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
-                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
-                <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
+                <th style="width: 300px;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
+                <th style="width: 300px;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
                 <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
                 <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
                 <th style="width: 150px;"><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
@@ -37,11 +37,10 @@
                 <td data-bind="text: Queue"></td>
                 <td data-bind="text: StatusString"></td>
                 <td data-bind="text: Priority"></td>
-                <td data-bind="text: SubmitdateString"></td>
-                <td style="width: 150px;"><a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+ PreBugId, 'target':'_blank'}"><p data-bind="text: PreBugId "></p></a></td>
+                <td data-bind="text: SubmitdateString"></td>               
                 <td style="width: 150px;">
                     <div data-bind="foreach: PreBugId">
-                        <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/129130', 'target':'_blank'}"><p data-bind="text: $data"></p></a>
+                        <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+PreBugId, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
                     </div>
 
                 </td>

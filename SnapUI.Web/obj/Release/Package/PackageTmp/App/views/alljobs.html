@@ -42,7 +42,7 @@
 
             <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="first accordion-toggle" >
               
-                <td style="width: 100px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev, 'target':'_blank'}"><p data-bind="text: Checkid "></p></a></td>
+                <td style="width: 100px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"><p data-bind="text: Checkid "></p></a></td>
                 <td style="width: 150px;" data-bind="text: Jobid "></td>
                 <td style="width: 150px;" data-bind="text: Dev"></td>
                 <td style="width: 250px;" data-bind="text: Queue"></td>
@@ -51,10 +51,9 @@
                 <td style="width: 150px;" data-bind="text: SubmitdateString"></td>
 
                 <td style="width: 150px;">
-                <div data-bind="foreach: PreBugId">
-                    <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/129130', 'target':'_blank'}"><p data-bind="text: $data"></p></a>
-                </div>
-                
+                    <div data-bind="foreach: PreBugId">
+                        <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+$data, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
+                    </div>
                 </td>
             </tr>
             <tr>
