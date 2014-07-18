@@ -34,7 +34,7 @@ namespace SnapUI.Web.Controllers
         public IEnumerable<Job> GetAllJobs()
         {
             //List<string> userPrefList = _userPrefService.GetUserPref();
-            return _allJobsService.GetMyJobs(new List<string>() { "intune_dev_office", "intune_dev_office_test", "JupiterSnapVM5", "Sandbox4" });
+            return _allJobsService.GetMyJobs(new List<string>() { "intune_dev_office", "intune_dev_office_test", "JupiterSnapVM5", "Sandbox4", "SCCM_Office", "SccmMain", "SCCM-WEH2-CVP" });
         }
     }
 }
