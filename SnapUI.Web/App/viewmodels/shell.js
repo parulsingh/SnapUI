@@ -22,7 +22,7 @@
             var routes = [
                 { route: '', moduleId: 'myJobs', title: 'My Jobs', nav: 1 },
                 { route: 'alljobs', moduleId: 'allJobs', title: 'All Jobs', nav: 2 },
-                { route: 'preferences', moduleId: 'preferences', title: 'Preferences', nav: 3 }];
+                { route: 'summary', moduleId: 'summary', title: 'Summary', nav: 3 }];
 
             return router.makeRelative({ moduleId: 'viewmodels' }) // router will look here for viewmodels by convention
                 .map(routes)            // Map the routes

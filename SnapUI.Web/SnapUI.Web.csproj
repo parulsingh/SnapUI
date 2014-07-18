@@ -166,6 +166,7 @@
     <Content Include="App\viewmodels\myJobs.js" />
     <Content Include="App\viewmodels\preferences.js" />
     <Content Include="App\viewmodels\shell.js" />
+    <Content Include="App\viewmodels\summary.js" />
     <Content Include="App\views\alljobs.html" />
     <Content Include="App\views\details.html" />
     <Content Include="App\views\footer.html" />
@@ -174,6 +175,7 @@
     <Content Include="App\views\nav.html" />
     <Content Include="App\views\preferences.html" />
     <Content Include="App\views\shell.html" />
+    <Content Include="App\views\summary.html" />
     <Content Include="Content\app.css" />
     <Content Include="Content\bootstrap-responsive.css" />
     <Content Include="Content\bootstrap-responsive.min.css" />
