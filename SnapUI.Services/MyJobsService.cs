@@ -18,7 +18,8 @@ namespace SnapUI.Services
     public class MyJobsService : IMyJobsService
     {
         private readonly string _connectionString;
-        object myAlias;
+        private readonly List<string> _queueList;
+        object myAlias;        
 
         public MyJobsService(string alias)
         {
@@ -27,7 +28,9 @@ namespace SnapUI.Services
             else
                 myAlias = alias;
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-        }
+            string queueListString = ConfigurationManager.AppSettings["Queues"];
+            _queueList = queueListString.Split(new char[] { ',' }).ToList();
+        }        
 
         public IEnumerable<Job> GetMyJobs(List<string> queuePrefList)
         {
@@ -164,8 +167,7 @@ namespace SnapUI.Services
                                     preBugId.Add(split[i]);
                                     i++;
                                 }
-                        }
-                        Debug.WriteLine("hello" + checkid + " " + string.Join(",", preBugId.ToArray()));
+                        }                       
                         var statusList = new List<object>();
                         if (status == "Aborted" || status == "In Progress")
                         {
