@@ -38,6 +38,7 @@
 
                 for (var i = 0; i < jobs.length; i++) {
 
+
                 }
 
                 logger.log('Data loaded from server');

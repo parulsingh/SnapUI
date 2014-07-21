@@ -9,7 +9,9 @@
     var vm = {
         activate: activate,
         title: title,
-        allJobs: ko.observableArray([])
+        allJobs: ko.observableArray([]),
+        allQueues: ko.observableArray([]),
+        jobsAndQueues: ko.observableArray([])
 
     };
 
@@ -198,8 +200,10 @@
         }
 
         return myJobsService
-            .getAllJobs(self.allJobs)
+            .getAllJobs(self.jobsAndQueues)
             .then(function () {
+                self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
+                self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
                 logger.log('Data loaded from server');
 
                 ////////// Top Failuire Logic //////

@@ -9,7 +9,8 @@
     var vm = {
         activate: activate,
         title: title,
-        myJobs: ko.observableArray([])
+        myJobs: ko.observableArray([]),
+        jobsAndQueues: ko.observableArray([])
     };
 
     return vm;
@@ -112,9 +113,10 @@
         });
 
         return myJobsService
-            .getMyJobs(self.myJobs)
+            .getMyJobs(self.jobsAndQueues)
             .then(function () {
-                logger.log('Data loaded from server');
+                self.myJobs = self.jobsAndQueues()[0];
+          
             });
 
 
