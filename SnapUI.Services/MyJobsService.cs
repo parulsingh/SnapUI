@@ -18,7 +18,8 @@ namespace SnapUI.Services
     public class MyJobsService : IMyJobsService
     {
         private readonly string _connectionString;
-        object myAlias;
+        private readonly List<string> _queueList;
+        object myAlias;        
 
         public MyJobsService(string alias)
         {
@@ -27,7 +28,9 @@ namespace SnapUI.Services
             else
                 myAlias = alias;
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-        }
+            string queueListString = ConfigurationManager.AppSettings["Queues"];
+            _queueList = queueListString.Split(new char[] { ',' }).ToList();
+        }        
 
         public IEnumerable<Job> GetMyJobs(List<string> queuePrefList)
         {
@@ -92,7 +95,7 @@ namespace SnapUI.Services
             foreach (var queue in queuePrefList)
             {
                 List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now, queue, myAlias };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-5), DateTime.Now, queue, myAlias };
                 var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
@@ -164,8 +167,7 @@ namespace SnapUI.Services
                                     preBugId.Add(split[i]);
                                     i++;
                                 }
-                        }
-                        Debug.WriteLine("hello" + checkid + " " + string.Join(",", preBugId.ToArray()));
+                        }                       
                         var statusList = new List<object>();
                         if (status == "Aborted" || status == "In Progress")
                         {

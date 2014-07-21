@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IGetQueueService.cs" />
     <Compile Include="ILogFileService.cs" />
     <Compile Include="IMyJobsService.cs" />
     <Compile Include="IUserPrefService.cs" />

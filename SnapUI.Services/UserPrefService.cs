@@ -41,7 +41,7 @@ namespace SnapUI.Services
             string queuePrefString = CallUserPrefProc("NewSnapUIGetUserPref", userPrefParameters, userPrefParameterValues);
             List<string> queuePrefList = queuePrefString.Split(new char[] { ',' }).ToList();
             return queuePrefList;
-        }                
+        }
 
         public SqlDataReader MakeReader(SqlConnection conn, string procname, List<object> parameters, List<object> parameterValues)
         {

@@ -55,16 +55,7 @@
         self.priorityFilters = ko.observableArray(["None", "High", "Low", "Normal"]);
         self.priorityFilter = ko.observable('');
 
-        self.queueFilters = ko.observableArray(["None", "CAS", "CMPreCacheWorkflow", "CMPreCacheWorkflow_test",
-                "InfraSandbox01", "InfraSandbox02", "intune_ctip1", "intune_ctip1_test",
-                "intune_dev_infra", "intune_dev_office", "intune_dev_office_test",
-                "intune_dev_test", "intune_dev_wcs", "intune_dev_wcs_test",
-                "intune_rel", "intune_rel_prod", "intune_rel_prod_live", "intune_rel_prod_live_test",
-                "intune_rel_prod_test", "intune_rel_test", "intune_tools_vnext", "IntuneTools",
-                "JupiterSnapILDC1", "JupiterSnapMobileTest", "JupiterSnapMobileTest2",
-                "JupiterSnapVM3", "JupiterSnapVM5", "JupiterSnapVM7",
-                "Sandbox3", "Sandbox4", "Sandbox5",
-                "SCCM_Office", "SccmMain", "SccmTest", "SCCM-WEH2-CVP"]);
+        
         self.queueFilter = ko.observable('');
 
         self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending" ]);
@@ -204,6 +195,11 @@
             .then(function () {
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
+                self.queueFilters = self.allQueues();
+                self.queueFilters.reverse();
+                self.queueFilters.push("None");
+                self.queueFilters.reverse();
+                console.log(self.allQueues());
                 logger.log('Data loaded from server');
 
                 ////////// Top Failuire Logic //////

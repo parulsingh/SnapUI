@@ -9,9 +9,7 @@
     var vm = {
         activate: activate,
         title: title,
-        jobs: ko.observableArray([]),
-        jobsAndQueues: ko.observableArray([]),
-        allQueues: ko.observableArray([])
+        jobs: ko.observableArray([])
     };
 
     return vm;
@@ -31,16 +29,18 @@
 
 
         return jobsService
-            .getAllJobs(self.jobsAndQueues)
+            .getAllJobs(self.jobs)
             .then(function () {
                 //// add summary calculating logic here /////
-                /// "intune_dev_office" 1, "intune_dev_office_test" 2, "JupiterSnapVM5" 3, "Sandbox4" 4, "SCCM_Office" 5, "SccmMain" 6, "SCCM-WEH2-CVP" 7 })
-                self.jobs = ko.observableArray(self.jobsAndQueues[0]);
                 var today = new Date();
                 var jobs = self.jobs();
                 self.numCheckins = jobs.length;
-                var allQueues = {};
 
+                for (var i = 0; i < jobs.length; i++) {
+
+                }
+
+                logger.log('Data loaded from server');
             });
 
 

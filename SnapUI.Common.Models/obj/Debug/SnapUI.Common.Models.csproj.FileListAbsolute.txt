@@ -1,5 +1,4 @@
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Common.Models\bin\Debug\SnapUI.Common.Models.dll
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Common.Models\bin\Debug\SnapUI.Common.Models.pdb
-C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.csprojResolveAssemblyReference.cache
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.dll
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Common.Models\obj\Debug\SnapUI.Common.Models.pdb

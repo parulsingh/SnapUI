@@ -31,7 +31,7 @@
         <tbody data-bind="foreach: myJobs">
 
             <tr data-toggle="collapse" data-bind="attr: { 'data-target': '#tray'+$index()}" class="first accordion-toggle" >
-                <td style="width: 150px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev, 'target':'_blank'}"><p data-bind="text: Checkid "></p></a></td>
+                <td style="width: 150px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"><p data-bind="text: Checkid "></p></a></td>
                 <td style="width: 150px;" data-bind="text: Jobid "></td>
                 <td data-bind="text: Dev"></td>
                 <td data-bind="text: Queue"></td>
