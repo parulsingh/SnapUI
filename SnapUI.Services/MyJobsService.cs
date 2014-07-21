@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -19,9 +20,7 @@ namespace SnapUI.Services
     {
         private readonly string _connectionString;
         private readonly List<string> _queueList;
-        private readonly bool readalready;
-        private readonly IEnumerable<Job> jobs;
-        object myAlias;        
+        object myAlias;
 
         public MyJobsService(string alias)
         {
@@ -32,7 +31,7 @@ namespace SnapUI.Services
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
             string queueListString = ConfigurationManager.AppSettings["Queues"];
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
-        }        
+        }
 
         public IEnumerable<Job> GetMyJobs(List<string> queuePrefList)
         {
@@ -97,12 +96,12 @@ namespace SnapUI.Services
             foreach (var queue in queuePrefList)
             {
                 List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-5), DateTime.Now, queue, myAlias };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-1), DateTime.Now, queue, myAlias };
                 var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
             }
 
-            IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);           
+            IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
             return uniqueAllJobsOrdered;
         }
 
@@ -135,6 +134,8 @@ namespace SnapUI.Services
 
         public IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues)
         {
+            Dictionary<int, CheckinId> checkinDuration = new Dictionary<int, CheckinId>();
+
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
                 var allJobs = new List<Job>();
@@ -158,22 +159,23 @@ namespace SnapUI.Services
                         string statusString = null;
                         List<string> preBugId = new List<string>();
                         Boolean runBVTfailure = false;
+                        int duration = reader.GetInt32(10);
                         string[] split = description.Split();
                         if (Array.IndexOf(split, "BUG:") != -1)
                         {
                             int i = Array.IndexOf(split, "BUG:") + 1;
                             int n;
-                           
-                            while (i <split.Length && int.TryParse(split[i], out n) )
-                                {
-                                    preBugId.Add(split[i]);
-                                    i++;
-                                }
-                        }                       
+
+                            while (i < split.Length && int.TryParse(split[i], out n))
+                            {
+                                preBugId.Add(split[i]);
+                                i++;
+                            }
+                        }
                         var statusList = new List<object>();
                         if (status == "Aborted" || status == "In Progress")
                         {
-                           
+
                             if (reader.GetValue(9) != DBNull.Value)
                                 task = reader.GetString(9);
                             else
@@ -211,16 +213,47 @@ namespace SnapUI.Services
                             Status = statusList,
                             RunBVTfailure = runBVTfailure,
                             StatusString = statusString,
-                            Priority = priority
+                            Priority = priority,
+                            Duration = duration
                         };
                         allJobs.Add(newJob);
+
+                        // updating # of jobs per checkin in dictionary
+                        // key = int checkinId, values = List<object>(){ int count, bool isCompleted}
+                        try
+                        {
+                            if (status == "Completed")
+                                checkinDuration.Add(checkid, new CheckinId { Count = 1, IsCompleted = true });
+                            else
+                                checkinDuration.Add(checkid, new CheckinId { Count = 1, IsCompleted = false });
+                        }
+                        catch
+                        {
+                            CheckinId checkinId = checkinDuration[checkid];
+                            int count = checkinId.Count + 1;
+                            if (status == "Completed")
+                                checkinDuration[checkid] = new CheckinId { Count = count, IsCompleted = true };
+                            else
+                                checkinDuration[checkid] = new CheckinId { Count = count, IsCompleted = false };
+                        }
                     }
                 }
+
+                foreach (KeyValuePair<int, CheckinId> checkin in checkinDuration)
+                {
+                    CheckinId aCheckin = checkin.Value;
+                    Debug.Write(checkin.Key + "          ");
+                    var count = aCheckin.Count;
+                    var isCompleted = aCheckin.IsCompleted;
+                    Debug.Write(count + "     ");
+                    Debug.WriteLine(isCompleted + "     ");
+                }
+
                 return allJobs;
             }
         }
 
-        public string MakePositionSuffix (int position)
+        public string MakePositionSuffix(int position)
         {
             int mod100 = position % 100;
             if (11 <= mod100 && mod100 <= 19)
@@ -246,8 +279,8 @@ namespace SnapUI.Services
                         return "th";
                     default:
                         return null;
-                }    
-            }        
+                }
+            }
         }
     }
 }
@@ -301,3 +334,5 @@ namespace SnapUI.Services
 //    };
 //    allJobs.Add(newJob);
 //}
+
+

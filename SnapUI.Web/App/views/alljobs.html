@@ -62,6 +62,13 @@
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <br>
                         <p data-bind="text: Description "></p>
+                        <div data-bind="if: Status == 'Completed'">
+                            <br>
+                            <p>Duration to complete: </p>
+                            <p data-bind="text: Duration"></p>
+                            <p> minutes</p>
+                            <br>
+                        </div>
                         <br>
                         <div data-bind="if: RunBVTfailure">
                             <p> View Log Tracer Files </p>
