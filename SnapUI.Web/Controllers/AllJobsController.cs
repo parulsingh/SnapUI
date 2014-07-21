@@ -41,7 +41,7 @@ namespace SnapUI.Web.Controllers
 
             _allJobsService = new MyJobsService("null");
             string queueListString = ConfigurationManager.AppSettings["Queues"];
-            Debug.WriteLine(queueListString);
+            //Debug.WriteLine(queueListString);
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
         }
 

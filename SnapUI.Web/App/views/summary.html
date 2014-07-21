@@ -1,285 +1,83 @@
 ﻿<div class="row fluid">
+    <style>
+        table
+        {
+        table-layout:fixed;
+        }
+    </style>
     <table class=" table table-condensed">
         <thead>
             <tr>
                 <th style="width:300px">All Queues</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
+                <th style="width:200px">Num Checkins</th>
+                <th style="width:200px">Completed</th>
+                <th style="width:200px">Aborted</th>
+                <th style="width:200px">In Progress</th>
+                <th style="width:200px">Pending</th>
+                <th style="width:200px">Cancelled</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody >
             <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins"></td>
+                <td>Week</td>
+                <td data-bind="text: allQueueData().numCheckins"></td>
+                <td data-bind="text: allQueueData().Completed"></td>
+                <td data-bind="text: allQueueData().Aborted"></td>
+                <td data-bind="text: allQueueData()['In Progress']"></td>
+                <td data-bind="text: allQueueData().Pending"></td>
+                <td data-bind="text: allQueueData().Cancelled"></td>
             </tr>
             <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed"></td>
+                <td>24 Hours</td>
+                <td data-bind="text: allQueueDataDay().numCheckins"></td>
+                <td data-bind="text: allQueueDataDay().Completed"></td>
+                <td data-bind="text: allQueueDataDay().Aborted"></td>
+                <td data-bind="text: allQueueDataDay()['In Progress']"></td>
+                <td data-bind="text: allQueueDataDay().Pending"></td>
+                <td data-bind="text: allQueueDataDay().Cancelled"></td>
             </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
         </tbody>
+        
     </table>
+    <div data-bind="foreach: queueArray()">
+        <table class=" table table-condensed">
+            <thead>
+                <tr>
+                    <th style="width:300px" data-bind="text: name"></th>
+                    <th style="width:200px">Num Checkins</th>
+                    <th style="width:200px">Completed</th>
+                    <th style="width:200px">Aborted</th>
+                    <th style="width:200px">In Progress</th>
+                    <th style="width:200px">Pending</th>
+                    <th style="width:200px">Cancelled</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Week</td>
+                    <td data-bind="text: numCheckins"></td>
+                    <td data-bind="text: Completed"></td>
+                    <td data-bind="text: Aborted"></td>
+                    <td data-bind="text: $data['In Progress']"></td>
+                    <td data-bind="text: Pending"></td>
+                    <td data-bind="text: Cancelled"></td>
+                </tr>
+                <tr>
+                    <td>24 Hours</td>
+                    <td data-bind="text: numCheckinsDay"></td>
+                    <td data-bind="text: CompletedDay"></td>
+                    <td data-bind="text: AbortedDay"></td>
+                    <td data-bind="text: $data['In ProgressDay']"></td>
+                    <td data-bind="text: PendingDay"></td>
+                    <td data-bind="text: CancelledDay"></td>
+                </tr>
+            </tbody>
 
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">intune_dev_office</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins1"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed1"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted1"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress1"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
+        </table>
+    </div>
 
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">intune_dev_office_test</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins2"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed2"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted2"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress2"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">JupiterSnapVM5</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins3"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed3"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted3"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress3"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">Sandbox4</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins4"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed4"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted4"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress4"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">SCCM_Office</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins5"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed5"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted5"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress5"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">SccmMain</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins6"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed6"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted6"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress6"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-
-    <table class=" table table-condensed">
-        <thead>
-            <tr>
-                <th style="width:300px">SCCM-WEH2-CVP</th>
-                <th style="width:300px">24 hours</th>
-                <th style="width:300px">Week</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Num Checkins</td>
-                <td></td>
-                <td data-bind="text: numCheckins7"></td>
-            </tr>
-            <tr>
-                <td>Num Successful</td>
-                <td></td>
-                <td data-bind="text: completed7"></td>
-            </tr>
-            <tr>
-                <td>Num Failed</td>
-                <td></td>
-                <td data-bind="text: aborted7"></td>
-            </tr>
-            <tr>
-                <td>Num In Progress</td>
-                <td></td>
-                <td data-bind="text: inProgress7"></td>
-            </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-        </tbody>
-    </table>
-    <br>
-    <br>
-    <br>
-    <br>
+<br>
+<br>
+<br>
+<br>
 </div>

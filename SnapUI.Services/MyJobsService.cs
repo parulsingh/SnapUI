@@ -19,6 +19,8 @@ namespace SnapUI.Services
     {
         private readonly string _connectionString;
         private readonly List<string> _queueList;
+        private readonly bool readalready;
+        private readonly IEnumerable<Job> jobs;
         object myAlias;        
 
         public MyJobsService(string alias)
