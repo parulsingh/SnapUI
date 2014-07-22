@@ -9,7 +9,8 @@
     var vm = {
         activate: activate,
         title: title,
-        myJobs: ko.observableArray([])
+        myJobs: ko.observableArray([]),
+        jobsAndQueues: ko.observableArray([])
     };
 
     return vm;
@@ -94,27 +95,28 @@
             });
         };
 
-        $(function () {
+        //$(function () {
 
-            $('#jobid-filter').change(function () {
-                var filterValue = $(this).val();
+        //    $('#jobid-filter').change(function () {
+        //        var filterValue = $(this).val();
 
-                $('tbody tr').each(function () {
-                    var $tr = $(this);
-                    if ($tr.find('td:eq(1)').html() != filterValue) {
-                        $tr.hide();
-                    } else {
-                        $tr.show();
-                    }
-                });
-            });
+        //        $('tbody tr').each(function () {
+        //            var $tr = $(this);
+        //            if ($tr.find('td:eq(1)').html() != filterValue) {
+        //                $tr.hide();
+        //            } else {
+        //                $tr.show();
+        //            }
+        //        });
+        //    });
 
-        });
+        //});
 
         return myJobsService
-            .getMyJobs(self.myJobs)
+            .getMyJobs(self.jobsAndQueues)
             .then(function () {
-                logger.log('Data loaded from server');
+                self.myJobs = ko.observableArray(self.jobsAndQueues()[0]);
+          
             });
 
 
