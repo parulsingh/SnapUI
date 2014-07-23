@@ -23,10 +23,6 @@
         var qtyDirection = -1;
         //logger.log(title + ' View Activated', null, title, true);
 
-        if (self.myJobs().length > 0) {
-            logger.log('Array already has data');
-            return true;
-        }
         self.sortByJobid = function () {
             nameDirection = -nameDirection;
             self.myJobs.sort(function (a, b) {
@@ -95,22 +91,6 @@
             });
         };
 
-        $(function () {
-
-            $('#jobid-filter').change(function () {
-                var filterValue = $(this).val();
-
-                $('tbody tr').each(function () {
-                    var $tr = $(this);
-                    if ($tr.find('td:eq(1)').html() != filterValue) {
-                        $tr.hide();
-                    } else {
-                        $tr.show();
-                    }
-                });
-            });
-
-        });
 
         return myJobsService
             .getMyJobs(self.jobsAndQueues)

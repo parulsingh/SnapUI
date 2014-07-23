@@ -42,13 +42,12 @@
                 }
             }
         };
-        var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
         //logger.log(title + ' View Activated', null, title, true);
 
         // filtering stuff
-        self.jobIdFilter = ko.observable('');
+        jobIdFilter = ko.observable('');
         self.checkinIdFilter = ko.observable('');
         self.devFilter = ko.observable('');
         
@@ -190,7 +189,7 @@
             return true;
         }
 
-        return myJobsService
+       return myJobsService
             .getAllJobs(self.jobsAndQueues)
             .then(function () {
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
@@ -223,11 +222,11 @@
                 }
 
                 sortable.sort(function (a, b) { return a[1] - b[1] });
-                self.firstFailure = sortable[0][0];
-                self.secondFailure = sortable[1][0];
-                self.thirdFailure = sortable[2][0];
+                self.firstFailure = "test"; //sortable[0][0];
+                self.secondFailure = "test"; //sortable[1][0];
+                self.thirdFailure = "test"; //sortable[2][0];
                 ///////////////////////////////////
-            });
+            }); 
     }
     
 

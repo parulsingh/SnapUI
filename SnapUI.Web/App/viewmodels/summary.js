@@ -3,28 +3,56 @@
         ko = require('knockout'),
         jobsService = require('services/myJobsService');
 
-    var title = 'My Jobs';
+    var title = 'My Jobs', 
+        allJobs = ko.observableArray([]);
 
+    function setData(data) {
+        for (var i = 0, l = data.length; i < l; i++)
+            data[i].y = parseFloat(data[i].price); //modify this
 
+        chart.series[0].setData(data);
+    }
+
+    var GiftModel = function (gifts) {
+        var self = this;
+        self.gifts = ko.observableArray(gifts);
+
+    };
+    
     var vm = {
         activate: activate,
         title: title,
-        allJobs: ko.observableArray([]),
+        allJobs: allJobs,
+        list: [],
         jobsAndQueues: ko.observableArray([]),
-        allQueues: ko.observableArray([])
+        allQueues: ko.observableArray([]),
+        compositionComplete: compositionComplete,
+        dummyGraph: ko.observableArray([
+        { name: "Tall Hat", price: "39.95" },
+        { name: "Long Cloak", price: "120.00" }
+        ])
     };
-
     return vm;
 
+    function compositionComplete() {
 
+        $('#chart').highcharts({
+            chart: {
+                type: 'column'
+            },
+            series: [{
+                data: vm.list
+            }]
+        }
+
+        )
+    };
 
     function activate() {
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        //logger.log(title + ' View Activated', null, title, true);
-
-
+        self.list = [5,20]
 
         return jobsService
             .getAllJobs(self.jobsAndQueues)
@@ -33,7 +61,7 @@
                 /// "intune_dev_office" 1, "intune_dev_office_test" 2, "JupiterSnapVM5" 3, "Sandbox4" 4, "SCCM_Office" 5, "SccmMain" 6, "SCCM-WEH2-CVP" 7 })
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
-                
+
                 var allQueueData = {
                     name: "All Queues",
                     Aborted: 0,
@@ -90,8 +118,6 @@
                     d.setSeconds(0);
                     d.setMilliseconds(0);
 
-                    console.log("job Date " + dateString2);
-                    console.log("today Date " + d);
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
                     for (var j = 0; j < queueArray.length; j++) {
@@ -114,10 +140,6 @@
 
                     allQueueData[status]++;
                 }
-                
-
-                console.log(JSON.stringify(allQueueData));
-                console.log("queueArray " + queueArray);
 
                 self.queueArray = ko.observableArray(queueArray);
                 self.queueArrayDay = ko.observableArray(queueArrayDay);

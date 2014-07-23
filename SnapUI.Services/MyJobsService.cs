@@ -94,13 +94,23 @@ namespace SnapUI.Services
             //}                
 
             var allJobs = new List<Job>();
-            foreach (var queue in queuePrefList)
-            {
-                List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-5), DateTime.Now, queue, myAlias };
-                var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
+            //foreach (var queue in queuePrefList)
+            //{
+            List<object> parameters = new List<object>() { "@StartDt", "@EndDt",
+                "@QueueFilterOne",
+                "@QueueFilterTwo", 
+                "@QueueFilterThree", 
+                "@QueueFilterFour", 
+                "@DevFilter" };
+                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now,
+                "intune_dev_office", 
+                "intune_dev_office_test", 
+                "Sandbox4", 
+                "JupiterSnapVM5",
+                    myAlias };
+                var allJobsFromQueue = CallNewSnapUIProc("TestProc", parameters, parameterValues);
                 allJobs.AddRange(allJobsFromQueue);
-            }
+            //}
 
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);           
             return uniqueAllJobsOrdered;

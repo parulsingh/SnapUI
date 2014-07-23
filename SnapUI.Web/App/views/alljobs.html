@@ -40,8 +40,8 @@
         </tr>
         <tbody data-bind="foreach: filteredItems">
 
-            <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="first accordion-toggle" >
-              
+            <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="first accordion-toggle">
+
                 <td style="width: 100px;"><a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"><p data-bind="text: Checkid "></p></a></td>
                 <td style="width: 150px;" data-bind="text: Jobid "></td>
                 <td style="width: 150px;" data-bind="text: Dev"></td>
@@ -58,7 +58,7 @@
             </tr>
             <tr>
                 <td colspan="8" class="hiddenRow" style="border: none; width: 50px; ">
-                    
+
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <br>
                         <p data-bind="text: Description "></p>
