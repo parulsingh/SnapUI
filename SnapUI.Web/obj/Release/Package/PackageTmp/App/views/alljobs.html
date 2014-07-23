@@ -55,7 +55,7 @@
                 <td style="width: 20%;" data-bind="css: { completed: Status[0] == 'Completed', aborted: Status[0] == 'Aborted', inprogress: Status[0] == 'In Progress', pending: Status[0] == 'Pending' }, text: StatusString"></td>               
                 <td style="width: 7%;" data-bind="text: Priority"></td>
                 <td style="width: 14%;" data-bind="text: SubmitdateString"></td>
-                <td style="width: 7%;" data-bind="css: { completed: IsCompleted == true }, text: Attempts"></td>
+                <td style="width: 7%;" data-bind="css: { completed: IsCompleted == true, inprogress: IsCompleted == false }, text: Attempts"></td>
                 <td style="width: 26%">
                     <div data-bind="foreach: PreBugId">
                         <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+$data, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
