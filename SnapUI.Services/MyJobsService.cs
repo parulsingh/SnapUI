@@ -93,14 +93,25 @@ namespace SnapUI.Services
             //}                
 
             var allJobs = new List<Job>();
-            foreach (var queue in queuePrefList)
-            {
-                List<object> parameters = new List<object>() { "@StartDt", "@EndDt", "@QueueFilter", "@DevFilter" };
-                List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now, queue, myAlias };
-                var allJobsFromQueue = CallNewSnapUIProc("NewSnapUIProc", parameters, parameterValues);
-                allJobs.AddRange(allJobsFromQueue);
-            }
-
+            List<object> parameters = new List<object>() { "@StartDt", "@EndDt",
+                "@QueueFilterOne",
+                "@QueueFilterTwo", 
+                "@QueueFilterThree", 
+                "@QueueFilterFour", 
+                "@QueueFilterFive", 
+                "@QueueFilterSix", 
+                "@QueueFilterSeven", 
+                "@DevFilter" };
+            List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now,
+                "intune_dev_office", 
+                "intune_dev_office_test", 
+                "Sandbox4", 
+                "JupiterSnapVM5",
+                "SCCM_Office",
+                "SccmMain",
+                "SCCM-WEH2-CVP",
+                myAlias };            
+            allJobs.AddRange(CallNewSnapUIProc("TestProc", parameters, parameterValues));
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
             return uniqueAllJobsOrdered;
         }
@@ -247,8 +258,15 @@ namespace SnapUI.Services
                     var isCompleted = aCheckin.IsCompleted;
                     Debug.Write(count + "     ");
                     Debug.WriteLine(isCompleted + "     ");
+                } 
+                
+                foreach (var job in allJobs)
+                {
+                    int attempts = checkinDuration[job.Checkid].Count;
+                    bool isCompleted = checkinDuration[job.Checkid].IsCompleted;
+                    job.Attempts = attempts;
+                    job.IsCompleted = isCompleted;
                 }
-
                 return allJobs;
             }
         }
