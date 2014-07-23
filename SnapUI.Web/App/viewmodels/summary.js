@@ -11,7 +11,32 @@
         title: title,
         allJobs: ko.observableArray([]),
         jobsAndQueues: ko.observableArray([]),
-        allQueues: ko.observableArray([])
+        allQueues: ko.observableArray([]),
+        header: ko.observable('head'),
+        stacked: ko.observable(false),
+        seriesList: ko.observableArray(),
+        changeSeries1: function () {
+            var series_1 = [{
+                label: 'US',
+                legendEntry: true,
+                data: {
+                    x: ['PS3', 'XBOX360', 'Wii'],
+                    y: [12.35, 21.50, 30.56]
+                }
+            }];
+            this.seriesList(series_1);
+        },
+        changeSeries2: function () {
+            var series_2 = [{
+                label: 'US',
+                legendEntry: true,
+                data: {
+                    x: ['UNIX', 'WINDOWS', 'Wii'],
+                    y: [30, 30, 10]
+                }
+            }];
+            this.seriesList(series_2);
+        }
     };
 
     return vm;
@@ -29,8 +54,18 @@
         return jobsService
             .getAllJobs(self.jobsAndQueues)
             .then(function () {
-                //// add summary calculating logic here /////
-                /// "intune_dev_office" 1, "intune_dev_office_test" 2, "JupiterSnapVM5" 3, "Sandbox4" 4, "SCCM_Office" 5, "SccmMain" 6, "SCCM-WEH2-CVP" 7 })
+                
+                var init_series_1 = [{
+                    label: 'US',
+                    legendEntry: true,
+                    data: {
+                        x: ['PS3', 'XBOX360', 'Wii'],
+                        y: [12.35, 21.50, 30.56]
+                    }
+                }];
+
+                self.seriesList(init_series_1);
+
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
                 
@@ -90,8 +125,7 @@
                     d.setSeconds(0);
                     d.setMilliseconds(0);
 
-                    console.log("job Date " + dateString2);
-                    console.log("today Date " + d);
+       
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
                     for (var j = 0; j < queueArray.length; j++) {
@@ -116,8 +150,7 @@
                 }
                 
 
-                console.log(JSON.stringify(allQueueData));
-                console.log("queueArray " + queueArray);
+
 
                 self.queueArray = ko.observableArray(queueArray);
                 self.queueArrayDay = ko.observableArray(queueArrayDay);

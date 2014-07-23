@@ -45,7 +45,6 @@ namespace SnapUI.Web.Controllers
             //_userPrefService = new UserPrefService(alias);
             _myJobsService = new MyJobsService(alias);
             string queueListString = ConfigurationManager.AppSettings["Queues"];
-            Debug.WriteLine(queueListString);
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
         }
 

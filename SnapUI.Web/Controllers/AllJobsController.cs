@@ -26,6 +26,8 @@ namespace SnapUI.Web.Controllers
         private readonly IMyJobsService _allJobsService;
         public string alias;
         public List<string> _queueList;
+        public List<string> _managerList;
+        public List<Manager> _managers = new List<Manager>();
         public AllJobsController()
         {
             if (User.Identity.IsAuthenticated)
@@ -41,15 +43,20 @@ namespace SnapUI.Web.Controllers
 
             _allJobsService = new MyJobsService("null");
             string queueListString = ConfigurationManager.AppSettings["Queues"];
-            //Debug.WriteLine(queueListString);
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
+            _managerList = ConfigurationManager.AppSettings["Managers"].Split(new char[] { ',' }).ToList();
+            for (int i = 0; i < _managerList.Count; i++)
+            {
+                _managers.Add(new Manager(_managerList[i], ConfigurationManager.AppSettings[_managerList[i]].Split(new char[] { ',' }).ToList()));
+
+            }
         }
 
         public object[] GetAllJobs()
         {
             
             IEnumerable<Job> jobs = _allJobsService.GetMyJobs(_queueList);
-            return new object[] { jobs, _queueList };
+            return new object[] { jobs, _queueList, _managers, _managerList };
 
         }
     }

@@ -11,8 +11,7 @@
         title: title,
         allJobs: ko.observableArray([]),
         allQueues: ko.observableArray([]),
-        jobsAndQueues: ko.observableArray([])
-
+        jobsAndQueues: ko.observableArray([]),
     };
 
     return vm;
@@ -86,7 +85,7 @@
             var result;
 
             return ko.utils.arrayFilter(self.allJobs(), function (i) {
-
+                console.log("THIS IS DEV " + i.Dev);
               if (!jobIdFilter || jobIdFilter == "") {
                   jBool = true;
               }
@@ -105,36 +104,25 @@
               }
               if (!devFilter || devFilter == "") {
                   dBool = true;
-              } else if (devFilter == "djam*") {
-                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin",
-                      "ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu", "adeepc", "ezager", "jitenkos",
-                      "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan", "apervaiz", "dvoskuil", "t-jiro", "liharris",
-                      "xiaoshi", "cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi", "bbisht", "brandonw", "brunoy",
-                      "sajaga", "siddsi", "sokhalsa", "fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
+              }
+              else if (devFilter.substr(-1) == "*" && self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1) {
+                  var directReports;
+                  
+                  for (var j = 0; j < self.managers.length; j++) {
+                      if (self.managers[j].Name == devFilter.substring(0, devFilter.length - 1)) {
+                          //console.log("reached inside if");
+                          directReports = self.managers[j].Reports;
+                          //console.log(directReports);
+                          break;
+                      }
+                  }
+                  
+                  
                   dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "sangeev*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "benyim*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "gdhawan*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["adeepc", "ezager", "jitenkos", "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "joyceche*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["apervaiz", "dvoskuil", "t-jiro", "liharris", "xiaoshi"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "lichen*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "prasak*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["bbisht", "brandonw", "brunoy", "sajaga", "siddsi", "sokhalsa"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "tbrady*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
+                  console.log("dev " + i.Dev + " this is dbool " + dBool);
               }
               else {
+                  //console.log("HA " + self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1);
                   dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
               }
                 
@@ -195,6 +183,8 @@
             .then(function () {
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
+                self.managers = self.jobsAndQueues()[2];
+                self.managerNames = self.jobsAndQueues()[3];
                 self.queueFilters = self.allQueues();
                 self.queueFilters.reverse();
                 self.queueFilters.push("None");
