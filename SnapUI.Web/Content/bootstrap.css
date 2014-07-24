@@ -10,10 +10,15 @@
 
 .completed {
     color: #35B235;
-}
 
+}
+.completedAttempts{
+    color: #35B235;
+    font-weight: bold;
+}
 .aborted {
     color: #FF4C4C;
+
 }
 
 .inprogress {
