@@ -1,4 +1,0 @@
-C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Common.Models\bin\Release\SnapUI.Common.Models.dll
-C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Common.Models\bin\Release\SnapUI.Common.Models.pdb
-C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Common.Models\obj\Release\SnapUI.Common.Models.dll
-C:\Users\t-serhe\SnapUI2\SnapUI\SnapUI.Common.Models\obj\Release\SnapUI.Common.Models.pdb

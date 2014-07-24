@@ -3,72 +3,47 @@
         ko = require('knockout'),
         jobsService = require('services/myJobsService');
 
-    var title = 'My Jobs';
-
-
+    var title = 'My Jobs', 
+        allJobs = ko.observableArray([]);
+    
     var vm = {
         activate: activate,
         title: title,
-        allJobs: ko.observableArray([]),
+        allJobs: allJobs,
+        list: [],
         jobsAndQueues: ko.observableArray([]),
         allQueues: ko.observableArray([]),
-        header: ko.observable('head'),
-        stacked: ko.observable(false),
-        seriesList: ko.observableArray(),
-        changeSeries1: function () {
-            var series_1 = [{
-                label: 'US',
-                legendEntry: true,
-                data: {
-                    x: ['PS3', 'XBOX360', 'Wii'],
-                    y: [12.35, 21.50, 30.56]
-                }
-            }];
-            this.seriesList(series_1);
-        },
-        changeSeries2: function () {
-            var series_2 = [{
-                label: 'US',
-                legendEntry: true,
-                data: {
-                    x: ['UNIX', 'WINDOWS', 'Wii'],
-                    y: [30, 30, 10]
-                }
-            }];
-            this.seriesList(series_2);
-        }
+        compositionComplete: compositionComplete
     };
-
     return vm;
 
+    function compositionComplete() {
 
+        $('#chart').highcharts({
+            chart: {
+                type: 'column'
+            },
+            series: [{
+                data: vm.list
+            }]
+        }
+
+        )
+    };
 
     function activate() {
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        //logger.log(title + ' View Activated', null, title, true);
-
-
+        self.list = [5,20]
 
         return jobsService
             .getAllJobs(self.jobsAndQueues)
             .then(function () {
-                
-                var init_series_1 = [{
-                    label: 'US',
-                    legendEntry: true,
-                    data: {
-                        x: ['PS3', 'XBOX360', 'Wii'],
-                        y: [12.35, 21.50, 30.56]
-                    }
-                }];
-
-                self.seriesList(init_series_1);
 
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
-                
+
                 var allQueueData = {
                     name: "All Queues",
                     Aborted: 0,
@@ -125,7 +100,6 @@
                     d.setSeconds(0);
                     d.setMilliseconds(0);
 
-       
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
                     for (var j = 0; j < queueArray.length; j++) {
@@ -148,9 +122,6 @@
 
                     allQueueData[status]++;
                 }
-                
-
-
 
                 self.queueArray = ko.observableArray(queueArray);
                 self.queueArrayDay = ko.observableArray(queueArrayDay);

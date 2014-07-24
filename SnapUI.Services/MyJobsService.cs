@@ -93,6 +93,8 @@ namespace SnapUI.Services
             //}                
 
             var allJobs = new List<Job>();
+
+
             List<object> parameters = new List<object>() { "@StartDt", "@EndDt",
                 "@QueueFilterOne",
                 "@QueueFilterTwo", 
@@ -113,6 +115,7 @@ namespace SnapUI.Services
                 myAlias };            
             allJobs.AddRange(CallNewSnapUIProc("TestProc", parameters, parameterValues));
             IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
+
             return uniqueAllJobsOrdered;
         }
 
