@@ -94,7 +94,14 @@
                 return 0;
             });
         };
-
+        self.sortByAttempts = function () {
+            nameDirection = -nameDirection;
+            self.myJobs.sort(function (a, b) {
+                if (a.Attempts > b.Attempts) return 1 * nameDirection;
+                if (a.Attempts < b.Attempts) return -1 * nameDirection;
+                return 0;
+            });
+        };
         //$(function () {
 
         //    $('#jobid-filter').change(function () {

@@ -34,7 +34,6 @@
             },
             update: function (element, valueAccessor) {
                 var widget = $(element).data("datepicker");
-                //when the view model is updated, update the widget
                 if (widget) {
                     widget.date = ko.utils.unwrapObservable(valueAccessor());
                     widget.setValue();
@@ -44,7 +43,6 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        //logger.log(title + ' View Activated', null, title, true);
 
         // filtering stuff
         self.jobIdFilter = ko.observable('');
@@ -110,9 +108,7 @@
                   
                   for (var j = 0; j < self.managers.length; j++) {
                       if (self.managers[j].Name == devFilter.substring(0, devFilter.length - 1)) {
-                          //console.log("reached inside if");
                           directReports = self.managers[j].Reports;
-                          //console.log(directReports);
                           break;
                       }
                   }
@@ -122,7 +118,6 @@
                   console.log("dev " + i.Dev + " this is dbool " + dBool);
               }
               else {
-                  //console.log("HA " + self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1);
                   dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
               }
                 
