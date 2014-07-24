@@ -24,12 +24,13 @@
                 type: 'column'
             },
             series: [{
-                data: vm.list
-            }]
+                data: vm.allQGraphData
+            }],
+            xAxis: {
+                categories: ["Aborted","Completed","In P"]
+            }
         }
-
-        )
-    };
+        )};
 
     function activate() {
         var self = this;
@@ -120,13 +121,23 @@
 
                     }
 
+
+
                     allQueueData[status]++;
                 }
 
-                self.queueArray = ko.observableArray(queueArray);
+                self.queueArray = ko.observableArray(queueArray);  
                 self.queueArrayDay = ko.observableArray(queueArrayDay);
                 self.allQueueData = ko.observable(allQueueData);
                 self.allQueueDataDay = ko.observable(allQueueDataDay);
+
+                self.allQGraphData = [];
+                self.allQGraphDataCat = [];
+                for (elem in self.allQueueData()) {
+                    self.allQGraphData.push(self.allQueueData()[elem]);
+                    self.allQGraphDataCat.push(elem);
+                }
+                console.log(self.allQGraphDataCat);
             });
 
 
