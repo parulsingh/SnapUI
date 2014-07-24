@@ -15,15 +15,15 @@
         <p data-bind="text: 'Top Failures: '+firstFailure+', '+secondFailure+', '+thirdFailure"></p>
         <thead>
             <tr>
-                <th style="width: 7%; word-wrap: break-word;">Checkin ID</th>
-                <th style="width: 7%; word-wrap: break-word;">Job ID</th>
-                <th style="width: 7%; word-wrap: break-word;">Dev</th>
-                <th style="width: 12%; word-wrap: break-word;">Queue</th>
-                <th style="width: 20%; word-wrap: break-word;">Status</th>               
-                <th style="width: 7%; word-wrap: break-word;">Priority</th>
-                <th style="width: 14%; word-wrap: break-word;">Submit Date</th>
-                <th style="width: 7%; word-wrap: break-word;">Attempts</th>
-                <th style="width: 26%; word-wrap: break-word;">Bug ID</th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByJobid">Job ID </a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
+                <th style="width: 12%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
+                <th style="width: 20%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
+                <th style="width: 14%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByAttempts">Attempts</a></th>
+                <th style="width: 26%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
             </tr>
         </thead>
 
@@ -55,7 +55,7 @@
                 <td style="width: 20%; word-wrap: break-word;" data-bind="css: { completed: Status[0] == 'Completed', aborted: Status[0] == 'Aborted', inprogress: Status[0] == 'In Progress', pending: Status[0] == 'Pending' }, text: StatusString"></td>               
                 <td style="width: 7%; word-wrap: break-word;" data-bind="text: Priority"></td>
                 <td style="width: 14%; word-wrap: break-word;" data-bind="text: SubmitdateString"></td>
-                <td style="width: 7%; word-wrap: break-word;" data-bind="css: { completed: IsCompleted == true, inprogress: IsCompleted == false }, text: Attempts"></td>
+                <td style="width: 7%; word-wrap: break-word;" data-bind="css: { completedAttempts: IsCompleted == true}, text: Attempts"></td></strong>
                 <td style="width: 26%; word-wrap: break-word;">
                     <div data-bind="if: Queue == 'SCCM_Office' || Queue == 'SccmMain' || Queue == 'SccmTest' || Queue == 'SCCM-WEH2-CVP' ">
                         <div data-bind="foreach: PreBugId">
@@ -71,32 +71,27 @@
             </tr>
             <tr>
 
-                <td colspan="8" class="hiddenRow" style="border: none; width: 100%; ">                    
+                <td colspan="9" class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <br>
                         <p data-bind="text: Description "></p>
                         <div data-bind="if: Status == 'Completed'">
-                            <br><p>Duration to complete: </p>
+                            <p>Duration to complete: </p>
                             <p data-bind="text: Duration"></p>
-                            <p> minutes</p><br>
+                            <p> minutes</p>
                         </div>
-                        <div data-bind="if: RunBVTfailure">
-                            <br>
-                            <p> View Log Tracer Files </p>
-                            <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        <div data-bind="if: Queue != 'SCCM_Office' && Queue != 'SccmMain' && Queue != 'SccmTest' && Queue != 'SCCM-WEH2-CVP' ">
+                            <div data-bind="if: RunBVTfailure">
+                                <p> View Log Tracer Files </p>
+                                <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                            </div>
                             <br>
                         </div>
-                        <br>
                     </div>
                 </td>
             </tr>
 
-        </t
-            
-            
-            
-            
-            >
+        </tbody>
     </table>
 
 </div>

@@ -59,5 +59,6 @@ C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\sv-SE\Kendo.Mvc
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\tr-TR\Kendo.Mvc.resources.dll
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\uk-UA\Kendo.Mvc.resources.dll
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\bin\zh-CN\Kendo.Mvc.resources.dll
+C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.csprojResolveAssemblyReference.cache
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.dll
 C:\Users\t-geezen\Documents\SnapUIOfficial\SnapUI\SnapUI.Web\obj\Debug\SnapUI.Web.pdb

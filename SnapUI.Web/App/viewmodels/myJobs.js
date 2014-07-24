@@ -91,6 +91,32 @@
             });
         };
 
+        self.sortByAttempts = function () {
+            nameDirection = -nameDirection;
+            self.myJobs.sort(function (a, b) {
+                if (a.Attempts > b.Attempts) return 1 * nameDirection;
+                if (a.Attempts < b.Attempts) return -1 * nameDirection;
+                return 0;
+            });
+        };
+        //$(function () {
+
+        //    $('#jobid-filter').change(function () {
+        //        var filterValue = $(this).val();
+
+        //        $('tbody tr').each(function () {
+        //            var $tr = $(this);
+        //            if ($tr.find('td:eq(1)').html() != filterValue) {
+        //                $tr.hide();
+        //            } else {
+        //                $tr.show();
+        //            }
+        //        });
+        //    });
+
+        //});
+
+
         return myJobsService
             .getMyJobs(self.jobsAndQueues)
             .then(function () {

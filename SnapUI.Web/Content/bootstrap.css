@@ -10,10 +10,15 @@
 
 .completed {
     color: #35B235;
-}
 
+}
+.completedAttempts{
+    color: #35B235;
+    font-weight: bold;
+}
 .aborted {
     color: #FF4C4C;
+
 }
 
 .inprogress {
@@ -2025,7 +2030,7 @@ table {
 .table th,
 .table td {
   padding: 8px;
-  line-height: 20px;
+  line-height: 30px;
   text-align: left;
   vertical-align: top;
   border-top: 1px solid #dddddd;
@@ -2058,7 +2063,7 @@ table {
 
 .table-condensed th,
 .table-condensed td {
-  padding: 4px 5px;
+  padding: 0px 0px;
 }
 
 .table-bordered {
