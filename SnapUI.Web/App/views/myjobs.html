@@ -15,21 +15,21 @@
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <thead>
             <tr>
-                <th style="width: 7%;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
-                <th style="width: 7%;"><a href="#myjobs" data-bind="click: sortByJobid">Job ID </a></th>
-                <th style="width: 7%;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
-                <th style="width: 12%;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
-                <th style="width: 20%;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
-                <th style="width: 7%;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
-                <th style="width: 14%;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
-                <th><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByJobid">Job ID </a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
+                <th style="width: 12%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
+                <th style="width: 20%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
+                <th style="width: 14%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
+                <th style="width: 7%; word-wrap: break-word;">Attempts</th>
+                <th style="word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
             </tr>
         </thead>
 
         <tbody data-bind="foreach: myJobs()">
             <tr data-toggle="collapse" data-bind=" attr: { 'data-target': '#tray'+$index()}" class="first accordion-toggle">
-
-                <td style="width: 100%;">
+                <td style="width: 100%; word-wrap: break-word;">
                     <div data-bind="if: Queue == 'SCCM_Office' || Queue == 'SccmMain' || Queue == 'SccmTest' || Queue == 'SCCM-WEH2-CVP' ">
                         <a data-bind="attr: { 'href': 'file://mermaid.redmond.corp.microsoft.com/snaplogs/'+Checkid+'.'+Dev}"><p data-bind="text: Checkid "></p></a>
                     </div>
@@ -37,15 +37,23 @@
                         <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev}"><p data-bind="text: Checkid "></p></a>
                     </div>
                 </td>                    
-                <td style="width: 100%;" data-bind="text: Jobid "></td>
-                <td style="width: 100%;" data-bind="text: Dev"></td>
-                <td style="width: 100%;" data-bind="text: Queue"></td>
-                <td style="width: 100%;" data-bind="css: { completed: Status[0] == 'Completed', aborted: Status[0] == 'Aborted', inprogress: Status[0] == 'In Progress', pending: Status[0] == 'Pending' }, text: StatusString"></td>
-                <td style="width: 100%;" data-bind="text: Priority"></td>
-                <td style="width: 100%;" data-bind="text: SubmitdateString"></td>
-                <td style="width: 100%;">
-                    <div data-bind="foreach: PreBugId">
-                        <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+$data, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="text: Jobid "></td>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="text: Dev"></td>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="text: Queue"></td>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="css: { completed: Status[0] == 'Completed', aborted: Status[0] == 'Aborted', inprogress: Status[0] == 'In Progress', pending: Status[0] == 'Pending' }, text: StatusString"></td>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="text: Priority"></td>
+                <td style="width: 100%; word-wrap: break-word;" data-bind="text: SubmitdateString"></td>
+                <td style="width: 7%; word-wrap: break-word;" data-bind="css: { completed: IsCompleted == true, inprogress: IsCompleted == false }, text: Attempts"></td>
+                <td style="width: 100%; word-wrap: break-word;">
+                    <div data-bind="if: Queue == 'SCCM_Office' || Queue == 'SccmMain' || Queue == 'SccmTest' || Queue == 'SCCM-WEH2-CVP' ">
+                        <div data-bind="foreach: PreBugId">
+                            <a data-bind="attr: { 'href': 'http://bugcheck/bugs/SMS/'+$data, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
+                        </div>
+                    </div>
+                    <div data-bind="if: Queue != 'SCCM_Office' && Queue != 'SccmMain' && Queue != 'SccmTest' && Queue != 'SCCM-WEH2-CVP' ">
+                        <div data-bind="foreach: PreBugId">
+                            <a data-bind="attr: { 'href': 'http://bugcheck/bugs/ManagementServices/'+$data, 'target':'_blank'}"><p data-bind="text: $data"></p></a>
+                        </div>
                     </div>
                 </td>
             </tr>
