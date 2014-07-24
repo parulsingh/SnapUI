@@ -91,11 +91,10 @@
             });
         };
 
-
         return myJobsService
             .getMyJobs(self.jobsAndQueues)
             .then(function () {
-                self.myJobs = self.jobsAndQueues()[0];
+                self.myJobs = ko.observableArray(self.jobsAndQueues()[0]);
           
             });
 

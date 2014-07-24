@@ -8,6 +8,22 @@
  * Designed and built with all the love in the world @twitter by @mdo and @fat.
  */
 
+.completed {
+    color: #35B235;
+}
+
+.aborted {
+    color: #FF4C4C;
+}
+
+.inprogress {
+    color: #0C59EF;
+}
+
+.pending {
+    color: #878787;
+}
+
 .clearfix {
   *zoom: 1;
 }

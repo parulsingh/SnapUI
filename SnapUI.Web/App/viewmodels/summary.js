@@ -5,19 +5,6 @@
 
     var title = 'My Jobs', 
         allJobs = ko.observableArray([]);
-
-    function setData(data) {
-        for (var i = 0, l = data.length; i < l; i++)
-            data[i].y = parseFloat(data[i].price); //modify this
-
-        chart.series[0].setData(data);
-    }
-
-    var GiftModel = function (gifts) {
-        var self = this;
-        self.gifts = ko.observableArray(gifts);
-
-    };
     
     var vm = {
         activate: activate,
@@ -26,11 +13,7 @@
         list: [],
         jobsAndQueues: ko.observableArray([]),
         allQueues: ko.observableArray([]),
-        compositionComplete: compositionComplete,
-        dummyGraph: ko.observableArray([
-        { name: "Tall Hat", price: "39.95" },
-        { name: "Long Cloak", price: "120.00" }
-        ])
+        compositionComplete: compositionComplete
     };
     return vm;
 
@@ -57,8 +40,7 @@
         return jobsService
             .getAllJobs(self.jobsAndQueues)
             .then(function () {
-                //// add summary calculating logic here /////
-                /// "intune_dev_office" 1, "intune_dev_office_test" 2, "JupiterSnapVM5" 3, "Sandbox4" 4, "SCCM_Office" 5, "SccmMain" 6, "SCCM-WEH2-CVP" 7 })
+
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
 

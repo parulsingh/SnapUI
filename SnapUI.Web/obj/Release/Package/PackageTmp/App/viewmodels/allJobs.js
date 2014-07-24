@@ -9,7 +9,9 @@
     var vm = {
         activate: activate,
         title: title,
-        allJobs: ko.observableArray([])
+        allJobs: ko.observableArray([]),
+        allQueues: ko.observableArray([]),
+        jobsAndQueues: ko.observableArray([])
 
     };
 
@@ -53,10 +55,7 @@
         self.priorityFilters = ko.observableArray(["None", "High", "Low", "Normal"]);
         self.priorityFilter = ko.observable('');
 
-        self.queueFilters = ko.observableArray([
-                "None", "intune_dev_office", "intune_dev_office_test",               
-                "JupiterSnapVM5", "Sandbox4",
-                "SCCM_Office", "SccmMain", "SCCM-WEH2-CVP"]);
+        
         self.queueFilter = ko.observable('');
 
         self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending" ]);
@@ -192,8 +191,15 @@
         }
 
         return myJobsService
-            .getAllJobs(self.allJobs)
+            .getAllJobs(self.jobsAndQueues)
             .then(function () {
+                self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
+                self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
+                self.queueFilters = self.allQueues();
+                self.queueFilters.reverse();
+                self.queueFilters.push("None");
+                self.queueFilters.reverse();
+                console.log(self.allQueues());
                 logger.log('Data loaded from server');
 
                 ////////// Top Failuire Logic //////

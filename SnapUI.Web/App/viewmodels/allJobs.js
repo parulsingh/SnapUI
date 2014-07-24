@@ -11,8 +11,7 @@
         title: title,
         allJobs: ko.observableArray([]),
         allQueues: ko.observableArray([]),
-        jobsAndQueues: ko.observableArray([])
-
+        jobsAndQueues: ko.observableArray([]),
     };
 
     return vm;
@@ -42,22 +41,23 @@
                 }
             }
         };
+        var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
         //logger.log(title + ' View Activated', null, title, true);
 
         // filtering stuff
-        jobIdFilter = ko.observable('');
+        self.jobIdFilter = ko.observable('');
         self.checkinIdFilter = ko.observable('');
         self.devFilter = ko.observable('');
-        
+
         self.priorityFilters = ko.observableArray(["None", "High", "Low", "Normal"]);
         self.priorityFilter = ko.observable('');
 
-        
+
         self.queueFilter = ko.observable('');
 
-        self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending" ]);
+        self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending"]);
         self.statusFilter = ko.observable('');
         self.test_date = ko.observable(new Date());
 
@@ -85,100 +85,89 @@
             var result;
 
             return ko.utils.arrayFilter(self.allJobs(), function (i) {
+                console.log("THIS IS DEV " + i.Dev);
+                if (!jobIdFilter || jobIdFilter == "") {
+                    jBool = true;
+                }
+                else {
 
-              if (!jobIdFilter || jobIdFilter == "") {
-                  jBool = true;
-              }
-              else {
+                    jBool = self.jobIdFilter() == String(i.Jobid).substring(0, self.jobIdFilter().length);
 
-                  jBool = self.jobIdFilter() == String(i.Jobid).substring(0, self.jobIdFilter().length);
+                }
 
-              }
+                if (!checkinIdFilter || checkinIdFilter == "") {
+                    cBool = true;
+                }
+                else {
+                    cBool = self.checkinIdFilter() == String(i.Checkid).substring(0, self.checkinIdFilter().length);
 
-              if (!checkinIdFilter || checkinIdFilter == "") {
-                  cBool = true;
-              }
-              else {
-                  cBool = self.checkinIdFilter() == String(i.Checkid).substring(0, self.checkinIdFilter().length);
+                }
+                if (!devFilter || devFilter == "") {
+                    dBool = true;
+                }
+                else if (devFilter.substr(-1) == "*" && self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1) {
+                    var directReports;
 
-              }
-              if (!devFilter || devFilter == "") {
-                  dBool = true;
-              } else if (devFilter == "djam*") {
-                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin",
-                      "ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu", "adeepc", "ezager", "jitenkos",
-                      "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan", "apervaiz", "dvoskuil", "t-jiro", "liharris",
-                      "xiaoshi", "cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi", "bbisht", "brandonw", "brunoy",
-                      "sajaga", "siddsi", "sokhalsa", "fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "sangeev*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["kerwinm", "nali", "yuexia", "ssingha", "stevgao", "jasongb", "kialli", "saranga", "t-parsi", "t-serhe", "t-geezen", "vsorokin"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "benyim*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["ajitn", "huyao", "insikdar", "juhacket", "skhade", "veperu"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "gdhawan*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["adeepc", "ezager", "jitenkos", "lishil", "nkrilov", "prasannk", "rasamu", "sharmily", "weiwan"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "joyceche*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["apervaiz", "dvoskuil", "t-jiro", "liharris", "xiaoshi"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "lichen*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["cimurphy", "enyu", "jzhu", "lomack", "mihoura", "preetir", "qimi", "ramchi"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "prasak*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["bbisht", "brandonw", "brunoy", "sajaga", "siddsi", "sokhalsa"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              } else if (devFilter == "tbrady*" && devFilter.substr(-1) == "*") {
-                  var directReports = ["fmokren", "hchen", "jerryliu", "patnga", "yohuang"];
-                  dBool = directReports.indexOf(i.Dev) != -1;
-              }
-              else {
-                  dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
-              }
-                
-              if (!queueFilter || queueFilter == "None") {
-                  qBool = true;
-              } 
-              else {
-                  qBool = i.Queue == queueFilter;
-            
-              }
-
-              if (!statusFilter || statusFilter == "None") {
-                  sBool = true;
-              } 
-              else {
-                  sBool = i.Status[0] == statusFilter;
-            
-              }
-              if (!priorityFilter || priorityFilter == "None") {
-                  pBool = true;
-              }
-              else {
-                  pBool = i.Priority == priorityFilter;
-
-              }
-              var today = new Date();
-              if (!test_date || ((test_date.getDay() == today.getDay()) && (test_date.getDate() == today.getDate()) && (test_date.getFullYear() == today.getFullYear()))) {
-                  daBool = true;
-              }
-              else {
-                  var dateString = i.Submitdate.substring(0, 10);
-                  var split = dateString.split("-");
-                  var dateString2 = split[0] + "/" + split[1] + "/" + split[2];
-
-                  var jobDate = new Date(dateString2);
-                  jobDate.setHours(0);
-                  test_date.setHours(0);
-                  daBool = test_date.getTime() == jobDate.getTime();
-
-              }
+                    for (var j = 0; j < self.managers.length; j++) {
+                        if (self.managers[j].Name == devFilter.substring(0, devFilter.length - 1)) {
+                            //console.log("reached inside if");
+                            directReports = self.managers[j].Reports;
+                            //console.log(directReports);
+                            break;
+                        }
+                    }
 
 
-              result = jBool && cBool && dBool && pBool && qBool && sBool && daBool;
+                    dBool = directReports.indexOf(i.Dev) != -1;
+                    //console.log("dev " + i.Dev + " this is dbool " + dBool);
+                }
+                else {
+                    //console.log("HA " + self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1);
+                    dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
+                }
 
-              return result;
+                if (!queueFilter || queueFilter == "None") {
+                    qBool = true;
+                }
+                else {
+                    qBool = i.Queue == queueFilter;
+
+                }
+
+                if (!statusFilter || statusFilter == "None") {
+                    sBool = true;
+                }
+                else {
+                    sBool = i.Status[0] == statusFilter;
+
+                }
+                if (!priorityFilter || priorityFilter == "None") {
+                    pBool = true;
+                }
+                else {
+                    pBool = i.Priority == priorityFilter;
+
+                }
+                var today = new Date();
+                if (!test_date || ((test_date.getDay() == today.getDay()) && (test_date.getDate() == today.getDate()) && (test_date.getFullYear() == today.getFullYear()))) {
+                    daBool = true;
+                }
+                else {
+                    var dateString = i.Submitdate.substring(0, 10);
+                    var split = dateString.split("-");
+                    var dateString2 = split[0] + "/" + split[1] + "/" + split[2];
+
+                    var jobDate = new Date(dateString2);
+                    jobDate.setHours(0);
+                    test_date.setHours(0);
+                    daBool = test_date.getTime() == jobDate.getTime();
+
+                }
+
+
+                result = jBool && cBool && dBool && pBool && qBool && sBool && daBool;
+
+                return result;
 
             });
         });
@@ -189,11 +178,13 @@
             return true;
         }
 
-       return myJobsService
+        return myJobsService
             .getAllJobs(self.jobsAndQueues)
             .then(function () {
                 self.allJobs = ko.observableArray(self.jobsAndQueues()[0]);
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
+                self.managers = self.jobsAndQueues()[2];
+                self.managerNames = self.jobsAndQueues()[3];
                 self.queueFilters = self.allQueues();
                 self.queueFilters.reverse();
                 self.queueFilters.push("None");
@@ -222,13 +213,13 @@
                 }
 
                 sortable.sort(function (a, b) { return a[1] - b[1] });
-                self.firstFailure = "test"; //sortable[0][0];
-                self.secondFailure = "test"; //sortable[1][0];
-                self.thirdFailure = "test"; //sortable[2][0];
+                self.firstFailure = sortable[0][0];
+                self.secondFailure = sortable[1][0];
+                self.thirdFailure = sortable[2][0];
                 ///////////////////////////////////
-            }); 
+            });
     }
-    
+
 
 
 });
