@@ -18,7 +18,10 @@
         durationDay: ko.observableArray([]),
         durationWeek: ko.observableArray([]),
         allQGraphData: ko.observableArray([]),
-        allQGraphDataDay: ko.observableArray([])
+        allQGraphDataDay: ko.observableArray([]),
+        weekCheckins: ko.observableArray([]),
+        dayCheckins: ko.observableArray([]),
+        totalWeekCheckins: ko.observable([])
     };
     return vm;
 
@@ -28,7 +31,7 @@
                 enabled: false
             },
             chart: {
-                //renderTo: 'container',
+   
                 type: 'column',
                 backgroundColor: 'transparent',
                 width: 800,
@@ -36,6 +39,17 @@
             },
             title: {
                 text: "All Queues"
+            },
+            labels: {
+                items: [{
+                    html: 'Total Checkins ' + vm.totalWeekCheckins(),
+                    style: {
+                        left: '10px',
+                        top: '360px',
+                        color: 'black',
+                        //zIndex : 100
+                    }
+                }]
             },
             series: [{
                 showInLegend: true,
@@ -75,7 +89,7 @@
                 enabled: false
             },
             chart: {
-                //renderTo: 'container',
+      
                 type: 'column',
                 backgroundColor: 'transparent',
                 width: 800,
@@ -87,12 +101,12 @@
             series: [{
                 showInLegend: true,
                 name: "Week",
-                color: 'red',
+                color: 'green',
                 data: vm.durationWeek()
             }, {
                 showInLegend: true,
                 name: "24 hours",
-                color: 'blue',
+                color: '#4AC948',
                 data: vm.durationDay()
             }],
             xAxis: {
@@ -112,10 +126,10 @@
                         color: 'black'
                         
                     },
-                    colorByPoint: true,
+                   
                 }
             },
-            colors: ['#4AC948', '#FF6961', '#0198E1', '#878787']
+            
         }
 )
 
@@ -128,11 +142,22 @@
                     renderTo: 'container',
                     type: 'column',
                     backgroundColor: 'transparent',
-                    width: 400,
+                    width: 375,
                     height: 450
                 },
                 title: {
-                    text: vm.queueArray()[i][0]
+                    text: vm.queueArray()[i][0] 
+                },
+                labels: {
+                    items: [{
+                        html: 'Total Checkins ' + vm.weekCheckins()[i],
+                        style: {
+                            left: '10px',
+                            top: '350px',
+                            color: 'black',
+                            //zIndex : 100
+                        }
+                    }]
                 },
                 series: [{
                     showInLegend: true,
@@ -146,7 +171,7 @@
                     data: vm.queueArray()[i][2]
                 }],
                 xAxis: {
-                    //categories: ["Aborted", "Completed", "In Progress", "Pending"]
+                 
                     categories: ["Completed", "Aborted", "In Progress", "Pending"]
                 },
                 yAxis: {
@@ -161,6 +186,7 @@
                         dataLabels: {
                             enabled: true,
                             color: 'black',
+                           
                         },
                         colorByPoint: true,
                     }
@@ -191,7 +217,7 @@
                     Aborted: 0,
                     "In Progress": 0,
                     Pending: 0,
-                    //numCheckins: self.allJobs().length
+                    numCheckins: self.allJobs().length
                 }
                 //objects for all queue info for a day
                 var allQueueDataDay = {
@@ -199,21 +225,21 @@
                     Aborted: 0,
                     "In Progress": 0,
                     Pending: 0,
-                    //numCheckins: 0
+                    numCheckins: 0
                 }
 
                 // array of objects holding info for specific queues for a week and day
                 var queueArray = [];
 
                 // populating the array with objects
-                //name week day duration
+                //name week day duration numcompleted numCheckins
                 for (var i = 0; i < self.allQueues().length; i++) {
-                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0]];
+                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0,0]];
                 }
 
-                //var statusDict = { "Aborted": 0, "Completed": 1, "In Progress": 2, "Pending": 3, "Cancelled": 4, "numCheckins": 5 };
-                var statusDict = { "Completed": 0, "Aborted": 1, "In Progress": 2, "Pending": 3, };
-                var checkins = [];
+     
+                var statusDict = { "Completed": 0, "Aborted": 1, "In Progress": 2, "Pending": 3 };
+                
                 var jobs = self.allJobs();
                 var numCompletedWeek = 0;
                 var numCompletedDay = 0;
@@ -231,29 +257,26 @@
                     d.setMinutes(0);
                     d.setSeconds(0);
                     d.setMilliseconds(0);
+
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
                     for (var j = 0; j < queueArray.length; j++) {
-                        if (queueArray[j][0] == queue) {
-                            //queueArray[j][1][5]++;
+
+                        if (queueArray[j][0] == queue) {                 
                             queueArray[j][1][4]++;
-                            queueArray[j][1][statusDict[status]]++;
-                            
-                            console.log("status " + status + " jobid " + jobs[i].Jobid + " duration " + jobs[i].Duration);
-                            if (status == "Completed") {
+                            queueArray[j][1][statusDict[status]]++;                                                
+                            if (status == "Completed") {                          
                                 queueArray[j][3][0] += jobs[i].Duration;
-                                numCompletedWeek++;
+                                queueArray[j][4][0]++;
                             }
-                            if (jobDate.getTime() == d.getTime()) {
-                                //queueArray[j][2][5]++;
+                            if (jobDate.getTime() == d.getTime()) {                         
                                 queueArray[j][2][4]++;
                                 queueArray[j][2][statusDict[status]]++;
                                 //allQueueDataDay.numCheckins++;
-                                allQueueDataDay[status]++;
-                                
+                                allQueueDataDay[status]++;                              
                                 if (status == "Completed") {
                                     queueArray[j][3][1] += jobs[i].Duration;
-                                    numCompletedDay++;
+                                    queueArray[j][4][1]++;
                                 }
                             }
                         }
@@ -262,21 +285,19 @@
 
                 }
 
-                for (var j = 0; j < queueArray.length; j++) {
-                    var weekCheckins = checkins.push(queueArray[j][1].pop());
-                    var dayCheckins = checkins.push(queueArray[j][2].pop());
-                    queueArray[j][3][0] = queueArray[j][3][0] / numCompletedWeek;
-                    queueArray[j][3][1] = queueArray[j][3][1] / numCompletedDay;
-                }
-
-                //duration stuff
+                // more duration stuff
+                var weekCheckins = [];
+                var dayCheckins = [];
                 var durationWeek = [];
                 var durationDay = [];
                 for (var j = 0; j < queueArray.length; j++) {
+                    weekCheckins.push(queueArray[j][1].pop());
+                    dayCheckins.push(queueArray[j][2].pop());
+                    queueArray[j][3][0] = queueArray[j][3][0] / queueArray[j][4][0];
+                    queueArray[j][3][1] = queueArray[j][3][1] / queueArray[j][4][1];
                     durationWeek.push(Math.round(queueArray[j][3][0]));
                     durationDay.push(Math.round(queueArray[j][3][1]));
                 }
-              
 
                 // creating observables
                 self.queueArray = ko.observableArray(queueArray);
@@ -284,19 +305,23 @@
                 self.allQueueDataDay = ko.observable(allQueueDataDay);
                 self.durationWeek = ko.observable(durationWeek);
                 self.durationDay = ko.observable(durationDay);
+                self.weekCheckins = ko.observable(weekCheckins);
+                self.dayCheckins = ko.observable(dayCheckins);
 
                 // counting values to put in highcharts
                 allQGraphData = [];
                 for (elem in self.allQueueData()) {
                     allQGraphData.push(self.allQueueData()[elem]);
                 }
+                var totalWeekCheckins = allQGraphData.pop();
+
                 allQGraphDataDay = [];
                 for (elem in self.allQueueDataDay()) {
                     allQGraphDataDay.push(self.allQueueDataDay()[elem]);
                 }
-                console.log("All Q grpah data " + allQGraphData);
                 self.allQGraphData = ko.observable(allQGraphData);
                 self.allQGraphDataDay = ko.observable(allQGraphDataDay);
+                self.totalWeekCheckins = ko.observable(totalWeekCheckins);
             });
 
 

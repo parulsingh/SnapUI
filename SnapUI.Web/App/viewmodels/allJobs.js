@@ -162,8 +162,6 @@
             var result;
 
             return ko.utils.arrayFilter(self.allJobs(), function (i) {
-                console.log("THIS IS DEV " + i.Dev);
-
               if (!jobIdFilter || jobIdFilter == "") {
                   jBool = true;
               }
@@ -195,7 +193,6 @@
                   
                   
                   dBool = directReports.indexOf(i.Dev) != -1;
-                  console.log("dev " + i.Dev + " this is dbool " + dBool);
               }
               else {
                   dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
@@ -264,8 +261,6 @@
                 self.queueFilters.reverse();
                 self.queueFilters.push("None");
                 self.queueFilters.reverse();
-                console.log(self.allQueues());
-                logger.log('Data loaded from server');
 
                 ////////// Top Failuire Logic //////
                 var failureDict = {};
