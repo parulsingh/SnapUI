@@ -58,23 +58,22 @@
                 </td>
             </tr>
             <tr>
-                <td colspan="8" class="hiddenRow" style="border:none;">
+                <td colspan="9" class="hiddenRow" style="border:none;">
                     <div class="accordian-body collapse" data-bind="attr: { id: 'tray'+$index()}">
                         <br>
                         <p data-bind="text: Description "></p>
-                        <br>
                         <div data-bind="if: Status == 'Completed'">
-                            <br><p>Duration to complete: </p>
+                            <p>Duration to complete: </p>
                             <p data-bind="text: Duration"></p>
-                            <p> minutes</p><br>
+                            <p> minutes</p>
                         </div>
-                        <div data-bind="if: RunBVTfailure">
-                            <br>
-                            <p> View Log Tracer Files </p>
-                            <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                        <div data-bind="if: Queue != 'SCCM_Office' && Queue != 'SccmMain' && Queue != 'SccmTest' && Queue != 'SCCM-WEH2-CVP' ">
+                            <div data-bind="if: RunBVTfailure">
+                                <p> View Log Tracer Files </p>
+                                <a data-bind="attr: { 'href': 'file://st.redmond.corp.microsoft.com/teams/INTUNE/snap/logs/'+Checkid+'.'+Dev+'/Job.'+Jobid+'/Logs/Run_1/test/pilot/TestPassLogs', 'target':'_blank'}"> Run_1</a>
+                            </div>
                             <br>
                         </div>
-                        <br>
                     </div>
                 </td>
             </tr>
