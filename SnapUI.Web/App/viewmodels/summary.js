@@ -99,6 +99,7 @@
                 text: "Time to Success" 
             },
             series: [{
+
                 showInLegend: true,
                 name: "Week",
                 color: 'green',
@@ -281,6 +282,7 @@
                             }
                         }
                     }
+
                     allQueueData[status]++;
 
                 }
@@ -308,7 +310,7 @@
                     durationWeek.push(Math.round(queueArray[j][3][0]));
                     durationDay.push(Math.round(queueArray[j][3][1]));
                 }
-       
+
                 // creating observables
                 self.queueArray = ko.observableArray(queueArray);
                 self.allQueueData = ko.observable(allQueueData);
@@ -332,6 +334,7 @@
                 self.allQGraphData = ko.observable(allQGraphData);
                 self.allQGraphDataDay = ko.observable(allQGraphDataDay);
                 self.totalWeekCheckins = ko.observable(totalWeekCheckins);
+
             });
 
 
