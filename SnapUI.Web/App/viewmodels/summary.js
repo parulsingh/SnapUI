@@ -232,7 +232,7 @@
                 var queueArray = [];
 
                 // populating the array with objects
-                //name week day duration numcompleted numCheckins
+                //name week day duration numcompleted 
                 for (var i = 0; i < self.allQueues().length; i++) {
                     queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0,0]];
                 }
@@ -284,6 +284,7 @@
                     allQueueData[status]++;
 
                 }
+              
 
                 // more duration stuff
                 var weekCheckins = [];
@@ -293,12 +294,21 @@
                 for (var j = 0; j < queueArray.length; j++) {
                     weekCheckins.push(queueArray[j][1].pop());
                     dayCheckins.push(queueArray[j][2].pop());
-                    queueArray[j][3][0] = queueArray[j][3][0] / queueArray[j][4][0];
-                    queueArray[j][3][1] = queueArray[j][3][1] / queueArray[j][4][1];
+                    if (queueArray[j][4][0] == 0) {
+                        queueArray[j][3][0] = 0;
+                    } else {
+                        queueArray[j][3][0] = queueArray[j][3][0] / queueArray[j][4][0];
+                    }
+                    if (queueArray[j][4][1] == 0) {
+                        queueArray[j][3][1] = 0;
+                    } else {
+                        queueArray[j][3][1] = queueArray[j][3][1] / queueArray[j][4][1];
+                    }
+                    
                     durationWeek.push(Math.round(queueArray[j][3][0]));
                     durationDay.push(Math.round(queueArray[j][3][1]));
                 }
-
+       
                 // creating observables
                 self.queueArray = ko.observableArray(queueArray);
                 self.allQueueData = ko.observable(allQueueData);
@@ -307,7 +317,7 @@
                 self.durationDay = ko.observable(durationDay);
                 self.weekCheckins = ko.observable(weekCheckins);
                 self.dayCheckins = ko.observable(dayCheckins);
-
+                
                 // counting values to put in highcharts
                 allQGraphData = [];
                 for (elem in self.allQueueData()) {
