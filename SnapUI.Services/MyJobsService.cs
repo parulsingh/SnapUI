@@ -148,7 +148,7 @@ namespace SnapUI.Services
 
         public IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues)
         {
-            Dictionary<int, CheckinId> checkinDuration = new Dictionary<int, CheckinId>();
+            Dictionary<int, CheckinId> checkinDict = new Dictionary<int, CheckinId>();
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
@@ -234,41 +234,46 @@ namespace SnapUI.Services
 
                         // updating # of jobs per checkin in dictionary
                         // key = int checkinId, values = List<object>(){ int count, bool isCompleted}
-                        try
+                        // if checkinId not already in dict
+	                    try
                         {
                             if (status == "Completed")
-                                checkinDuration.Add(checkid, new CheckinId { Count = 1, IsCompleted = true });
+                                checkinDict.Add(checkid, new CheckinId { Count = 1, IsCompleted = true, Duration = duration });
                             else
-                                checkinDuration.Add(checkid, new CheckinId { Count = 1, IsCompleted = false });
+                                checkinDict.Add(checkid, new CheckinId { Count = 1, IsCompleted = false, Duration = duration });
                         }
-                        catch
+	                    catch
                         {
-                            CheckinId checkinId = checkinDuration[checkid];
+                            CheckinId checkinId = checkinDict[checkid];
                             int count = checkinId.Count + 1;
+                            int durSoFar = checkinId.Duration;
                             if (status == "Completed")
-                                checkinDuration[checkid] = new CheckinId { Count = count, IsCompleted = true };
+                                checkinDict[checkid] = new CheckinId { Count = count, IsCompleted = true, Duration = durSoFar + duration };
                             else
-                                checkinDuration[checkid] = new CheckinId { Count = count, IsCompleted = false };
+                                checkinDict[checkid] = new CheckinId { Count = count, IsCompleted = false, Duration = durSoFar + duration };
                         }
                     }
                 }
 
-                foreach (KeyValuePair<int, CheckinId> checkin in checkinDuration)
+                foreach (KeyValuePair<int, CheckinId> checkin in checkinDict)
                 {
                     CheckinId aCheckin = checkin.Value;
                     Debug.Write(checkin.Key + "          ");
                     var count = aCheckin.Count;
                     var isCompleted = aCheckin.IsCompleted;
+                    var duration = aCheckin.Duration;
                     Debug.Write(count + "     ");
                     Debug.WriteLine(isCompleted + "     ");
+                    Debug.WriteLine("duration: "  + duration + "     ");
                 } 
                 
                 foreach (var job in allJobs)
                 {
-                    int attempts = checkinDuration[job.Checkid].Count;
-                    bool isCompleted = checkinDuration[job.Checkid].IsCompleted;
+                    int attempts = checkinDict[job.Checkid].Count;
+                    bool isCompleted = checkinDict[job.Checkid].IsCompleted;
                     job.Attempts = attempts;
                     job.IsCompleted = isCompleted;
+                    job.Dict = checkinDict;
                 }
                 return allJobs;
             }

@@ -12,6 +12,8 @@ namespace SnapUI.Common.Models
     //public class Job
     {
         public int Jobid { get; set; }
+        
+        public Dictionary<int, CheckinId> Dict {get; set;}
         public int Checkid { get; set; }
         public string Dev { get; set; }
         public string Queue { get; set; }
@@ -44,5 +46,7 @@ namespace SnapUI.Common.Models
     {
         public int Count { get; set; }
         public bool IsCompleted { get; set; }
+
+        public int Duration { get; set; }
     }
 }

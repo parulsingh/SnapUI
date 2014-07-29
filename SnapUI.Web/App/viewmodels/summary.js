@@ -16,6 +16,8 @@
         compositionComplete: compositionComplete,
         queueArray: ko.observableArray([]),
         durationDay: ko.observableArray([]),
+        durationWeekCheckID: ko.observableArray([]),
+        durationDayCheckID: ko.observableArray([]),
         durationWeek: ko.observableArray([]),
         allQGraphData: ko.observableArray([]),
         allQGraphDataDay: ko.observableArray([]),
@@ -96,7 +98,7 @@
                 height: 450
             },
             title: {
-                text: "Time to Success" 
+                text: "Average Time to Completion (per Job)" 
             },
             series: [{
 
@@ -131,6 +133,61 @@
                 }
             },
             
+        }
+)
+        $('#duration2').highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+
+                type: 'column',
+                backgroundColor: 'transparent',
+                width: 800,
+                height: 450
+            },
+            title: {
+                text: "Average Time to Completion (per Changelist)"
+            },
+            series: [{
+
+                showInLegend: true,
+                name: "Week",
+                color: 'green',
+                data: vm.durationWeekCheckID()
+
+            }, {
+                showInLegend: true,
+                name: "24 hours",
+                color: '#4AC948',
+                data: vm.durationDayCheckID()
+            }],
+            xAxis: {
+                categories: vm.allQueues()
+            },
+            yAxis: {
+                title: {
+                    text: 'Time to Completion (minutes)'
+                },
+            },
+            /*tooltip: {
+                enabled: true,
+                formatter: function () {
+                    return "# of Submits: " +_ ;
+                }
+            },*/
+            plotOptions: {
+                column: {
+                    borderWidth: '0',
+                    dataLabels: {
+                        enabled: true,
+                        color: 'black'
+
+                    },
+
+                }
+            },
+
         }
 )
 
@@ -233,20 +290,22 @@
                 var queueArray = [];
 
                 // populating the array with objects
-                //name week day duration numcompleted 
+                //name week day durationjobID numcompletedJOBID durationcheckinID numCompletedCHECKinID 
                 for (var i = 0; i < self.allQueues().length; i++) {
-                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0,0]];
+                    //                     0                     1              2             3       4      5     6
+                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0,0], [0,0],[0,0]];
                 }
 
      
                 var statusDict = { "Completed": 0, "Aborted": 1, "In Progress": 2, "Pending": 3 };
                 
                 var jobs = self.allJobs();
-                var numCompletedWeek = 0;
-                var numCompletedDay = 0;
+                
+
                 // counting the aborted/completed.../.. values for specific queues for weeks and days
                 // and then incrementing corresponding object values
                 for (var i = 0; i < jobs.length; i++) {
+                    console.log("THis is dict " + JSON.stringify(jobs[i].Dict));
                     // date comparison
                     var dateString = jobs[i].Submitdate.substring(0, 10);
                     var split = dateString.split("-");
@@ -261,6 +320,8 @@
 
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
+                    var checkinId = jobs[i].Checkid;
+                    var durationDict = jobs[i].Dict;
                     for (var j = 0; j < queueArray.length; j++) {
 
                         if (queueArray[j][0] == queue) {                 
@@ -269,6 +330,8 @@
                             if (status == "Completed") {                          
                                 queueArray[j][3][0] += jobs[i].Duration;
                                 queueArray[j][4][0]++;
+                                queueArray[j][5][0] += durationDict[checkinId]["Duration"];
+                                queueArray[j][6][0]++;
                             }
                             if (jobDate.getTime() == d.getTime()) {                         
                                 queueArray[j][2][4]++;
@@ -278,6 +341,8 @@
                                 if (status == "Completed") {
                                     queueArray[j][3][1] += jobs[i].Duration;
                                     queueArray[j][4][1]++;
+                                    queueArray[j][5][1] += durationDict[checkinId]["Duration"];
+                                    queueArray[j][6][1]++;
                                 }
                             }
                         }
@@ -293,6 +358,8 @@
                 var dayCheckins = [];
                 var durationWeek = [];
                 var durationDay = [];
+                var durationWeekCheckID = [];
+                var durationDayCheckID = [];
                 for (var j = 0; j < queueArray.length; j++) {
                     weekCheckins.push(queueArray[j][1].pop());
                     dayCheckins.push(queueArray[j][2].pop());
@@ -306,9 +373,21 @@
                     } else {
                         queueArray[j][3][1] = queueArray[j][3][1] / queueArray[j][4][1];
                     }
+                    if (queueArray[j][6][0] == 0) {
+                        queueArray[j][5][0] = 0;
+                    } else {
+                        queueArray[j][5][0] = queueArray[j][5][0] / queueArray[j][6][0];
+                    }
+                    if (queueArray[j][6][1] == 0) {
+                        queueArray[j][5][1] = 0;
+                    } else {
+                        queueArray[j][5][1] = queueArray[j][5][1] / queueArray[j][6][1];
+                    }
                     
                     durationWeek.push(Math.round(queueArray[j][3][0]));
                     durationDay.push(Math.round(queueArray[j][3][1]));
+                    durationWeekCheckID.push(Math.round(queueArray[j][5][0]));
+                    durationDayCheckID.push(Math.round(queueArray[j][5][1]));
                 }
 
                 // creating observables
@@ -317,6 +396,8 @@
                 self.allQueueDataDay = ko.observable(allQueueDataDay);
                 self.durationWeek = ko.observable(durationWeek);
                 self.durationDay = ko.observable(durationDay);
+                self.durationWeekCheckID = ko.observable(durationWeekCheckID);
+                self.durationDayCheckID = ko.observable(durationDayCheckID);
                 self.weekCheckins = ko.observable(weekCheckins);
                 self.dayCheckins = ko.observable(dayCheckins);
                 
