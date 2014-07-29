@@ -36,7 +36,7 @@
    
                 type: 'column',
                 backgroundColor: 'transparent',
-                width: 380,
+                width: 385,
                 height: 450
             },
             title: {
@@ -200,7 +200,7 @@
                     renderTo: 'container',
                     type: 'column',
                     backgroundColor: 'transparent',
-                    width: 380,
+                    width: 385,
                     height: 450
                 },
                 title: {
@@ -253,6 +253,53 @@
             }
         )
         }
+
+        $('#topFailures').highcharts({
+            credits: {
+                enabled: false
+            },
+            chart: {
+                type: 'pie',
+                backgroundColor: 'transparent',
+                //width: 600,
+                height: 500
+            },
+            title: {
+                y: 10,
+                text: "Top Failures of the Week"
+            },
+            labels: {
+                items: [{
+                    style: {
+                        left: '10px',
+                        top: '360px',
+                        color: 'black',
+                        //zIndex : 100
+                    }
+                }]
+            },
+            series: [{
+                showInLegend: false,
+                name: "Week",
+                color: 'red',
+                data: vm.topFailureData(),
+                innerSize: "70%"
+            }],
+        
+            yAxis: {
+                title: {
+                    text: '# of Failures'
+                },
+            },
+            //plotOptions: {
+            //    pie: {
+            //        dataLabels: {
+            //            enabled: false,
+            //        }
+            //    }               
+            //},
+            colors: ['#4AC948', '#FF6961', '#0198E1']
+        })
     };
 
     function activate() {
@@ -304,8 +351,7 @@
 
                 // counting the aborted/completed.../.. values for specific queues for weeks and days
                 // and then incrementing corresponding object values
-                for (var i = 0; i < jobs.length; i++) {
-                    console.log("THis is dict " + JSON.stringify(jobs[i].Dict));
+                for (var i = 0; i < jobs.length; i++) {                    
                     // date comparison
                     var dateString = jobs[i].Submitdate.substring(0, 10);
                     var split = dateString.split("-");
@@ -400,7 +446,8 @@
                 self.durationDayCheckID = ko.observable(durationDayCheckID);
                 self.weekCheckins = ko.observable(weekCheckins);
                 self.dayCheckins = ko.observable(dayCheckins);
-                
+                self.topFailureNames = ko.observableArray([]);
+                self.topFailureData = ko.observableArray([]);
                 // counting values to put in highcharts
                 allQGraphData = [];
                 for (elem in self.allQueueData()) {
@@ -417,9 +464,31 @@
                 self.allQGraphDataDay = ko.observable(allQGraphDataDay);
                 self.totalWeekCheckins = ko.observable(totalWeekCheckins);
 
+
+                var failureDict = {};
+                var jobsLength = self.allJobs().length;
+                var jobs = self.allJobs();
+                for (var i = 0; i < jobsLength; i++) {
+                    if (jobs[i].Status[0] == "Aborted") {
+                        var failure = jobs[i].Status[1];
+                        if (typeof failureDict[failure] == "number") {
+                            failureDict[failure]++;
+                        }
+                        else {
+                            failureDict[failure] = 1;
+                        }
+                    }
+                }
+                var sortable = [];
+                for (var failure in failureDict) {
+                    sortable.push([failure, failureDict[failure]])
+                }
+
+                sortable.sort(function (a, b) { return b[1] - a[1] });
+               
+                self.topFailureData = ko.observableArray(sortable);
+               
+                console.log(self.topFailureNames());
             });
-
-
     }
-
 });
