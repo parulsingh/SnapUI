@@ -255,17 +255,14 @@ namespace SnapUI.Services
                     }
                 }
 
-                foreach (KeyValuePair<int, CheckinId> checkin in checkinDict)
-                {
-                    CheckinId aCheckin = checkin.Value;
-                    Debug.Write(checkin.Key + "          ");
-                    var count = aCheckin.Count;
-                    var isCompleted = aCheckin.IsCompleted;
-                    var duration = aCheckin.Duration;
-                    Debug.Write(count + "     ");
-                    Debug.WriteLine(isCompleted + "     ");
-                    Debug.WriteLine("duration: "  + duration + "     ");
-                } 
+                //foreach (KeyValuePair<int, CheckinId> checkin in checkinDict)
+                //{
+                //    CheckinId aCheckin = checkin.Value;
+                //    Debug.Write(checkin.Key + "          ");
+                //    Debug.Write(aCheckin.Count + "     ");
+                //    Debug.Write(aCheckin.Duration + "          ");
+                //    Debug.WriteLine(aCheckin.IsCompleted + "     ");
+                //} 
                 
                 foreach (var job in allJobs)
                 {

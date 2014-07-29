@@ -46,7 +46,6 @@ namespace SnapUI.Common.Models
     {
         public int Count { get; set; }
         public bool IsCompleted { get; set; }
-
         public int Duration { get; set; }
     }
 }
