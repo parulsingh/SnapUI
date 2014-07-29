@@ -261,32 +261,6 @@
                 self.queueFilters.reverse();
                 self.queueFilters.push("None");
                 self.queueFilters.reverse();
-
-                ////////// Top Failuire Logic //////
-                var failureDict = {};
-                var jobsLength = self.allJobs().length;
-                var jobs = self.allJobs();
-                for (var i = 0; i < jobsLength; i++) {
-                    if (jobs[i].Status[0] == "Aborted") {
-                        var failure = jobs[i].Status[1];
-                        if (typeof failureDict[failure] == "number") {
-                            failureDict[failure]++;
-                        }
-                        else {
-                            failureDict[failure] = 1;
-                        }
-                    }
-                }
-                var sortable = [];
-                for (var failure in failureDict) {
-                    sortable.push([failure, failureDict[failure]])
-                }
-
-                sortable.sort(function (a, b) { return a[1] - b[1] });
-                self.firstFailure = sortable[0][0];
-                self.secondFailure = sortable[1][0];
-                self.thirdFailure = sortable[2][0];
-                ///////////////////////////////////
             });
     }
 

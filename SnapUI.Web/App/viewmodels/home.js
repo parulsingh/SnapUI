@@ -1,5 +1,5 @@
 ﻿define(['services/logger'], function (logger) {
-    var title = 'SNAP UI';
+    var title = 'SNAP Job Portal';
     var vm = {
         activate: activate,
         title: title
