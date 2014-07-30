@@ -5,13 +5,23 @@
 
     var title = 'All Jobs';
 
-
     var vm = {
         activate: activate,
         title: title,
         allJobs: ko.observableArray([]),
         allQueues: ko.observableArray([]),
+        sortValue: ko.observable(),
         jobsAndQueues: ko.observableArray([]),
+        sortByJobid: function () {},
+        sortByCheckid: function () {},
+        sortByDev: function () {},
+        sortByQueue: function () {},
+        sortByStatus: function () {},
+        sortByPriority: function () { },
+        sortBySubmitdate: function () { },
+        sortByBugid: function () { },
+        sortByAttempts: function () { },
+        jobIdFilter : ko.observable(''),
     };
 
     return vm;
@@ -41,89 +51,40 @@
             }
         };
 
-        //sorting stuff
+        /////////////////////////////////// sorting code ///////////////////////////////////////
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        //logger.log(title + ' View Activated', null, title, true);
 
-        self.sortByJobid = function (value) {
+        self.sortByColumn = function (value) {
             nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a[value] > b[value]) return 1 * nameDirection;
-                if (a[value] < b[value]) return -1 * nameDirection;
-                return 0;
-            });
-        };
+            if (value == "Status") {
+                self.allJobs.sort(function (a, b) {
+                    if (a[value][0].toLowerCase() > b[value][0].toLowerCase()) return 1 * nameDirection;
+                    if (a[value][0].toLowerCase() < b[value][0].toLowerCase()) return -1 * nameDirection;
+                    return 0;
+                });
+            }
+            else {
+                self.allJobs.sort(function (a, b) {
+                    if (typeof a[value] == "string") {
+                        a[value] = a[value].toLowerCase();
+                        b[value] = b[value].toLowerCase();
+                    }
+                    
+                    if (a[value] > b[value]) return 1 * nameDirection;
+                    if (a[value] < b[value]) return -1 * nameDirection;
+                    return 0;
+                });
+            }
 
-        self.sortByCheckid = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Checkid > b.Checkid) return 1 * nameDirection;
-                if (a.Checkid < b.Checkid) return -1 * nameDirection;
-                return 0;
-            });
-        };
 
-        self.sortByDev = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Dev.toLowerCase() > b.Dev.toLowerCase()) return 1 * nameDirection;
-                if (a.Dev.toLowerCase() < b.Dev.toLowerCase()) return -1 * nameDirection;
-                return 0;
-            });
-        };
-        self.sortByQueue = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Queue.toLowerCase() > b.Queue.toLowerCase()) return 1 * nameDirection;
-                if (a.Queue.toLowerCase() < b.Queue.toLowerCase()) return -1 * nameDirection;
-                return 0;
-            });
-        };
-        self.sortByStatus = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Status[0].toLowerCase() > b.Status[0].toLowerCase()) return 1 * nameDirection;
-                if (a.Status[0].toLowerCase() < b.Status[0].toLowerCase()) return -1 * nameDirection;
-                return 0;
-            });
-        };
-        self.sortByPriority = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Priority.toLowerCase() > b.Priority.toLowerCase()) return 1 * nameDirection;
-                if (a.Priority.toLowerCase() < b.Priority.toLowerCase()) return -1 * nameDirection;
-                return 0;
-            });
-        };
-        self.sortBySubmitdate = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Submitdate > b.Submitdate) return 1 * nameDirection;
-                if (a.Submitdate < b.Submitdate) return -1 * nameDirection;
-                return 0;
-            });
         };
 
-        self.sortByBugid = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.PreBugId > b.PreBugId) return 1 * nameDirection;
-                if (a.PreBugId < b.PreBugId) return -1 * nameDirection;
-                return 0;
-            });
-        };
+        ////////////////////////////////////////////////////////////////////////////////////
 
-        self.sortByAttempts = function () {
-            nameDirection = -nameDirection;
-            self.allJobs.sort(function (a, b) {
-                if (a.Attempts > b.Attempts) return 1 * nameDirection;
-                if (a.Attempts < b.Attempts) return -1 * nameDirection;
-                return 0;
-            });
-        };
-        // filtering stuff
+
+        /////////////////////////// filtering stuff ////////////////////////////
         self.jobIdFilter = ko.observable('');
         self.checkinIdFilter = ko.observable('');
         self.devFilter = ko.observable('');
@@ -243,6 +204,7 @@
 
             });
         });
+        /////////////////////////////////////////////////////////////////
 
 
         if (self.allJobs().length > 0) {

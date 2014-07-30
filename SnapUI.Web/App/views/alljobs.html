@@ -14,15 +14,15 @@
     <table class=" table table-condensed" id="accordion2" style="border-collapse:collapse;">
         <thead>
             <tr>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByJobid.bind($data, 'Jobid')">Job ID </a></th>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
-                <th style="width: 12%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
-                <th style="width: 20%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByPriority">Priority</a></th>
-                <th style="width: 14%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortBySubmitdate">Submit Date</a></th>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByAttempts">Attempts</a></th>
-                <th style="width: 26%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByBugid">Bug ID</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Checkid')">Checkin ID</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Jobid') ">Job ID </a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Dev')">Dev</a></th>
+                <th style="width: 12%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Queue')">Queue</a></th>
+                <th style="width: 20%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Status')">Status</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Priority')">Priority</a></th>
+                <th style="width: 14%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Submitdate')">Submit Date</a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#alljobs" data-bind="click: sortByColumn.bind($data,'Attempts')">Attempts</a></th>
+                <th style="width: 26%; color: #198EC8; word-wrap: break-word; ">Bug ID</th>
             </tr>
         </thead>
 
