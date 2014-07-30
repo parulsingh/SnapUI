@@ -15,7 +15,7 @@
         <thead>
             <tr>
                 <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByCheckid">Checkin ID</a></th>
-                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByJobid">Job ID </a></th>
+                <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByJobid.bind($data, 'Jobid')">Job ID </a></th>
                 <th style="width: 7%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByDev">Dev</a></th>
                 <th style="width: 12%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByQueue">Queue</a></th>
                 <th style="width: 20%; word-wrap: break-word;"><a href="#myjobs" data-bind="click: sortByStatus">Status</a></th>

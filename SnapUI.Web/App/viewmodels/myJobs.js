@@ -21,7 +21,6 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        //logger.log(title + ' View Activated', null, title, true);
 
         self.sortByJobid = function () {
             nameDirection = -nameDirection;

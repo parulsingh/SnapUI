@@ -28,6 +28,7 @@
     return vm;
 
     function compositionComplete() {
+        //// ALL QUEUE CHART ///
         $('#allqueues').highcharts({
             credits: {
                 enabled: false
@@ -49,7 +50,6 @@
                         left: '10px',
                         top: '340px',
                         color: 'black',
-                        //zIndex : 100
                     }
                 }]
             },
@@ -85,7 +85,9 @@
             },
             colors: ['#4AC948', '#FF6961', '#0198E1', '#878787']
         }
+
 )
+        //// DURATION BY JOBID CHART ///
         $('#duration').highcharts({
             credits: {
                 enabled: false
@@ -135,6 +137,7 @@
             
         }
 )
+        //// DURATION BY CHECKIN ID CHART ///
         $('#duration2').highcharts({
             credits: {
                 enabled: false
@@ -170,12 +173,6 @@
                     text: 'Time to Completion (minutes)'
                 },
             },
-            /*tooltip: {
-                enabled: true,
-                formatter: function () {
-                    return "# of Submits: " +_ ;
-                }
-            },*/
             plotOptions: {
                 column: {
                     borderWidth: '0',
@@ -190,7 +187,7 @@
 
         }
 )
-
+        //// INDIVIDUAL QUEUES CHART MAKER LOOP //
         for (var i = 0; i < vm.allQueues().length; i++) {
             $('#chart' + i).highcharts({
                 credits: {
@@ -213,7 +210,6 @@
                             left: '10px',
                             top: '340px',
                             color: 'black',
-                            //zIndex : 100
                         }
                     }]
                 },
@@ -237,7 +233,6 @@
                         text: '# of Jobs'
                     },
                 },
-
                 plotOptions: {
                     column: {
                         borderWidth: '0',
@@ -253,7 +248,7 @@
             }
         )
         }
-
+        //// TOP FAILURES CHART ///
         $('#topFailures').highcharts({
             credits: {
                 enabled: false
@@ -261,7 +256,6 @@
             chart: {
                 type: 'pie',
                 backgroundColor: 'transparent',
-                //width: 600,
                 height: 500
             },
             title: {
@@ -274,7 +268,6 @@
                         left: '10px',
                         top: '360px',
                         color: 'black',
-                        //zIndex : 100
                     }
                 }]
             },
@@ -291,13 +284,6 @@
                     text: '# of Failures'
                 },
             },
-            //plotOptions: {
-            //    pie: {
-            //        dataLabels: {
-            //            enabled: false,
-            //        }
-            //    }               
-            //},
             colors: ['#4AC948', '#FF6961', '#0198E1']
         })
     };
@@ -306,7 +292,6 @@
         var self = this;
         var nameDirection = -1;
         var qtyDirection = -1;
-        self.list = [5, 20]
 
         return jobsService
             .getAllJobs(self.jobsAndQueues)
@@ -316,7 +301,7 @@
                 //names of queues
                 self.allQueues = ko.observableArray(self.jobsAndQueues()[1]);
 
-                //objects for all queue info for a week
+                //object for all queue info for a week
                 var allQueueData = {
                     Completed: 0,
                     Aborted: 0,
@@ -324,23 +309,23 @@
                     Pending: 0,
                     numCheckins: self.allJobs().length
                 }
-                //objects for all queue info for a day
+                //object for all queue info for a day
                 var allQueueDataDay = {
                     Completed: 0,
                     Aborted: 0,
                     "In Progress": 0,
                     Pending: 0,
-                    numCheckins: 0
                 }
 
-                // array of objects holding info for specific queues for a week and day
+                // array of arrays holding info for specific queues for a week and day
                 var queueArray = [];
 
-                // populating the array with objects
-                //name week day durationjobID numcompletedJOBID durationcheckinID numCompletedCHECKinID 
+                // populating the array with arrays, one entry for each queue
+                
                 for (var i = 0; i < self.allQueues().length; i++) {
-                    //                     0                     1              2             3       4      5     6
-                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0,0], [0,0],[0,0]];
+                    //                     0 name  1 week  2 day 3 durationjobID(week,day)  4 completedJOBID  5 durationcheckinID  6 completedCHECKinID    
+                    queueArray[i] = [self.allQueues()[i], [0, 0, 0, 0, 0], [0, 0, 0, 0, 0], [0, 0], [0, 0], [0, 0], [0, 0]];
+                    /// queueArray[i] for a specififc queue will hold  [queueName, [numCompletedinWeek, numAborted, NumInProgress, NumPending, numCheckins], [same info for today], [totalDurationofCompletedJobs, 0], [numCompletedJobs, 0], [totalDurationofCompletedCheckins, 0], [numCompletedCheckins, 0]];
                 }
 
      
@@ -348,11 +333,11 @@
                 
                 var jobs = self.allJobs();
                 
-
+                ///// STATUS GRAPH LOGIC FOR INDIVIDUAL QUEUES //// 
                 // counting the aborted/completed.../.. values for specific queues for weeks and days
-                // and then incrementing corresponding object values
+                // and then incrementing corresponding array values
                 for (var i = 0; i < jobs.length; i++) {                    
-                    // date comparison
+                    //// date comparison logic ///
                     var dateString = jobs[i].Submitdate.substring(0, 10);
                     var split = dateString.split("-");
                     var dateString2 = split[0] + "/" + split[1] + "/" + split[2];
@@ -363,6 +348,8 @@
                     d.setMinutes(0);
                     d.setSeconds(0);
                     d.setMilliseconds(0);
+                    ////////////////////////////////////
+
 
                     var status = jobs[i].Status[0];
                     var queue = jobs[i].Queue;
@@ -382,7 +369,6 @@
                             if (jobDate.getTime() == d.getTime()) {                         
                                 queueArray[j][2][4]++;
                                 queueArray[j][2][statusDict[status]]++;
-                                //allQueueDataDay.numCheckins++;
                                 allQueueDataDay[status]++;                              
                                 if (status == "Completed") {
                                     queueArray[j][3][1] += jobs[i].Duration;
@@ -398,8 +384,9 @@
 
                 }
               
-
-                // more duration stuff
+                ///// DURATION GRAPH LOGIC ///////
+                // dividing the duration to complete jobs and checkins by the number of completed jobs/checkins 
+                // this creates average duration statistics by week/day for jobID and checkID
                 var weekCheckins = [];
                 var dayCheckins = [];
                 var durationWeek = [];
@@ -448,7 +435,8 @@
                 self.dayCheckins = ko.observable(dayCheckins);
                 self.topFailureNames = ko.observableArray([]);
                 self.topFailureData = ko.observableArray([]);
-                // counting values to put in highcharts
+
+                // counting values to put in highcharts for ALLQUEUES
                 allQGraphData = [];
                 for (elem in self.allQueueData()) {
                     allQGraphData.push(self.allQueueData()[elem]);
@@ -459,12 +447,12 @@
                 for (elem in self.allQueueDataDay()) {
                     allQGraphDataDay.push(self.allQueueDataDay()[elem]);
                 }
-                allQGraphDataDay.pop();
+                
                 self.allQGraphData = ko.observable(allQGraphData);
                 self.allQGraphDataDay = ko.observable(allQGraphDataDay);
                 self.totalWeekCheckins = ko.observable(totalWeekCheckins);
 
-
+                // top failure logic //
                 var failureDict = {};
                 var jobsLength = self.allJobs().length;
                 var jobs = self.allJobs();
@@ -479,16 +467,14 @@
                         }
                     }
                 }
+
                 var sortable = [];
                 for (var failure in failureDict) {
                     sortable.push([failure, failureDict[failure]])
                 }
-
-                sortable.sort(function (a, b) { return b[1] - a[1] });
-               
+                sortable.sort(function (a, b) { return b[1] - a[1] });              
                 self.topFailureData = ko.observableArray(sortable);
-               
-                console.log(self.topFailureNames());
+              
             });
     }
 });

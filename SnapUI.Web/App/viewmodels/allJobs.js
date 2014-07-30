@@ -47,11 +47,11 @@
         var qtyDirection = -1;
         //logger.log(title + ' View Activated', null, title, true);
 
-        self.sortByJobid = function () {
+        self.sortByJobid = function (value) {
             nameDirection = -nameDirection;
             self.allJobs.sort(function (a, b) {
-                if (a.Jobid > b.Jobid) return 1 * nameDirection;
-                if (a.Jobid < b.Jobid) return -1 * nameDirection;
+                if (a[value] > b[value]) return 1 * nameDirection;
+                if (a[value] < b[value]) return -1 * nameDirection;
                 return 0;
             });
         };
