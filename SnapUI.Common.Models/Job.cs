@@ -9,11 +9,9 @@ using System.Threading.Tasks;
 namespace SnapUI.Common.Models
 {
     public class Job : IEquatable<Job>
-    //public class Job
     {
         public int Jobid { get; set; }
-        
-        public Dictionary<int, CheckinId> Dict {get; set;}
+        public Dictionary<int, ACheckin> Dict { get; set; }
         public int Checkid { get; set; }
         public string Dev { get; set; }
         public string Queue { get; set; }
@@ -24,9 +22,8 @@ namespace SnapUI.Common.Models
         public string Priority { get; set; }
         public object Placeorstatus { get; set; }
         public Boolean RunBVTfailure { get; set; }
-
         public List<string> PreBugId { get; set; }
-        public int PostBugId { get; set; }
+        //public int PostBugId { get; set; }
         public string Description { get; set; }
         public int Duration { get; set; }
         public int Attempts { get; set; }
@@ -37,15 +34,10 @@ namespace SnapUI.Common.Models
             if (other == null) return false;
             else return this.Jobid.Equals(other.Jobid);
         }
+
         public override int GetHashCode()
         {
             return this.Jobid.GetHashCode();
         }
-    }
-    public class CheckinId
-    {
-        public int Count { get; set; }
-        public bool IsCompleted { get; set; }
-        public int Duration { get; set; }
     }
 }

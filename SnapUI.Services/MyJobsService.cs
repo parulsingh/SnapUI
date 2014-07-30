@@ -10,8 +10,6 @@ using SnapUI.Services.Contracts;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-using System.Xml;
-using System.Xml.XPath;
 using System.Diagnostics;
 
 namespace SnapUI.Services
@@ -20,141 +18,50 @@ namespace SnapUI.Services
     {
         private readonly string _connectionString;
         private readonly List<string> _queueList;
-        object myAlias;
 
-        public MyJobsService(string alias)
+        // Initializes an instance of the service before Web API Controller calls GetMyJobs
+        public MyJobsService(List<string> queueList)
         {
-            if (alias == "null")
-                myAlias = DBNull.Value;
-            else
-                myAlias = alias;
             _connectionString = ConfigurationManager.ConnectionStrings["DbConnection"].ConnectionString;
-            string queueListString = ConfigurationManager.AppSettings["Queues"];
-            _queueList = queueListString.Split(new char[] { ',' }).ToList();
+            _queueList = queueList;
         }
 
-        public IEnumerable<Job> GetMyJobs(List<string> queuePrefList)
+        public static class Globals
         {
-            //List<string> allQueuesList = new List<string>() {
-            //    "CAS", "CMPreCacheWorkflow", "CMPreCacheWorkflow_test",
-            //    "InfraSandbox01", "InfraSandbox02", "intune_ctip1", "intune_ctip1_test",
-            //    "intune_dev_infra", "intune_dev_office", "intune_dev_office_test", 
-            //    "intune_dev_test", "intune_dev_wcs", "intune_dev_wcs_test",
-            //    "intune_rel", "intune_rel_prod", "intune_rel_prod_live", "intune_rel_prod_live_test",
-            //    "intune_rel_prod_test", "intune_rel_test", "intune_tools_vnext", "IntuneTools",              
-            //    "JupiterSnapILDC1", "JupiterSnapMobileTest", "JupiterSnapMobileTest2",
-            //    "JupiterSnapVM3", "JupiterSnapVM5", "JupiterSnapVM7",
-            //    "Sandbox3", "Sandbox4", "Sandbox5",
-            //    "SCCM_Office", "SccmMain", "SccmTest", "SCCM-WEH2-CVP",
-            //    //"TestSSDBulidMachine_intune_rel_prod"
-            //};
+            // This dict is to keep checkinID details updated with its multiple job details
+            // (i.e. we group details from each resubmit into their common changelist)
+            public static Dictionary<int, ACheckin> CheckinDict = new Dictionary<int, ACheckin>();
+        }
 
-            //var allJobs = new List<Job>();
+        // This method is called by Web API Controller
+        public IEnumerable<Job> GetMyJobs()
+        {
+            var jobs = new List<Job>();
 
-            //var jobs_getCheckinHist = CallProc(
-            //    "Snp.GetCheckinHist",
-            //    new List<object>() { "@DevNm", "@Number", "@QueueId" },
-            //    new List<object>() { myAlias, "20", DBNull.Value }
-            //    );
-            //allJobs.AddRange(jobs_getCheckinHist);
-
-            //foreach (var queue in allQueuesList)
-            //{
-            //    var jobs_getPendingQueue = CallProc(
-            //        "Snp.GetPendingQueue",
-            //        new List<object>() { "@ProjectNm" },
-            //        new List<object>() { queue }
-            //        );
-            //    if (myAlias == DBNull.Value)
-            //        allJobs.AddRange(jobs_getPendingQueue);
-            //    else
-            //        allJobs.AddRange(jobs_getPendingQueue.Where(Job => Job.Dev == (string)myAlias));
-            //}
-
-            //var tempJobs = CallProc(
-            //    "Snp.UI_GetCheckinDetails",
-            //    new List<object>() { "@CheckinId" },
-            //    new List<object>() { 86215 }
-            //);
-            //allJobs.AddRange(tempJobs);
-
-            //object queue = DBNull.Value;
-
-            //if (myAlias != DBNull.Value)
-            //{
-            //    IUserPrefService _userPrefService = new UserPrefService((string)myAlias);
-
-            //    var temp = new List<string>(){ "intune_dev_office", "JupiterSnapVM5" };
-
-            //    _userPrefService.UpdateUserPref(temp);
-
-            //    var queuePrefList = _userPrefService.GetUserPref();                 
-            //    queue = queuePrefList.First();
-            //}                
-
-            var allJobs = new List<Job>();
-
-
+            // Defining the parameters going into the stored procedure "NewSnapUIProc"
             List<object> parameters = new List<object>() { "@StartDt", "@EndDt",
-                "@QueueFilterOne",
-                "@QueueFilterTwo", 
-                "@QueueFilterThree", 
-                "@QueueFilterFour", 
-                "@QueueFilterFive", 
-                "@QueueFilterSix", 
-                "@QueueFilterSeven", 
-                "@DevFilter" };
-            List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now,
-                "intune_dev_office", 
-                "intune_dev_office_test", 
-                "Sandbox4", 
-                "JupiterSnapVM5",
-                "SCCM_Office",
-                "SccmMain",
-                "SCCM-WEH2-CVP",
-                myAlias };            
-            allJobs.AddRange(CallNewSnapUIProc("TestProc", parameters, parameterValues));
-            IEnumerable<Job> uniqueAllJobsOrdered = allJobs.Distinct().OrderByDescending(Job => Job.Submitdate);
+                "@QueueFilterOne", "@QueueFilterTwo", "@QueueFilterThree", "@QueueFilterFour", 
+                "@QueueFilterFive", "@QueueFilterSix", "@QueueFilterSeven" };
+            List<object> parameterValues = new List<object>() { DateTime.Now.AddDays(-7), DateTime.Now };
+            foreach (var q in _queueList)
+                parameterValues.Add(q);
 
-            return uniqueAllJobsOrdered;
+            jobs.AddRange(GetJobsFromDB("NewSnapUIProc", parameters, parameterValues));
+            IEnumerable<Job> uniqueJobsOrdered = jobs.Distinct().OrderByDescending(Job => Job.Submitdate);
+            return uniqueJobsOrdered;
         }
 
-        public SqlDataReader MakeReader(SqlConnection conn, string procname, List<object> parameters, List<object> parameterValues)
+        // This method is called by GetMyJobs (above)
+        // It calls Reader (below) to read the data returned from SQL,
+        // and for each job calls UpdateCheckin (below),
+        // and finally calls UpdateAllJobs (below).
+        public IEnumerable<Job> GetJobsFromDB(string procname, List<object> parameters, List<object> parameterValues)
         {
-            var command = new SqlCommand
-            {
-                Connection = conn,
-                CommandText = procname,
-                CommandType = CommandType.StoredProcedure
-            };
-
-            // count # of parameters
-            IEnumerable<int> parameterCount = Enumerable.Range(0, parameters.Count());
-            //set each parameter in List parameters to List parameterValues
-            foreach (int i in parameterCount)
-            {
-                var newParameter = new SqlParameter
-                {
-                    ParameterName = parameters[i].ToString(),
-                    Direction = ParameterDirection.Input,
-                    Value = parameterValues[i]
-                };
-                command.Parameters.Add(newParameter);
-            }
-            conn.Open();
-            SqlDataReader reader = command.ExecuteReader();
-            return reader;
-        }
-
-        public IEnumerable<Job> CallNewSnapUIProc(string procname, List<object> parameters, List<object> parameterValues)
-        {
-            Dictionary<int, CheckinId> checkinDict = new Dictionary<int, CheckinId>();
+            List<Job> allJobs = new List<Job>() { };
 
             using (SqlConnection conn = new SqlConnection(_connectionString))
             {
-                var allJobs = new List<Job>();
-
-                SqlDataReader reader = MakeReader(conn, procname, parameters, parameterValues);
+                SqlDataReader reader = Reader(conn, procname, parameters, parameterValues);
                 //conn.Open();                                            
                 if (reader.HasRows)
                 {
@@ -164,56 +71,68 @@ namespace SnapUI.Services
                         int jobid = reader.GetInt32(1);
                         string dev = reader.GetString(2);
                         string queue = reader.GetString(3);
+                        int duration = reader.GetInt32(10);
+                        string priority = reader.GetString(7);
                         DateTime submitdate = reader.GetDateTime(4);
                         string submitdateString = submitdate.ToShortDateString() + "  " + submitdate.ToShortTimeString();
                         string description = reader.GetString(8);
-                        string status = reader.GetString(5);
-                        string task = null;
-                        string placeinQueue = null;
-                        string statusString = null;
-                        List<string> preBugId = new List<string>();
-                        Boolean runBVTfailure = false;
-                        int duration = reader.GetInt32(10);
                         string[] split = description.Split();
+
+                        // see below
+                        Boolean runBVTfailure = false;
+
+                        List<string> preBugId = new List<string>();
+                        // If bugID exists in job description
                         if (Array.IndexOf(split, "BUG:") != -1)
                         {
                             int i = Array.IndexOf(split, "BUG:") + 1;
                             int n;
-
                             while (i < split.Length && int.TryParse(split[i], out n))
                             {
                                 preBugId.Add(split[i]);
                                 i++;
                             }
                         }
-                        var statusList = new List<object>();
+
+                        string status = reader.GetString(5);
+                        string statusDetail = null;
+                        string statusString = null;
+
+                        // statusDetail is ABORTED TASK for Aborted jobs, and CURRENT TASK for jobs In Progress
                         if (status == "Aborted" || status == "In Progress")
                         {
-
                             if (reader.GetValue(9) != DBNull.Value)
-                                task = reader.GetString(9);
+                            {
+                                statusDetail = (string)reader.GetValue(9);
+                            }
                             else
-                                task = "No current task";
-                            statusList = new List<object>() { status, task };
-                            statusString = status + ": " + task;
-                            if (status == "Aborted" && task == "RunBVTs")
+                            {
+                                statusDetail = "No current task";
+                            }
+                            statusString = status + ": " + statusDetail;
+
+                            if (status == "Aborted" && statusDetail == "RunBVTs")
                             {
                                 runBVTfailure = true;
                             }
                         }
+
+                        // statusDetail is PLACE IN QUEUE for Pending jobs
                         else if (status == "Pending")
                         {
-                            placeinQueue = reader.GetInt32(6).ToString();
-                            statusList = new List<object>() { status, placeinQueue };
-                            statusString = status + ": " + placeinQueue + MakePositionSuffix(Int32.Parse(placeinQueue)) + " in queue";
+                            statusDetail = reader.GetInt32(6).ToString();
+                            statusString = status + ": " + statusDetail + MakePositionSuffix(Int32.Parse(statusDetail)) + " in queue";
                         }
+
+                        // No statusDetail for Completed jobs
                         else
                         {
-                            statusList = new List<object>() { status };
                             statusString = status;
                         }
 
-                        string priority = reader.GetString(7);
+                        var statusList = new List<object>() { status, statusDetail };
+
+                        // Populate an instance of Job class
                         Job newJob = new Job
                         {
                             Checkid = checkid,
@@ -230,52 +149,94 @@ namespace SnapUI.Services
                             Priority = priority,
                             Duration = duration
                         };
+
                         allJobs.Add(newJob);
 
-                        // updating # of jobs per checkin in dictionary
-                        // key = int checkinId, values = List<object>(){ int count, bool isCompleted}
-                        // if checkinId not already in dict
-	                    try
-                        {
-                            if (status == "Completed")
-                                checkinDict.Add(checkid, new CheckinId { Count = 1, IsCompleted = true, Duration = duration });
-                            else
-                                checkinDict.Add(checkid, new CheckinId { Count = 1, IsCompleted = false, Duration = duration });
-                        }
-	                    catch
-                        {
-                            CheckinId checkinId = checkinDict[checkid];
-                            int count = checkinId.Count + 1;
-                            int durSoFar = checkinId.Duration;
-                            if (status == "Completed")
-                                checkinDict[checkid] = new CheckinId { Count = count, IsCompleted = true, Duration = durSoFar + duration };
-                            else
-                                checkinDict[checkid] = new CheckinId { Count = count, IsCompleted = false, Duration = durSoFar + duration };
-                        }
+                        // Update checkin dictionary with the new job details                        
+                        UpdateCheckin(newJob.Checkid, (string)newJob.Status[0], newJob.Duration);
                     }
                 }
 
-                //foreach (KeyValuePair<int, CheckinId> checkin in checkinDict)
-                //{
-                //    CheckinId aCheckin = checkin.Value;
-                //    Debug.Write(checkin.Key + "          ");
-                //    Debug.Write(aCheckin.Count + "     ");
-                //    Debug.Write(aCheckin.Duration + "          ");
-                //    Debug.WriteLine(aCheckin.IsCompleted + "     ");
-                //} 
-                
-                foreach (var job in allJobs)
-                {
-                    int attempts = checkinDict[job.Checkid].Count;
-                    bool isCompleted = checkinDict[job.Checkid].IsCompleted;
-                    job.Attempts = attempts;
-                    job.IsCompleted = isCompleted;
-                    job.Dict = checkinDict;
-                }
+                // Update all the jobs with the latest info from CheckinDict                
+                UpdateAllJobs(allJobs);
                 return allJobs;
             }
         }
 
+        // Update CheckinDict with the latest job details
+        public void UpdateCheckin(int checkinId, string jobStatus, int jobDuration)
+        {
+            bool isCheckinCompleted;
+
+            if (jobStatus == "Completed")
+                isCheckinCompleted = true;
+            else
+                isCheckinCompleted = false;
+
+            // This passes if checkinId is not in dictionary, i.e. if this job is the FIRST submit of the changelist
+            try
+            {
+                Globals.CheckinDict.Add(checkinId, new ACheckin
+                {
+                    SubmitCount = 1,
+                    IsCompleted = isCheckinCompleted,
+                    Duration = jobDuration
+                });
+            }
+            // We get here if checkinId has had previous jobs submitted (which aborted, leading to this resubmit)
+            catch
+            {
+                ACheckin existingCheckin = Globals.CheckinDict[checkinId];
+
+                Globals.CheckinDict[checkinId] = new ACheckin
+                {
+                    SubmitCount = existingCheckin.SubmitCount + 1,
+                    IsCompleted = isCheckinCompleted,
+                    Duration = existingCheckin.Duration + jobDuration
+                };
+            }
+        }
+
+        // Update every job with the details across their common checkinIDs (aka changelist)
+        public void UpdateAllJobs(List<Job> allJobs)
+        {
+            foreach (var job in allJobs)
+            {
+                job.Attempts = Globals.CheckinDict[job.Checkid].SubmitCount;
+                job.IsCompleted = Globals.CheckinDict[job.Checkid].IsCompleted;
+                job.Dict = Globals.CheckinDict;
+            }
+        }
+
+
+        // This method is called by CallNewSnapUIProc (above) to set up the SQL connection and reader
+        public SqlDataReader Reader(SqlConnection conn, string procname, List<object> parameters, List<object> parameterValues)
+        {
+            var command = new SqlCommand
+            {
+                Connection = conn,
+                CommandText = procname,
+                CommandType = CommandType.StoredProcedure
+            };
+
+            // Add parameters to SqlCommand
+            IEnumerable<int> parameterCount = Enumerable.Range(0, parameters.Count());
+            foreach (int i in parameterCount)
+            {
+                var newParameter = new SqlParameter
+                {
+                    ParameterName = parameters[i].ToString(),
+                    Direction = ParameterDirection.Input,
+                    Value = parameterValues[i]
+                };
+                command.Parameters.Add(newParameter);
+            }
+            conn.Open();
+            SqlDataReader reader = command.ExecuteReader();
+            return reader;
+        }
+
+        // This appends suffixes to place in queue for Pending jobs (e.g. 1 becomes 1st, 2 becomes 2nd)
         public string MakePositionSuffix(int position)
         {
             int mod100 = position % 100;

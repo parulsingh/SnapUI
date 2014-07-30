@@ -13,8 +13,6 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-using System.Xml;
-using System.Xml.XPath;
 using System.Runtime.Caching;
 using System.IO;
 
@@ -30,6 +28,7 @@ namespace SnapUI.Web.Controllers
         public List<Manager> _managers = new List<Manager>();
         public AllJobsController()
         {
+            // Getting login info using Windows Authentication
             if (User.Identity.IsAuthenticated)
             {
                 string user = User.Identity.Name;
@@ -41,15 +40,19 @@ namespace SnapUI.Web.Controllers
                 alias = "unknown";
             }
 
-            _allJobsService = new MyJobsService("null");
+            // Creating queue list, which is defined in Web.Config
             string queueListString = ConfigurationManager.AppSettings["Queues"];
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
+
+            // Creating manager list for, which is defined in Web.Config
             _managerList = ConfigurationManager.AppSettings["Managers"].Split(new char[] { ',' }).ToList();
             for (int i = 0; i < _managerList.Count; i++)
             {
                 _managers.Add(new Manager(_managerList[i], ConfigurationManager.AppSettings[_managerList[i]].Split(new char[] { ',' }).ToList()));
-
             }
+
+            // Creating an instance of the service (which calls the proc)
+            _allJobsService = new MyJobsService(_queueList);
         }
 
         public object[] GetAllJobs()
@@ -59,19 +62,15 @@ namespace SnapUI.Web.Controllers
 
             if (jobs != null)
             {
-                Debug.WriteLine("there was cache");
                 return new object[] { jobs, _queueList };
             }
             else
             {
-                Debug.WriteLine("there was no cache");
-                jobs = _allJobsService.GetMyJobs(_queueList);
+                jobs = _allJobsService.GetMyJobs();
                 CacheItemPolicy policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(1) };
                 cache.Add("Jobs", jobs, policy);
                 return new object[] { jobs, _queueList };
             }
-            //IEnumerable<Job> jobs = _allJobsService.GetMyJobs(_queueList);
-            //return new object[] { jobs, _queueList, _managers, _managerList };
         }
     }
 }

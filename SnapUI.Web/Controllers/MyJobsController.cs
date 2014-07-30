@@ -13,8 +13,6 @@ using System.Threading.Tasks;
 using System.Data;
 using System.Data.SqlClient;
 using System.Web;
-using System.Xml;
-using System.Xml.XPath;
 using System.Runtime.Caching;
 using System.IO;
 
@@ -24,11 +22,11 @@ namespace SnapUI.Web.Controllers
     public class MyJobsController : ApiController
     {
         private readonly IMyJobsService _myJobsService;
-        //private readonly IUserPrefService _userPrefService;
         public string alias;
         public List<string> _queueList;
         public MyJobsController()
         {
+            // Getting login info using Windows Authentication
             if (User.Identity.IsAuthenticated)
             {
                 string user = User.Identity.Name;
@@ -40,11 +38,12 @@ namespace SnapUI.Web.Controllers
                 alias = "unknown";
             }
 
-
-            //_userPrefService = new UserPrefService(alias);
-            _myJobsService = new MyJobsService("null");
+            // Creating queue list, which is defined in Web.Config
             string queueListString = ConfigurationManager.AppSettings["Queues"];
             _queueList = queueListString.Split(new char[] { ',' }).ToList();
+
+            // Creating an instance of the service (which calls the proc)
+            _myJobsService = new MyJobsService(_queueList);
         }
 
         public object[] GetAllJobs()
@@ -55,7 +54,6 @@ namespace SnapUI.Web.Controllers
 
             if (jobs != null)
             {
-                Debug.WriteLine("there was cache");
                 filteredJobs = jobs.Where(Job => Job.Dev == alias);
                 foreach (var item in filteredJobs)
                     Debug.Write(item.Dev);
@@ -63,8 +61,7 @@ namespace SnapUI.Web.Controllers
             }
             else
             {
-                Debug.WriteLine("there was NO cache");
-                jobs = _myJobsService.GetMyJobs(_queueList);
+                jobs = _myJobsService.GetMyJobs();
                 CacheItemPolicy policy = new CacheItemPolicy { AbsoluteExpiration = DateTimeOffset.Now.AddMinutes(1) };
                 cache.Add("Jobs", jobs, policy);
 
@@ -73,8 +70,6 @@ namespace SnapUI.Web.Controllers
                     Debug.Write(item.Dev);
                 return new object[] { filteredJobs, _queueList };
             }
-            //IEnumerable<Job> jobs = _myJobsService.GetMyJobs(_queueList);
-            //return new object[] { jobs, _queueList };
-        }
+        }        
     }
 }
