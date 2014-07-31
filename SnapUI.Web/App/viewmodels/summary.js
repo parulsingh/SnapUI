@@ -205,7 +205,7 @@
                 },
                 labels: {
                     items: [{
-                        html: 'Total Checkins ' + vm.weekCheckins()[i],
+                        html: 'Total Checkins ' + vm.allJobs().length,
                         style: {
                             left: '10px',
                             top: '340px',
@@ -442,6 +442,7 @@
                     allQGraphData.push(self.allQueueData()[elem]);
                 }
                 var totalWeekCheckins = allQGraphData.pop();
+                totalWeekCheckins = allQGraphData.pop();
 
                 allQGraphDataDay = [];
                 for (elem in self.allQueueDataDay()) {
