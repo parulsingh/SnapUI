@@ -21,11 +21,18 @@
         sortBySubmitdate: function () { },
         sortByBugid: function () { },
         sortByAttempts: function () { },
-        jobIdFilter : ko.observable(''),
+        jobIdFilter: ko.observable(''),
+        checkinIdFilter: ko.observable(''),
+        devFilter: ko.observable(''),
+        priorityFilters: ko.observableArray(["None", "High", "Low", "Normal"]),
+        priorityFilter: ko.observable(''),
+        queueFilter: ko.observable(''),
+        statusFilters: ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending"]),
+        statusFilter: ko.observable(''),
+        test_date : ko.observable(new Date())
     };
 
     return vm;
-
 
     function activate() {
         ko.bindingHandlers.datepicker = {
@@ -78,29 +85,12 @@
                 });
             }
 
-
         };
 
         ////////////////////////////////////////////////////////////////////////////////////
 
 
         /////////////////////////// filtering stuff ////////////////////////////
-        self.jobIdFilter = ko.observable('');
-        self.checkinIdFilter = ko.observable('');
-        self.devFilter = ko.observable('');
-
-        self.priorityFilters = ko.observableArray(["None", "High", "Low", "Normal"]);
-        self.priorityFilter = ko.observable('');
-
-
-        self.queueFilter = ko.observable('');
-
-        self.statusFilters = ko.observableArray(["None", "Aborted", "Cancelled", "Completed", "In Progress", "Pending"]);
-        self.statusFilter = ko.observable('');
-        self.test_date = ko.observable(new Date());
-
-
-
 
         self.filteredItems = ko.computed(function () {
             var jobIdFilter = self.jobIdFilter();
@@ -110,39 +100,28 @@
             var queueFilter = self.queueFilter();
             var statusFilter = self.statusFilter();
             var test_date = self.test_date();
-
-
-
-            var jBool;
-            var cBool;
-            var dBool;
-            var qBool;
-            var sBool;
-            var pBool;
-            var daBool;
+            var jBool = true;
+            var cBool = true;
+            var dBool = true;
+            var qBool = true;
+            var sBool = true;
+            var pBool = true;
+            var daBool = true;
             var result;
 
             return ko.utils.arrayFilter(self.allJobs(), function (i) {
-              if (!jobIdFilter || jobIdFilter == "") {
-                  jBool = true;
-              }
-              else {
-
+              if (jobIdFilter != "") {
                   jBool = self.jobIdFilter() == String(i.Jobid).substring(0, self.jobIdFilter().length);
-
               }
 
-              if (!checkinIdFilter || checkinIdFilter == "") {
-                  cBool = true;
-              }
-              else {
+              if (checkinIdFilter != "") {
                   cBool = self.checkinIdFilter() == String(i.Checkid).substring(0, self.checkinIdFilter().length);
+              }
 
+              if (devFilter != "") {
+                  dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
               }
-              if (!devFilter || devFilter == "") {
-                  dBool = true;
-              }
-              else if (devFilter.substr(-1) == "*" && self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1) {
+              if (devFilter.substr(-1) == "*" && self.managerNames.indexOf(devFilter.substring(0, devFilter.length - 1)) != -1) {
                   var directReports;
                   
                   for (var j = 0; j < self.managers.length; j++) {
@@ -151,41 +130,24 @@
                           break;
                       }
                   }
-                  
-                  
+     
                   dBool = directReports.indexOf(i.Dev) != -1;
               }
-              else {
-                  dBool = self.devFilter() == String(i.Dev).substring(0, self.devFilter().length);
-              }
-                
-              if (!queueFilter || queueFilter == "None") {
-                  qBool = true;
-              } 
-              else {
+
+              if (queueFilter != "None") {
                   qBool = i.Queue == queueFilter;
-            
-              }
-
-              if (!statusFilter || statusFilter == "None") {
-                  sBool = true;
               } 
-              else {
-                  sBool = i.Status[0] == statusFilter;
-            
-              }
-              if (!priorityFilter || priorityFilter == "None") {
-                  pBool = true;
-              }
-              else {
-                  pBool = i.Priority == priorityFilter;
 
+              if (statusFilter != "None") {
+                  sBool = i.Status[0] == statusFilter;
+              } 
+
+              if (priorityFilter != "None") {
+                  pBool = i.Priority == priorityFilter;
               }
+
               var today = new Date();
-              if (!test_date || ((test_date.getDay() == today.getDay()) && (test_date.getDate() == today.getDate()) && (test_date.getFullYear() == today.getFullYear()))) {
-                  daBool = true;
-              }
-              else {
+              if (((test_date.getDay() != today.getDay()) || (test_date.getDate() != today.getDate()) || (test_date.getFullYear() != today.getFullYear()))) {
                   var dateString = i.Submitdate.substring(0, 10);
                   var split = dateString.split("-");
                   var dateString2 = split[0] + "/" + split[1] + "/" + split[2];
@@ -196,7 +158,6 @@
                   daBool = test_date.getTime() == jobDate.getTime();
 
               }
-
 
               result = jBool && cBool && dBool && pBool && qBool && sBool && daBool;
 
@@ -220,9 +181,7 @@
                 self.managers = self.jobsAndQueues()[2];
                 self.managerNames = self.jobsAndQueues()[3];
                 self.queueFilters = self.allQueues();
-                self.queueFilters.reverse();
-                self.queueFilters.push("None");
-                self.queueFilters.reverse();
+                self.queueFilters.unshift("None");   // to make None the first option
             });
     }
 
